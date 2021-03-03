@@ -1,0 +1,42 @@
+{% macro input(formElement, placeholder, class = "form__input") %}
+    {{ form_widget(formElement,
+        {
+            'attr': {
+                'placeholder': placeholder,
+                'class': class
+            }
+        })
+    }}
+{% endmacro %}
+
+{% macro submit(message) %}
+    <div class="form__field">
+        <button type="submit" class="btn">{{ message }}</button>
+    </div>
+{% endmacro %}
+
+{% macro label(formElement, label) %}
+    {{ form_label(formElement, label,
+        {
+            'label_attr': {
+                'class': 'form__label'
+            }
+        })
+    }}
+{% endmacro %}
+
+{% macro error(formElement) %}
+    <div class="form__error">
+        {{ form_errors(formElement) }}
+    </div>
+{% endmacro %}
+
+{% macro infos(message) %}
+    <div class="form__infos">
+        <p>{{ message }}</p>
+    </div>
+{% endmacro %}
+
+{% macro csrf(csrf = 'authenticate') %}
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrf) }}">
+{%  endmacro %}

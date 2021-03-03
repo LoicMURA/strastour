@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ place.name }}{% endblock %}
+
+{% block body %}
+    <h1>{{ place.name }}</h1>
+    <p>{{ place.address }}</p>
+    <p>{{ place.longitude }} / {{ place.latitude }}</p>
+    <p>{{ place.description }}</p>
+    <img src="{{ place.picture }}" alt="test">
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <h1>Accueil</h1>
+    {% for parcours in courses %}
+        <article>
+            <h2>{{ parcours.name }}</h2>
+            <p>Dans le thème {{ parcours.theme.name }}</p>
+            <p>Description : {{ parcours.description }}</p>
+            <img src="{{ parcours.picture }}" alt="test">
+            <a href="{{ path('course_show', {"id": parcours.id}) }}">Aller au parcours</a>
+        </article>
+    {% endfor %}
+{% endblock %}

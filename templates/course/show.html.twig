@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ course.name }}{% endblock %}
+
+{% block body %}
+    <article>
+        <h1>{{ course.name }}</h1>
+        <p>Dans la catégorie {{ course.theme.name }}</p>
+        <p>{{ course.description }}</p>
+        <section>
+            {% for place in course.places %}
+                {% set place = place.place %}
+                <div>
+                    <h2>{{ place.name }}</h2>
+                    <p>Adresse : {{ place.address }}</p>
+                    <p>{{ place.description }}</p>
+                    <p>Au coordonnées : {{ place.longitude }} / {{ place.latitude }}</p>
+                    <img src="{{ place.picture }}" alt="test">
+                    <a href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
+                </div>
+            {% endfor %}
+        </section>
+    </article>
+{% endblock %}

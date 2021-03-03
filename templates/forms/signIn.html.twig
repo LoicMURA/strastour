@@ -1,0 +1,29 @@
+{% import 'macros/formMacros.html.twig' as formElement %}
+
+{{ form_start(form) }}
+    {{ formElement.csrf() }}
+    <div class="form_field">
+        {{ formElement.label(form.username, 'Nom d\'utilisateur') }}
+        {{ formElement.input(form.username, 'Votre nom d\'utilisateur') }}
+        {{ formElement.error(form.username) }}
+    </div>
+    <div class="form_field">
+        {{ formElement.label(form.password, 'Mot de passe') }}
+        {{ formElement.input(form.password, 'Votre mot de passe') }}
+        {{ formElement.error(form.password) }}
+    </div>
+    <div class="form_field">
+        {{ formElement.label(form.passwordConfirm, 'Confirmez le mot de passe') }}
+        {{ formElement.input(form.passwordConfirm, 'Confirmez votre mot de passe') }}
+        {{ formElement.error(form.passwordConfirm) }}
+    </div>
+    <div class="form_field">
+        {{ formElement.label(form.isPlayer, 'Êtes-vous joueur ?') }}
+        {{ formElement.input(form.isPlayer, '') }}
+        {{ formElement.infos(
+            'Si vous cocher cette case, vous devrez jouer au jeu pour débloquer les contenus du
+                site'
+        ) }}
+    </div>
+    {{ formElement.submit('S\'inscrire') }}
+{{ form_end(form) }}
