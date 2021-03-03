@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Repository\CourseRepository;
 use App\Entity\Course;
+use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CourseController extends AbstractController

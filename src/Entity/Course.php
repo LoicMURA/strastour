@@ -6,6 +6,7 @@ use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CourseRepository::class)
@@ -25,16 +26,32 @@ class Course
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(
+     *     min=5,
+     *     max=255,
+     *     minMessage="Le nom du parcours doit faire au minimum {{ limit }} caractères",
+     *     maxMessage="Le nom du parcours doit faire au maximum {{ limit }} caractères"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *     min=10,
+     *     minMessage="La description du parcours doit faire au minimum {{ limit }} caractères"
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Image(
+     *     mimeTypes={"image/png", "image/jpeg"},
+     *     mimeTypesMessage="Votre fichier doit être une image au format .jpg ou .png",
+     *     maxSize="350k",
+     *     maxSizeMessage="Votre fichier ne doit pas dépasser {{ limit }}Mo"
+     * )
      */
     private $picture;
 

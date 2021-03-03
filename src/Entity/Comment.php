@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -19,6 +20,12 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *     min=5,
+     *     max=500,
+     *     minMessage="Votre commentaire doit faire au minimum {{ limit }} caractères",
+     *     maxMessage="Votre commentaire ne peut faire au maximum que {{ limit }} caractères"
+     * )
      */
     private $content;
 
@@ -85,7 +92,7 @@ class Comment
         return $this;
     }
 
-    public function getCourse(): ?User
+    public function getCourse(): ?Course
     {
         return $this->course;
     }
