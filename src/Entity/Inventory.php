@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\InventoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=InventoryRepository::class)
@@ -31,6 +32,11 @@ class Inventory
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *     min=0,
+     *     max=100,
+     *     notInRangeMessage="La qualité de l'item doit être compris entre {{ min }} et {{ max }}"
+     * )
      */
     private $quality;
 

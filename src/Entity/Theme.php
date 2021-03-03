@@ -6,6 +6,7 @@ use App\Repository\ThemeRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ThemeRepository::class)
@@ -25,6 +26,12 @@ class Theme
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(
+     *     min=5,
+     *     max=255,
+     *     minMessage="Le nom du thème doit faire au minimum {{ limit }} caractères",
+     *     maxMessage="Le nom du thème doit faire au maximum {{ limit }} caractères"
+     * )
      */
     private $name;
 

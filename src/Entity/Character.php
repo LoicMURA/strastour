@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\CharacterRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=CharacterRepository::class)
@@ -22,16 +23,26 @@ class Character
 
     /**
      * @ORM\Column(type="string", length=1)
+     * @Assert\Regex(
+     *     pattern="/^[fFhH]{1,1}$/",
+     *     message="Le genre doit être 'f', 'F', 'h' ou 'H'"
+     * )
      */
     private $gender;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\PositiveOrZero(
+     *     message="La quantité d'xp doit être supérieur ou égal à 0"
+     * )
      */
     private $xp;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\PositiveOrZero(
+     *     message="Le nombre de stucks doit être supérieur ou égal à 0"
+     * )
      */
     private $stuck;
 
