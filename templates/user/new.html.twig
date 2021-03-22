@@ -16,8 +16,9 @@
         const genderForm = document.getElementById('js-gender-form');
         const isPlayerCheckbox = document.getElementById('user_isPlayer');
 
-        if (isPlayerCheckbox.value !== null) genderForm.classList.toggle('d-none');
+        isPlayerCheckbox.removeAttribute('checked');
         isPlayerCheckbox.addEventListener('input', (e) => {
+        console.log(isPlayerCheckbox.value)
             genderForm.classList.toggle('d-none');
         })
     </script>
