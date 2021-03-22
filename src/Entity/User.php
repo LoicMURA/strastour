@@ -56,6 +56,13 @@ class User implements UserInterface
     private $passwordConfirm;
 
     /**
+     * @Assert\Regex(
+     *     pattern="/^[hHfF]$/"
+     * )
+     */
+    private $gender;
+
+    /**
      * @ORM\Column(type="string", length=50)
      */
     private $role;
@@ -124,6 +131,17 @@ class User implements UserInterface
     {
         $this->passwordConfirm = $passwordConfirm;
 
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
         return $this;
     }
 

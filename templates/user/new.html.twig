@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <main class="mx-auto w-75">
+        <h2>S'inscrire</h2>
+        {{ include('user/_form.html.twig') }}
+
+        <p>Déjà inscrit ? <a href="{{ path('user_login') }}">Se connecter</a></p>
+    </main>
+{% endblock %}
+
+{% block bottom_javascript %}
+    <script>
+        const genderForm = document.getElementById('js-gender-form');
+        const isPlayerCheckbox = document.getElementById('user_isPlayer');
+
+        if (isPlayerCheckbox.value !== null) genderForm.classList.toggle('d-none');
+        isPlayerCheckbox.addEventListener('input', (e) => {
+            genderForm.classList.toggle('d-none');
+        })
+    </script>
+{% endblock %}
