@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\PlaceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PlaceRepository::class)
@@ -24,31 +25,61 @@ class Place
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(
+     *     min=5,
+     *     max=255,
+     *     minMessage="Le nom du lieu doit faire au minimum {{ limit }} caractères",
+     *     maxMessage="Le nom du lieu doit faire au maximum {{ limit }} caractères"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *     min=10,
+     *     minMessage="La description du parcours doit faire au minimum {{ limit }} caractères"
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(
+     *     pattern="/^(?=(\d{1,4})?[,]?[\'\ \wÀ-ÿ]+)([\w\d À-ÿ,\-']){15,}$/",
+     *     message="L'adresse '{{ value }}' n'est pas valide"
+     * )
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Image(
+     *     mimeTypes={"image/png", "image/jpeg"},
+     *     mimeTypesMessage="Votre fichier doit être une image au format .jpg ou .png",
+     *     maxSize="350k",
+     *     maxSizeMessage="Votre fichier ne doit pas dépasser {{ limit }}Mo"
+     * )
      */
     private $picture;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(
+     *     min=-90,
+     *     max=90,
+     *     notInRangeMessage="La latitude du lieux doit être comprise entre {{ min }} et {{ max }}"
+     * )
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(
+     *     min=-180,
+     *     max=180,
+     *     notInRangeMessage="La longitude du lieux doit être comprise entre {{ min }} et {{ max }}"
+     * )
      */
     private $longitude;
 

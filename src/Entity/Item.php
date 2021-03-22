@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ItemRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ItemRepository::class)
@@ -26,21 +27,42 @@ class Item
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(
+     *     min=5,
+     *     max=255,
+     *     minMessage="Le nom de l'item doit faire au minimum {{ limit }} carctères",
+     *     maxMessage="Le nom de l'item doit faire au maximum {{ limit }} carctères"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     *     @Assert\Length(
+     *     min=10,
+     *     max=750,
+     *     minMessage="La description de l'item doit faire au minimum {{ limit }} carctères",
+     *     maxMessage="La description de l'item doit faire au maximum {{ limit }} carctères"
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Image(
+     *     mimeTypes={},
+     *     mimeTypesMessage="L'image de l'item doit être un fichier .jpg ou .png",
+     *     maxSize="200k",
+     *     maxSizeMessage="L'image ne doit pas dépasser {{ limit }}Mo"
+     * )
      */
     private $picture;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive(
+     *     message="Le prix doit être supérieur à 0"
+     * )
      */
     private $price;
 

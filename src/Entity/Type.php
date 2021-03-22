@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TypeRepository::class)
@@ -24,6 +25,12 @@ class Type
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(
+     *     min=5,
+     *     max=255,
+     *     minMessage="Le nom du type d'item doit faire au minimum {{ limit }} caractères",
+     *     maxMessage="Le nom du type d'item doit faire au maximum {{ limit }} caractères"
+     * )
      */
     private $name;
 
