@@ -1,0 +1,23 @@
+{% import 'macros/formMacros.html.twig' as appForm %}
+
+{{ form_start(form) }}
+    {{ appForm.field(form.username, "Nom d'utilisateur", "Votre nom d'utilisateur") }}
+    {{ appForm.field(form.password, "Mot de passe", "Votre mot de passe") }}
+    {{ appForm.field(form.passwordConfirm, "Confirmation", "Confirmez le mot de passe") }}
+    {{ form_row(form.isPlayer, {'label': "Êtes-vous joueur ?"}) }}
+    <div class="form-group d-none" id="js-gender-form">
+        <fieldset>
+            <legend class="h4">Quel est le type de votre personnage ?</legend>
+            <div>
+                <label for="gender_h">Masculin</label>
+                <input type="radio" name="gender" id="gender_h" value="H">
+            </div>
+
+            <div>
+                <label for="gender_f">Feminin</label>
+                <input type="radio" name="gender" id="gender_f" value="F">
+            </div>
+        </fieldset>
+    </div>
+    {{ appForm.submit("S'inscrire") }}
+{{ form_end(form) }}
