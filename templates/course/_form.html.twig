@@ -1,0 +1,13 @@
+{% import 'macros/formMacros.html.twig' as appForm %}
+
+{{ form_start(form) }}   
+
+    {{ appForm.field(form.name, "Nom du parcour", "Nommez le parcour") }}
+    {{ appForm.field(form.description, "Description", "Description du parcour") }}
+    {{ appForm.field(form.picture, "Image", "Image du parcour") }}
+    {{ appForm.field(form.theme, "Theme", "theme du parcour") }}
+    {{ appForm.field(form.item, "Item", "Item lié au parcour") }}
+
+    {{ appForm.submit(button_label|default('Ajouter')) }}
+
+{{ form_end(form) }}

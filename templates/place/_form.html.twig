@@ -1,0 +1,13 @@
+{% import 'macros/formMacros.html.twig' as appForm %}
+
+{{ form_start(form) }}
+
+    {{ appForm.field(form.name, "Nom de la place", "Nommez la place") }}
+    {{ appForm.field(form.address, "Adresse", "Adresse de la place") }}
+    {{ appForm.field(form.longitude, "Longitude", "Longitude de la place") }}
+    {{ appForm.field(form.latitude, "Latitude", "Latitude de la place") }}
+    {{ appForm.field(form.description, "Description", "Description de la place") }}
+    {{ appForm.field(form.picture, "Image", "Image de la place") }}
+
+    {{ appForm.submit(button_label|default('Ajouter')) }}
+{{ form_end(form) }}

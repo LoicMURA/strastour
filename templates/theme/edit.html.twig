@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier theme{% endblock %}
+
+{% import 'macros/formMacros.html.twig' as appForm %}
+
+{% block body %}
+    <h2>Modifier le theme</h2>
+
+    {{ include('theme/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    {{ include('theme/_delete_form.html.twig') }}
+{% endblock %}
