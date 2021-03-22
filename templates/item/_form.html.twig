@@ -1,0 +1,10 @@
+{% import 'macros/formMacros.html.twig' as appForm %}
+
+{{ form_start(form) }}
+    {{ appForm.field(form.name, "Nom", "Nom de l'item") }}
+    {{ appForm.field(form.description, "Description", "Description de l'item") }}
+    {{ appForm.field(form.type, "Type", "Type de l'item") }}
+    {{ appForm.field(form.price, "Prix", "Prix de l'item (en stuck)") }}
+    {{ appForm.field(form.picture, "Image") }}
+    {{ appForm.submit(button_label|default('Ajouter')) }}
+{{ form_end(form) }}

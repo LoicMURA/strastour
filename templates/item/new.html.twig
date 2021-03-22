@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un item{% endblock %}
+
+{% block body %}
+    <main class="w-75 mx-auto">
+        <h2>Ajouter un nouvel item</h2>
+        {{ include('item/_form.html.twig') }}
+    </main>
+{% endblock %}
