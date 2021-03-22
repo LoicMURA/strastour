@@ -1,7 +1,22 @@
 <header>
-    <nav>
-        <a href="{{ path('course_index') }}">Accueil</a>
-        <a href="{{ path('game_index') }}">Jeu</a>
-        <p>Liens de navigations à venir ...</p>
+    <nav class="d-flex justify-content-between">
+        <img src="" alt="Logo">
+        <div>
+            <a href="{{ path('course_index') }}">Accueil</a>
+            <a href="{{ path('game_index') }}">Jeu</a>
+
+            {% if is_granted('ROLE_USER') %}
+                <div>
+                    <a href="{{ path('user_logout') }}">Déconnexion</a>
+                    <p>{{ app.user.username }}</p>
+                </div>
+                {% else %}
+                    <div>
+                        <a href="{{ path('user_login') }}">Se connecter</a>
+                        <a href="{{ path('user_new') }}">S'inscrire</a>
+                    </div>
+            {% endif %}
+            <p>Liens de navigations à venir ...</p>
+        </div>
     </nav>
 </header>

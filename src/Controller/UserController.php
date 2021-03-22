@@ -7,19 +7,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\UserType;
-use App\Entity\User;
+use App\Entity\{User, Character};
+use App\Security\AppAuthenticator;
 
 class UserController extends AbstractController
 {
     /**
-     * @Route("/signIn", name="user_signIn")
+     * @Route("/inscription", name="user_new")
      */
     public function signIn(
         Request $request,
         EntityManagerInterface $manager,
-        UserPasswordEncoderInterface $encoder
+        UserPasswordEncoderInterface $encoder,
+        GuardAuthenticatorHandler $guardHandler,
+        AppAuthenticator $authenticator
     ): Response
     {
         $user = new user();
@@ -27,40 +31,54 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
 
-        dump($user->getPassword());
-        dump($user->getPasswordConfirm());
         if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
 
             $user->setPassword($hash);
             $user->setRole('ROLE_USER');
 
+            if ($user->getIsPlayer()) {
+                $character = new Character();
+                $gender = $request->request->get('gender');
+
+                $character->setUser($user)
+                          ->setTutorialDone(false)
+                          ->setXp(0)
+                          ->setStuck(0)
+                          ->setGender($gender);
+
+                $manager->persist($character);
+            }
+
             $manager->persist($user);
             $manager->flush();
 
-            return $this->redirectToRoute('user_test');
+            return $guardHandler->authenticateUserAndHandleSuccess(
+                $user,
+                $request,
+                $authenticator,
+                'main' // firewall name in security.yaml
+            );
         }
 
-        return $this->render('test/index.html.twig', [
+        return $this->render('user/new.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/login", name="user_login")
+     * @Route("/connexion", name="user_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        $lastUsername = $authenticationUtils->getLastUsername();
-        $error = $authenticationUtils->getLastAuthenticationError();
-        return $this->render('test/index.html.twig', [
-            'lastUsername' => $lastUsername,
-            'error' => $error
+        return $this->render('user/login.html.twig', [
+            'username' => $authenticationUtils->getLastUsername(),
+            'error' => $authenticationUtils->getLastAuthenticationError()
         ]);
     }
 
     /**
-     * @Route("/logout", name="user_logout")
+     * @Route("/deconnexion", name="user_logout")
      */
     public function logout()
     {
