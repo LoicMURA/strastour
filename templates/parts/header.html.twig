@@ -1,6 +1,8 @@
 <header>
     <nav class="d-flex justify-content-between">
-        <img src="" alt="Logo">
+        <a href="{{ path('course_index') }}">
+            <img src="{{ asset('assets/image/logo.png') }}" alt="Logo" height="80">
+        </a>
         <div>
             <a href="{{ path('course_index') }}">Accueil</a>
             <a href="{{ path('game_index') }}">Jeu</a>

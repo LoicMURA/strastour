@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le bonus {{ bonus.name }}{% endblock %}
+
+{% block body %}
+    <main class="mx-auto w-75">
+        <h2>Modifier le bonus</h2>
+        {{ include('bonus/_form.html.twig', {'button_label': 'Modifier'}) }}
+        {{ include('bonus/_delete_form.html.twig') }}
+    </main>
+{% endblock %}
