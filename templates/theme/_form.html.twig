@@ -1,0 +1,9 @@
+{% import 'macros/formMacros.html.twig' as appForm %}
+
+{{ form_start(form) }}
+
+{{ appForm.field(form.name, "Nom du theme", "Nommez le theme") }}
+
+{{ appForm.submit(button_label|default('Ajouter')) }}
+
+{{ form_end(form) }}

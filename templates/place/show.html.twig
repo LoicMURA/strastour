@@ -7,5 +7,10 @@
     <p>{{ place.address }}</p>
     <p>{{ place.longitude }} / {{ place.latitude }}</p>
     <p>{{ place.description }}</p>
-    <img src="{{ place.picture }}" alt="test">
+    {% set link = asset('assets/image/'~place.picture) %}
+    {% if link matches '{http(s)?://}' %}
+        {% set link = place.picture %}
+    {% endif %}
+    <img src="{{ link }}" alt="test">
 {% endblock %}
+
