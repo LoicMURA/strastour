@@ -1,0 +1,70 @@
+.hud{
+    margin: 2rem;
+    &__items{
+        width: fit-content;
+        display: grid;
+        grid-template: repeat(2, 1fr) / repeat(3, 1fr);
+        row-gap: 0.25rem;
+        column-gap: 0.25rem;
+        place-items: center;
+    }
+
+    &__player{
+        width: 40%;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+    }
+}
+
+.items{
+    height: 60px;
+    width: 60px;
+    position: relative;
+    border-radius: 5px;
+    max-width: 350px;
+
+    &__preview{
+        display: block;
+        height: 100%;
+        width: 60px;
+    }
+
+    &__keytouch{
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+.player{
+    &__info{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__healt{
+        width: 100%;
+        background-color: red;
+        border-radius: 15px;
+        margin: 1rem 0;
+        border: 2px solid black
+    }
+    &__level{
+       width: 60px;
+       height: 60px;
+       background-color: white;
+       border-radius: 100%;
+       margin: 0 1rem;
+       color: black;
+    }
+    &__exp{
+        flex-grow: 3;
+        background-color: lime;
+        border-radius: 15px;
+        max-height: 40px;
+        border-radius: 15px;
+    }
+}
