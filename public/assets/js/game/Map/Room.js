@@ -1,9 +1,10 @@
+import Board from "./Board";
 
 export default class Room{
     constructor() {
         this.id = 0;
         this.ennemies = [] // [new Mob]
-        this.board = null // new Board
+        this.board = new Board(this._ctx)
         this.hordes = 0;
         this.hasBoss = false;
         this.isActive = false;

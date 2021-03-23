@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CoursePlaceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CoursePlaceRepository::class)
@@ -26,6 +27,7 @@ class CoursePlace
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Place::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"course:show"})
      */
     private $place;
 

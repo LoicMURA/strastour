@@ -13,6 +13,5 @@ export default class Level{
     async hydrateLevel(id){
         let query = await fetch(`/datas/levels/${id}`);
         let datas = await query.json();
-
     }
 }
