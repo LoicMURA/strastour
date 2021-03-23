@@ -47,6 +47,10 @@
             </div>
         </section>
         <section style="height: 75vh" id="game_container"></section>
+        <script>
+            const user = {{ app.user|json_encode }};
+            console.log(JSON.stringify(user))
+        </script>
     </main>
 {% endblock %} {% block footer %}{% endblock %}
 {% block javascripts %}
