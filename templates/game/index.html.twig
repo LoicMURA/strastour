@@ -47,9 +47,9 @@
             </div>
         </section>
         <section style="height: 75vh" id="game_container"></section>
+        <div class="js-user-rating" data-is-authenticated="{{ app.user.username|json_encode }}"></div>
         <script>
-            const user = {{ app.user|json_encode }};
-            console.log(JSON.stringify(user))
+            const USER = {{ user|json_encode|raw }}
         </script>
     </main>
 {% endblock %} {% block footer %}{% endblock %}

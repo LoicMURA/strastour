@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -23,6 +24,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"user:game"})
      */
     private $id;
 
@@ -34,6 +36,7 @@ class User implements UserInterface
      *     minMessage="Votre nom d'utilisateur doit faire au minimum {{ limit }} caractères !",
      *     maxMessage="Votre nom d'utilisateur ne doit pas faire plus de {{ limit }} caractères !"
      * )
+     * @Groups ({"user:game"})
      */
     private $username;
 
@@ -59,6 +62,7 @@ class User implements UserInterface
      * @Assert\Regex(
      *     pattern="/^[hHfF]$/"
      * )
+     * @Groups ({"user:game"})
      */
     private $gender;
 
@@ -69,21 +73,25 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups ({"user:game"})
      */
     private $isPlayer;
 
     /**
      * @ORM\OneToMany(targetEntity=UserCourses::class, mappedBy="user")
+     * @Groups ({"user:game"})
      */
     private $checkedCourses;
 
     /**
      * @ORM\OneToMany(targetEntity=UserPlaces::class, mappedBy="user")
+     * @Groups ({"user:game"})
      */
     private $checkedPlaces;
 
     /**
      * @ORM\OneToOne(targetEntity=Character::class, mappedBy="user", cascade={"persist", "remove"})
+     * @Groups ({"user:game"})
      */
     private $player;
 

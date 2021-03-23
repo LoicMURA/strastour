@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CharacterRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -35,6 +36,7 @@ class Character
      * @Assert\PositiveOrZero(
      *     message="La quantité d'xp doit être supérieur ou égal à 0"
      * )
+     * @Groups ({"user:game"})
      */
     private $xp;
 
@@ -43,11 +45,13 @@ class Character
      * @Assert\PositiveOrZero(
      *     message="Le nombre de stucks doit être supérieur ou égal à 0"
      * )
+     * @Groups ({"user:game"})
      */
     private $stuck;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups ({"user:game"})
      */
     private $tutorialDone;
 
@@ -58,6 +62,7 @@ class Character
 
     /**
      * @ORM\OneToMany(targetEntity=Inventory::class, mappedBy="player")
+     * @Groups ({"user:game"})
      */
     private $inventory;
 
