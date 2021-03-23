@@ -14,15 +14,21 @@ export default class Board{
         this.background = null; // new Sprite
     }
     async hydrateTiles(id_level, id_room){
-        let query = await fetch(`/data/levels`);
-        let datas = await query.json();
+        // let query = await fetch(`/data/levels`);
+        // let datas = await query.json();
         for(let i = 0; i < this.rows; i++){
             for (let j = 0; j < this.cols; j++){
                 this.tiles = [...this.tiles, new Tile(i * this.tileSize, j * this.tileSize, 0)];
             }
         }
     }
-    draw(ctx){
+    draw(){
+        canvas.width = this.cols * this.tileSize;
+        canvas.height = this.rows * this.tileSize;
 
+        ctx.beginPath();
+        for (const tileKey in tiles) {
+            ctx.fillRect(tiles[tileKey].x, tiles[tileKey].y, this.tileSize, this.tileSize);
+        }
     }
 }

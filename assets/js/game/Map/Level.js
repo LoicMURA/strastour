@@ -1,8 +1,6 @@
-
-// Game level
-
 export default class Level{
     constructor(id) {
+        console.log('level');
         this.difficulty = 'easy';
         this.rewards = [];
         this.rooms = [];
