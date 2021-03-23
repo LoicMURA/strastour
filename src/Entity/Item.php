@@ -6,6 +6,7 @@ use App\Repository\ItemRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -22,6 +23,7 @@ class Item
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"course:show"})
      */
     private $id;
 
@@ -33,6 +35,7 @@ class Item
      *     minMessage="Le nom de l'item doit faire au minimum {{ limit }} carctères",
      *     maxMessage="Le nom de l'item doit faire au maximum {{ limit }} carctères"
      * )
+     * @Groups({"course:show"})
      */
     private $name;
 
@@ -44,6 +47,7 @@ class Item
      *     minMessage="La description de l'item doit faire au minimum {{ limit }} carctères",
      *     maxMessage="La description de l'item doit faire au maximum {{ limit }} carctères"
      * )
+     * @Groups({"course:show"})
      */
     private $description;
 
@@ -55,6 +59,7 @@ class Item
      *     maxSize="200k",
      *     maxSizeMessage="L'image ne doit pas dépasser {{ limit }}Mo"
      * )
+     * @Groups({"course:show"})
      */
     private $picture;
 
@@ -63,17 +68,20 @@ class Item
      * @Assert\Positive(
      *     message="Le prix doit être supérieur à 0"
      * )
+     * @Groups({"course:show"})
      */
     private $price;
 
     /**
      * @ORM\ManyToOne(targetEntity=Type::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"course:show"})
      */
     private $type;
 
     /**
      * @ORM\OneToMany(targetEntity=ItemBonuses::class, mappedBy="item")
+     * @Groups({"course:show"})
      */
     private $itemBonuses;
 

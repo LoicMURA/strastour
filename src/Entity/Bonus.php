@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BonusRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,6 +16,7 @@ class Bonus
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"course:show"})
      */
     private $id;
 
@@ -26,6 +28,7 @@ class Bonus
      *     minMessage="Le nom de votre bonus doit faire au minimum {{ limit }} caractères",
      *     maxMessage="Le nom de votre bonus doit faire au maximum {{ limit }} caractères"
      * )
+     * @Groups({"course:show"})
      */
     private $name;
 

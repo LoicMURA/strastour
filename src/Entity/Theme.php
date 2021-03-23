@@ -6,6 +6,7 @@ use App\Repository\ThemeRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,6 +22,7 @@ class Theme
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"course:show"})
      */
     private $id;
 
@@ -32,6 +34,7 @@ class Theme
      *     minMessage="Le nom du thème doit faire au minimum {{ limit }} caractères",
      *     maxMessage="Le nom du thème doit faire au maximum {{ limit }} caractères"
      * )
+     * @Groups({"course:show"})
      */
     private $name;
 

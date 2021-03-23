@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\PlaceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,6 +21,7 @@ class Place
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"course:show"})
      */
     private $id;
 
@@ -31,6 +33,7 @@ class Place
      *     minMessage="Le nom du lieu doit faire au minimum {{ limit }} caractères",
      *     maxMessage="Le nom du lieu doit faire au maximum {{ limit }} caractères"
      * )
+     * @Groups({"course:show"})
      */
     private $name;
 
@@ -49,6 +52,7 @@ class Place
      *     pattern="/^(?=(\d{1,4})?[,]?[\'\ \wÀ-ÿ]+)([\w\d À-ÿ,\-']){15,}$/",
      *     message="L'adresse '{{ value }}' n'est pas valide"
      * )
+     * @Groups({"course:show"})
      */
     private $address;
 

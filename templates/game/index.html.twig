@@ -1,40 +1,54 @@
-{% extends 'base.html.twig' %} {% block title %}Jeu{% endblock %} {% block header %}{% endblock %} {% block body %}
-<main class="d-flex flex-column w-100">
-    <section style="height: 25vh" class="p-3 bg-dark text-white d-flex justify-content-center align-items-center w-100">
-        <div class="hud hud__items p-1">
-            <div class="items m-1">
-                <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=0" />
-                <span class="items__keytouch">1</span>
+{% extends 'base.html.twig' %}
+{% block title %}Jeu{% endblock %}
+{% block stylesheets %}
+  {{ encore_entry_link_tags("game") }}
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block body %}
+    <main class="d-flex flex-column w-100">
+        <section style="height: 25vh"
+                 class="p-3 bg-dark text-white d-flex justify-content-center align-items-center w-100">
+            <div class="hud hud__items p-1">
+                <div class="items m-1">
+                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=0"/>
+                    <span class="items__keytouch">1</span>
+                </div>
+                <div class="items m-1">
+                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=1"/><span
+                            class="items__keytouch">2</span>
+                </div>
+                <div class="items m-1">
+                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=2"/><span
+                            class="items__keytouch">3</span>
+                </div>
+                <div class="items m-1">
+                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=3"/><span
+                            class="items__keytouch">4</span>
+                </div>
+                <div class="items m-1">
+                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=4"/><span
+                            class="items__keytouch">5</span>
+                </div>
+                <div class="items m-1">
+                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=5"/><span
+                            class="items__keytouch">6</span>
+                </div>
             </div>
-            <div class="items m-1">
-                <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=1" /><span class="items__keytouch">2</span>
+            <div class="hud hud__player">
+                <div class="player__info player__healt">HP</div>
+                <div class="player__info player__level">Niveau</div>
+                <div class="player__info player__exp">Exp</div>
             </div>
-            <div class="items m-1">
-                <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=2" /><span class="items__keytouch">3</span>
+            <div class="hud hud__level">
+                <p>Parcours:</p>
+                <p>Étape:</p>
+                <p>Difficulté:</p>
             </div>
-            <div class="items m-1">
-                <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=3" /><span class="items__keytouch">4</span>
-            </div>
-            <div class="items m-1">
-                <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=4" /><span class="items__keytouch">5</span>
-            </div>
-            <div class="items m-1">
-                <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=5" /><span class="items__keytouch">6</span>
-            </div>
-        </div>
-        <div class="hud hud__player">
-            <div class="player__info player__healt">HP</div>
-            <div class="player__info player__level">Niveau</div>
-            <div class="player__info player__exp">Exp</div>
-        </div>
-        <div class="hud hud__level">
-            <p>Parcours:</p>
-            <p>Étape:</p>
-            <p>Difficulté:</p>
-        </div>
-    </section>
-    <section style="height: 75vh" id="game_container"></section>
-</main>
-{% endblock %} {% block footer %}{% endblock %} {% block bottom_javascript %}
-<script src="{{ asset('assets/js/game/game.js') }}"></script>
+        </section>
+        <section style="height: 75vh" id="game_container"></section>
+    </main>
+{% endblock %} {% block footer %}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags("game") }}
 {% endblock %}

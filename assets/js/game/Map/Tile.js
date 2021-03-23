@@ -2,7 +2,7 @@
 // Tile of a Board
 
 export default class Tile{
-    constructor(x, y, state) {
+    constructor(x, y) {
         this.position = {
             x: x,
             y: y

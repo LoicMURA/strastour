@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CourseRepository::class)
@@ -32,6 +33,7 @@ class Course
      *     minMessage="Le nom du parcours doit faire au minimum {{ limit }} caractères",
      *     maxMessage="Le nom du parcours doit faire au maximum {{ limit }} caractères"
      * )
+     * @Groups({"course:show"})
      */
     private $name;
 
@@ -41,6 +43,7 @@ class Course
      *     min=10,
      *     minMessage="La description du parcours doit faire au minimum {{ limit }} caractères"
      * )
+     * @Groups({"course:show"})
      */
     private $description;
 
@@ -58,17 +61,20 @@ class Course
     /**
      * @ORM\ManyToOne(targetEntity=Theme::class, inversedBy="courses")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"course:show"})
      */
     private $theme;
 
     /**
      * @ORM\ManyToOne(targetEntity=Item::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"course:show"})
      */
     private $item;
 
     /**
      * @ORM\OneToMany(targetEntity=CoursePlace::class, mappedBy="course")
+     * @Groups({"course:show"})
      */
     private $places;
 
