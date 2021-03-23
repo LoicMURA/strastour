@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ItemBonusesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ItemBonusesRepository::class)
@@ -21,11 +22,13 @@ class ItemBonuses
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Bonus::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"course:show"})
      */
     private $bonus;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"course:show"})
      */
     private $value;
 
