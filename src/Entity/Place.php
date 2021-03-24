@@ -21,7 +21,7 @@ class Place
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $id;
 
@@ -33,7 +33,7 @@ class Place
      *     minMessage="Le nom du lieu doit faire au minimum {{ limit }} caractères",
      *     maxMessage="Le nom du lieu doit faire au maximum {{ limit }} caractères"
      * )
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $name;
 
@@ -43,6 +43,7 @@ class Place
      *     min=10,
      *     minMessage="La description du parcours doit faire au minimum {{ limit }} caractères"
      * )
+     * @Groups({"course:show"})
      */
     private $description;
 

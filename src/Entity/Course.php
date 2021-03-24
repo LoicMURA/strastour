@@ -22,6 +22,7 @@ class Course
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"course:show", "user_game"})
      */
     private $id;
 
@@ -33,7 +34,7 @@ class Course
      *     minMessage="Le nom du parcours doit faire au minimum {{ limit }} caractères",
      *     maxMessage="Le nom du parcours doit faire au maximum {{ limit }} caractères"
      * )
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $name;
 

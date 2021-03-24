@@ -1,0 +1,79 @@
+{
+  "1": {
+    "price": 15,
+    "effect": {
+      "property": "HP",
+      "value": 15
+    },
+    "timer": 500,
+    "image": "https://picsum.photos/300/200?random=1",
+    "sprite": null,
+    "description" : "Lorem ipssum"
+  },
+  "2": {
+    "price": 25,
+    "effect": {
+      "property": "HP",
+      "value": 25
+    },
+    "timer": 500,
+    "image": "https://picsum.photos/300/200?random=2",
+    "sprite": null,
+    "description" : "Lorem ipssum"
+  },
+  "3": {
+    "price": 50,
+    "effect": {
+      "property": "HP",
+      "value": 50
+    },
+    "timer": 500,
+    "image": "https://picsum.photos/300/200?random=3",
+    "sprite": null,
+    "description" : "Lorem ipssum"
+  },
+  "4": {
+    "price": 35,
+    "effect": {
+      "property": "ATK",
+      "value": 35
+    },
+    "timer": 15000,
+    "image": "https://picsum.photos/300/200?random=4",
+    "sprite": null,
+    "description" : "Lorem ipssum"
+  },
+  "5": {
+    "price": 35,
+    "effect": {
+      "property": "DEF",
+      "value": 50
+    },
+    "timer": 15000,
+    "image": "https://picsum.photos/300/200?random=5",
+    "sprite": null,
+    "description" : "Lorem ipssum"
+  },
+  "6": {
+    "price": 40,
+    "effect": {
+      "property": "SPEED",
+      "value": 50
+    },
+    "timer": 10000,
+    "image": "https://picsum.photos/300/200?random=6",
+    "sprite": null,
+    "description" : "Lorem ipssum"
+  },
+  "7": {
+    "price": 50,
+    "effect": {
+      "property": "MAP",
+      "value": null
+    },
+    "timer": null,
+    "image": "https://picsum.photos/300/200?random=7",
+    "sprite": null,
+    "description" : "Lorem ipssum"
+  }
+}

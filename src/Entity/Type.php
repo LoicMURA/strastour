@@ -33,7 +33,7 @@ class Type
      *     minMessage="Le nom du type d'item doit faire au minimum {{ limit }} caractères",
      *     maxMessage="Le nom du type d'item doit faire au maximum {{ limit }} caractères"
      * )
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $name;
 

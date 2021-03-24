@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserPlacesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserPlacesRepository::class)
@@ -15,6 +16,7 @@ class UserPlaces
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Place::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_game"})
      */
     private $place;
 
@@ -28,6 +30,7 @@ class UserPlaces
     /**
      * @ORM\Id
      * @ORM\Column(type="boolean")
+     * @Groups({"user_game"})
      */
     private $inRealLife;
 

@@ -1,0 +1,67 @@
+{
+  "player": {
+    "hp": 100,
+    "atk": 20,
+    "def": 10,
+    "moveSpeed": 1,
+    "sprite": null
+  },
+  "mob": {
+    "1": {
+      "name": "voleurs",
+      "hp": [
+        50,
+        75,
+        100
+      ],
+      "atk": 15,
+      "def": 15,
+      "type_atk": "cac",
+      "dropped_xp": 5,
+      "dropped_stuff": "double stucks",
+      "drop_possibility": 8,
+      "dropped_stucks": 8
+    },
+    "2": {
+      "name": "cyclistes",
+      "hp": [
+        80,
+        100,
+        120
+      ],
+      "atk": 25,
+      "def": 15,
+      "type_atk": "cac",
+      "dropped_xp": 10,
+      "dropped_stuff": "vélo",
+      "drop_possibility": 5,
+      "dropped_stucks": 5
+    },
+    "3": {
+      "name": "pigeons",
+      "hp": [
+        40,
+        50,
+        60
+      ],
+      "atk": 20,
+      "def": 10,
+      "type_atk": "distance",
+      "dropped_xp": 3,
+      "dropped_stuff": "arrow",
+      "drop_possibility": 5,
+      "dropped_stucks": 2
+    },
+    "4": {
+      "name": "nuages",
+      "hp": null,
+      "atk": 11,
+      "def": null,
+      "type atk": "aoe",
+      "dropped_xp": 0,
+      "dropped_stuff": null,
+      "drop_possibility": null,
+      "dropped_stucks": null
+    }
+  }
+}

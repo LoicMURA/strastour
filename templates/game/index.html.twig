@@ -46,10 +46,15 @@
                 <p>Difficulté:</p>
             </div>
         </section>
-        <section style="height: 75vh" id="game_container"></section>
+        <section class="position-relative" style="height: 75vh" id="game_container"></section>
         <script>
-            const user = {{ app.user|json_encode }};
-            console.log(JSON.stringify(user))
+            const USER = {{ user|json_encode|raw }};
+            const ID_LEVEL = {{ course }};
+            const CANVAS = document.createElement('canvas');
+            CANVAS.classList = 'canvasGame';
+            const CTX = CANVAS.getContext('2d');
+            const gameContainer = document.getElementById('game_container');
+            gameContainer.appendChild(CANVAS);
         </script>
     </main>
 {% endblock %} {% block footer %}{% endblock %}
