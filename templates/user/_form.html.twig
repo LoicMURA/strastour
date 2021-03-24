@@ -5,19 +5,21 @@
     {{ appForm.field(form.password, "Mot de passe", "Votre mot de passe") }}
     {{ appForm.field(form.passwordConfirm, "Confirmation", "Confirmez le mot de passe") }}
     {{ form_row(form.isPlayer, {'label': "Êtes-vous joueur ?"}) }}
+
     <div class="form-group d-none" id="js-gender-form">
         <fieldset>
-            <legend class="h4">Quel est le type de votre personnage ?</legend>
-            <div>
-                <label for="gender_h">Masculin</label>
+            <legend>Quel est le type de votre personnage ?</legend>
+            <div class="d-flex my-1">
                 <input type="radio" name="gender" id="gender_h" value="H">
+                <label class="ml-1" for="gender_h">Masculin</label>
             </div>
 
-            <div>
-                <label for="gender_f">Feminin</label>
+            <div class="d-flex my-1">
                 <input type="radio" name="gender" id="gender_f" value="F">
+                <label class="ml-1" for="gender_f">Feminin</label>
             </div>
         </fieldset>
     </div>
+
     {{ appForm.submit("S'inscrire") }}
 {{ form_end(form) }}

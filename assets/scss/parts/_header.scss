@@ -1,0 +1,29 @@
+.header {
+  margin-bottom: 1rem;
+
+  &__link {
+    margin-left: 2rem;
+    font-size: 1.25rem;
+
+    &--little {
+      font-size: 1rem;
+    }
+  }
+
+  &__username {
+    padding: 0 0 0 2rem;
+    margin: 0;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &__separator {
+    margin-left: 2.5rem;
+    width: 1px;
+    height: 100%;
+    background-color: transparent;
+    box-shadow: 0 0 5px $bg-dark;
+  }
+}

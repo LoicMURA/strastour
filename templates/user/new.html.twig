@@ -3,11 +3,11 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <main class="mx-auto w-75">
+    <main class="main main__wrap">
         <h2>S'inscrire</h2>
         {{ include('user/_form.html.twig') }}
 
-        <p>Déjà inscrit ? <a href="{{ path('user_login') }}">Se connecter</a></p>
+        <p>Déjà inscrit ? <a class="form__link--redirect" href="{{ path('user_login') }}">Se connecter</a></p>
     </main>
 {% endblock %}
 
