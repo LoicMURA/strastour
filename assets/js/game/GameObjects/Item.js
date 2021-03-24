@@ -10,7 +10,7 @@ export default class Item{
         this.timer = 0;
         this.effect = {};
         this.fetcher = fetcher;
-        this.fetcher.fetchData(this, `Items.json`, this.id)
+        this.fetcher.fetchData(this, 'assets/datas/Items.json', [this.id])
         console.log(this)
     }
 }
