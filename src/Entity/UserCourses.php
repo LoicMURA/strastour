@@ -15,7 +15,7 @@ class UserCourses
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Course::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:game"})
+     * @Groups({"user_game"})
      */
     private $course;
 
@@ -29,7 +29,7 @@ class UserCourses
     /**
      * @ORM\Id
      * @ORM\Column(type="boolean")
-     * @Groups({"user:game"})
+     * @Groups({"user_game"})
      */
     private $inRealLife;
 

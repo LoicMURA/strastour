@@ -24,7 +24,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ({"user:game"})
+     * @Groups ({"user_game"})
      */
     private $id;
 
@@ -36,7 +36,7 @@ class User implements UserInterface
      *     minMessage="Votre nom d'utilisateur doit faire au minimum {{ limit }} caractères !",
      *     maxMessage="Votre nom d'utilisateur ne doit pas faire plus de {{ limit }} caractères !"
      * )
-     * @Groups ({"user:game"})
+     * @Groups ({"user_game"})
      */
     private $username;
 
@@ -53,7 +53,7 @@ class User implements UserInterface
     /**
      * @Assert\EqualTo(
      *     propertyPath="password",
-     *     message="La confirmation doit être simialaire au mot de passe"
+     *     message="La confirmation doit être similaire au mot de passe"
      * )
      */
     private $passwordConfirm;
@@ -62,7 +62,6 @@ class User implements UserInterface
      * @Assert\Regex(
      *     pattern="/^[hHfF]$/"
      * )
-     * @Groups ({"user:game"})
      */
     private $gender;
 
@@ -73,25 +72,25 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups ({"user:game"})
+     * @Groups({"user_game"})
      */
     private $isPlayer;
 
     /**
      * @ORM\OneToMany(targetEntity=UserCourses::class, mappedBy="user")
-     * @Groups ({"user:game"})
+     * @Groups({"user_game"})
      */
     private $checkedCourses;
 
     /**
      * @ORM\OneToMany(targetEntity=UserPlaces::class, mappedBy="user")
-     * @Groups ({"user:game"})
+     * @Groups({"user_game"})
      */
     private $checkedPlaces;
 
     /**
      * @ORM\OneToOne(targetEntity=Character::class, mappedBy="user", cascade={"persist", "remove"})
-     * @Groups ({"user:game"})
+     * @Groups({"user_game"})
      */
     private $player;
 

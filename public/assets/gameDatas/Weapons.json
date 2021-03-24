@@ -1,0 +1,22 @@
+{
+  "dagger" : {
+    "atk" : 14,
+    "nbHitMax": 100,
+    "fireRate" : 250
+  },
+  "spear" : {
+    "atk" : 30,
+    "nbHitMax": 40,
+    "fireRate" : 800
+  },
+  "long sword" : {
+    "atk" : 45,
+    "nbHitMax": 80,
+    "fireRate" : 1200
+  },
+  "bow" : {
+    "atk" : 38,
+    "nbHitMax": 60,
+    "fireRate" : 500
+  }
+}

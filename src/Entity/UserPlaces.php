@@ -16,7 +16,7 @@ class UserPlaces
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Place::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user:game"})
+     * @Groups({"user_game"})
      */
     private $place;
 
@@ -30,7 +30,7 @@ class UserPlaces
     /**
      * @ORM\Id
      * @ORM\Column(type="boolean")
-     * @Groups({"user:game"})
+     * @Groups({"user_game"})
      */
     private $inRealLife;
 
