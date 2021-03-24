@@ -7,10 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\UserType;
-use App\Entity\{User, Character};
+use App\Entity\{Place, User, Character, UserPlaces};
 use App\Security\AppAuthenticator;
 
 class UserController extends AbstractController
@@ -83,5 +84,28 @@ class UserController extends AbstractController
     public function logout()
     {
         // This function is managed by the Symfony Security Component
+    }
+
+    /**
+     * @Route("/check_place/{id}", name="check_place", methods={"POST"})
+     */
+    public function checkPlace(
+        Place $place,
+        Security $security,
+        EntityManagerInterface $manager
+    ): Response
+    {
+        $userPlace = (new UserPlaces())
+            ->setInRealLife(true)
+            ->setPlace($place)
+            ->setUser($security->getUser());
+
+        $manager->persist($userPlace);
+        $manager->flush();
+
+        return $this->json([
+            'message' => 'La place a bien été validé',
+            'code' => 200
+        ]);
     }
 }

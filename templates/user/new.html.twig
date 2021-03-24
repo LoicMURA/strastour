@@ -11,7 +11,8 @@
     </main>
 {% endblock %}
 
-{% block bottom_javascript %}
+{% block javascripts %}
+    {{ parent() }}
     <script>
         const genderForm = document.getElementById('js-gender-form');
         const isPlayerCheckbox = document.getElementById('user_isPlayer');
