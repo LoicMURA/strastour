@@ -6,6 +6,7 @@ use App\Entity\Course;
 use App\Form\CourseType;
 use App\Service\FileService;
 use App\Repository\CourseRepository;
+use App\Service\GoogleApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,10 +32,11 @@ class CourseController extends AbstractController
     /**
      * @Route("/parcours/{id}", name="course_show", requirements={"id"="\d+"})
      */
-    public function show(Course $course): Response
+    public function show(Course $course, GoogleApi $api): Response
     {
         return $this->render('course/show.html.twig', [
-            'course' => $course
+            'course' => $course,
+            'API_KEY' => $api->getKey()
         ]);
     }
 

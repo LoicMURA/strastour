@@ -1,0 +1,15 @@
+<script>
+    let map;
+    function initMap() {
+        const mapBox = document.getElementById('map');
+        let place = new google.maps.LatLng({{ place.latitude }}, {{ place.longitude }});
+        map = new google.maps.Map(mapBox, {
+            center: place,
+            zoom: 15
+        });
+        const marker = new google.maps.Marker({
+            position: place,
+            map: map
+        });
+    }
+</script>

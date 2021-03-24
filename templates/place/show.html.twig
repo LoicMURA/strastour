@@ -1,16 +1,46 @@
 {% extends 'base.html.twig' %}
 
+{% set link = asset('assets/image/'~place.picture) %}
+{% if link matches '{http(s)?://}' %}
+    {% set link = place.picture %}
+{% endif %}
+
 {% block title %}{{ place.name }}{% endblock %}
 
-{% block body %}
-    <h1>{{ place.name }}</h1>
-    <p>{{ place.address }}</p>
-    <p>{{ place.longitude }} / {{ place.latitude }}</p>
-    <p>{{ place.description }}</p>
-    {% set link = asset('assets/image/'~place.picture) %}
-    {% if link matches '{http(s)?://}' %}
-        {% set link = place.picture %}
-    {% endif %}
-    <img src="{{ link }}" alt="test">
+{% block stylesheets %}
+    {{ parent() }}
+    {% include('scripts/placeMap.html.twig') %}
 {% endblock %}
 
+{% block body %}
+    <main>
+        <h1>{{ place.name }}</h1>
+        <p>{{ place.address }}</p>
+        <p>{{ place.longitude }} / {{ place.latitude }}</p>
+
+        {% if is_granted('ROLE_USER') and not checkedPlace and is_mobile() %}
+            <form action="{{ path('check_place', {"id": place.id}) }}">
+                <p id="js-geolocalisation" class="btn btn-primary">J'y suis</p>
+            </form>
+            <div id="geo"></div>
+        {% endif %}
+
+        {% if not isPlayer or checkedPlace %}
+            <p>{{ place.description }}</p>
+            <img src="{{ link }}" alt="Image de {{ place.name }}">
+        {% else %}
+            {% if is_granted('ROLE_USER') %}
+                <p id="js-unchecked">Vous devez vous rendre sur place pour avoir plus d'information</p>
+            {% endif %}
+        {% endif %}
+        <div id="map"></div>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&callback=initMap"></script>
+    {% if is_mobile() %}
+        {% include 'scripts/geolocation.html.twig' %}
+    {% endif %}
+{% endblock %}
