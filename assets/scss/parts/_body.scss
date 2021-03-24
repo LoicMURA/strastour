@@ -1,0 +1,12 @@
+body {
+  min-height: 100vh;
+}
+
+.main {
+  flex-grow: 2;
+
+  &__wrap {
+    @extend .mx-auto;
+    @extend .w-75;
+  }
+}

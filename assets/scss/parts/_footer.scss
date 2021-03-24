@@ -1,0 +1,13 @@
+.footer {
+  background-color: $bg-dark;
+
+  &__link {
+    color: #eaeaea;
+    font-size: .925rem;
+
+    &:hover {
+      color: $primary-light;
+      text-decoration: none;
+    }
+  }
+}

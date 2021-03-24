@@ -10,14 +10,19 @@
             {{ encore_entry_link_tags("app") }}
         {% endblock %}
     </head>
-    <body>
-    {% block header %}
-        {% include 'parts/header.html.twig' %}
-    {% endblock %}
-        {% block body %}{% endblock %}
-    {% block footer %}
-        {% include 'parts/footer.html.twig' %}
-    {% endblock %}
+    <body class="d-flex flex-column">
+        {% block header %}
+            {% include 'parts/header.html.twig' %}
+        {% endblock %}
+
+        {% block body %}
+            {# Main content #}
+        {% endblock %}
+
+        {% block footer %}
+            {% include 'parts/footer.html.twig' %}
+        {% endblock %}
+
         {% block javascripts %}
             {{ encore_entry_script_tags("app") }}
         {% endblock %}

@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block body %}
-    <main>
+    <main class="main main__wrap">
         <h1>{{ place.name }}</h1>
         <p>{{ place.address }}</p>
         <p>{{ place.longitude }} / {{ place.latitude }}</p>
@@ -40,6 +40,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&callback=initMap"></script>
+
     {% if is_mobile() %}
         {% include 'scripts/geolocation.html.twig' %}
     {% endif %}

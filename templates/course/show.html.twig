@@ -8,29 +8,31 @@
 {% endblock %}
 
 {% block body %}
-    <div id="map"></div>
-    <article>
-        <h1>{{ course.name }}</h1>
-        <p>Dans la catégorie {{ course.theme.name }}</p>
-        <p>{{ course.description }}</p>
-        <section>
-            {% for place in course.places %}
-                {% set place = place.place %}
-                <div>
-                    <h2>{{ place.name }}</h2>
-                    <p>Adresse : {{ place.address }}</p>
-                    <p>{{ place.description }}</p>
-                    <p>Au coordonnées : {{ place.longitude }} / {{ place.latitude }}</p>
-                    {% set link = asset('assets/image/'~place.picture) %}
-                    {% if link matches '{http(s)?://}' %}
-                        {% set link = place.picture %}
-                    {% endif %}
-                    <img src="{{ link }}" alt="test">
-                    <a href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
-                </div>
-            {% endfor %}
-        </section>
-    </article>
+    <main class="main main__wrap">
+        <div id="map"></div>
+        <article>
+            <h1>{{ course.name }}</h1>
+            <p>Dans la catégorie {{ course.theme.name }}</p>
+            <p>{{ course.description }}</p>
+            <section>
+                {% for place in course.places %}
+                    {% set place = place.place %}
+                    <div>
+                        <h2>{{ place.name }}</h2>
+                        <p>Adresse : {{ place.address }}</p>
+                        <p>{{ place.description }}</p>
+                        <p>Au coordonnées : {{ place.longitude }} / {{ place.latitude }}</p>
+                        {% set link = asset('assets/image/'~place.picture) %}
+                        {% if link matches '{http(s)?://}' %}
+                            {% set link = place.picture %}
+                        {% endif %}
+                        <img src="{{ link }}" alt="test">
+                        <a href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
+                    </div>
+                {% endfor %}
+            </section>
+        </article>
+    </main>
 {% endblock %}
 
 {% block javascripts %}
