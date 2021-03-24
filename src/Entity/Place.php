@@ -43,6 +43,7 @@ class Place
      *     min=10,
      *     minMessage="La description du parcours doit faire au minimum {{ limit }} caractères"
      * )
+     * @Groups({"course:show"})
      */
     private $description;
 

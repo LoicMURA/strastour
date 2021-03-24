@@ -1,8 +1,13 @@
 import Player from "../Characters/Player";
 import Room from "./Room";
+import Item from "../GameObjects/Item";
+import {fetcher} from '../Fetcher';
 
 export default class Level{
     constructor(id) {
+        this.id = id;
+        this.fetcher = fetcher;
+        this.name = '';
         this.difficulty = 'easy';
         this.rewards = null ; // new Item
         this.rooms = [];
@@ -12,19 +17,17 @@ export default class Level{
         this.hydrateLevel(id);
     }
     async hydrateLevel(id){
-        let query = await fetch(`/assets/gameDatas/Levels.json`);
-        let levels = await query.json();
-        for (const level in levels) {
-            if(level == id){
-                this.hydrateRooms(levels[level]);
-            }
-        }
+        let fetchBDD = await fetch(`/jeu/${id}`);
+        const level = await fetchBDD.json();
+        let fetchJSON = await fetch(`/assets/datas/levels/${id}.json`);
+        await this.hydrateRooms(fetchJSON.json());
     }
+
     hydrateRooms(level){
         for (const rooms in level) {
-            console.log(rooms)
+            console.log(rooms);
             // let room = new Room();
-            // room.ennemies = rooms.nbEnnemies
+            // room.ennemies = level[rooms].nbEnnemies
             // this.rooms = [...this.rooms, new Room(room)]
         }
     }
