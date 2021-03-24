@@ -28,6 +28,7 @@ class Character
      *     pattern="/^[fFhH]{1,1}$/",
      *     message="Le genre doit être 'f', 'F', 'h' ou 'H'"
      * )
+     * @Groups({"user_game"})
      */
     private $gender;
 
@@ -36,7 +37,7 @@ class Character
      * @Assert\PositiveOrZero(
      *     message="La quantité d'xp doit être supérieur ou égal à 0"
      * )
-     * @Groups ({"user:game"})
+     * @Groups({"user_game"})
      */
     private $xp;
 
@@ -45,13 +46,13 @@ class Character
      * @Assert\PositiveOrZero(
      *     message="Le nombre de stucks doit être supérieur ou égal à 0"
      * )
-     * @Groups ({"user:game"})
+     * @Groups({"user_game"})
      */
     private $stuck;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups ({"user:game"})
+     * @Groups({"user_game"})
      */
     private $tutorialDone;
 
@@ -62,7 +63,7 @@ class Character
 
     /**
      * @ORM\OneToMany(targetEntity=Inventory::class, mappedBy="player")
-     * @Groups ({"user:game"})
+     * @Groups({"user_game"})
      */
     private $inventory;
 

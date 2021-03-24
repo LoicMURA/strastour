@@ -23,7 +23,7 @@ class Item
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $id;
 
@@ -36,6 +36,7 @@ class Item
      *     maxMessage="Le nom de l'item doit faire au maximum {{ limit }} carctères"
      * )
      * @Groups({"course:show"})
+     * @Groups({"user_game"})
      */
     private $name;
 
@@ -59,7 +60,7 @@ class Item
      *     maxSize="200k",
      *     maxSizeMessage="L'image ne doit pas dépasser {{ limit }}Mo"
      * )
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $picture;
 
@@ -75,13 +76,12 @@ class Item
     /**
      * @ORM\ManyToOne(targetEntity=Type::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $type;
 
     /**
      * @ORM\OneToMany(targetEntity=ItemBonuses::class, mappedBy="item")
-     * @Groups({"course:show"})
      */
     private $itemBonuses;
 

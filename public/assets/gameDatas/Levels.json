@@ -1,0 +1,188 @@
+{
+  "1": {
+    "Restaurant \"Au Canon\"": {
+      "nbEnnemies": [
+        10,
+        15,
+        20
+      ],
+      "hordes": [
+        3,
+        4,
+        5
+      ],
+      "hasBoss": false
+    },
+    "Hôtel Cathédrale": {
+      "nbEnnemies": [
+        12,
+        15,
+        17
+      ],
+      "hordes": [
+        3,
+        4,
+        5
+      ],
+      "hasBoss": false
+    },
+    "Credit Mutuel": {
+      "nbEnnemies": [
+        13,
+        15,
+        18
+      ],
+      "hordes": [
+        3,
+        4,
+        5
+      ],
+      "hasBoss": false
+    },
+    "Jardin Place de la République": {
+      "nbEnnemies": [
+        15,
+        17,
+        19
+      ],
+      "hordes": [
+        3,
+        4,
+        5
+      ],
+      "hasBoss": false
+    },
+    "Mémorial de la synagogue de 1940": {
+      "nbEnnemies": [
+        20,
+        22,
+        25
+      ],
+      "hordes": [
+        3,
+        5,
+        6
+      ],
+      "hasBoss": false
+    },
+    "Statut du Maréchal Leclerc": {
+      "nbEnnemies": [
+        22,
+        25,
+        30
+      ],
+      "hordes": [
+        4,
+        5,
+        6
+      ],
+      "hasBoss": true
+    }
+  },
+  "2": {
+    "Status de Gutenberg": {
+      "nbEnnemies": [
+        10,
+        15,
+        20
+      ],
+      "hordes": [
+        3,
+        4,
+        5
+      ],
+      "hasBoss": false
+    },
+    "Musée d'art contemporain": {
+      "nbEnnemies": [
+        12,
+        15,
+        17
+      ],
+      "hordes": [
+        3,
+        4,
+        5
+      ],
+      "hasBoss": false
+    },
+    "Le Barage Vauban": {
+      "nbEnnemies": [
+        13,
+        15,
+        18
+      ],
+      "hordes": [
+        3,
+        4,
+        5
+      ],
+      "hasBoss": false
+    },
+    "Les Ponts couverts": {
+      "nbEnnemies": [
+        15,
+        17,
+        19
+      ],
+      "hordes": [
+        3,
+        4,
+        5
+      ],
+      "hasBoss": false
+    },
+    "Musée des beaux arts": {
+      "nbEnnemies": [
+        20,
+        22,
+        25
+      ],
+      "hordes": [
+        3,
+        5,
+        6
+      ],
+      "hasBoss": false
+    },
+    "Musée Tomi Ungerer": {
+      "nbEnnemies": [
+        22,
+        25,
+        27
+      ],
+      "hordes": [
+        3,
+        5,
+        6
+      ],
+      "hasBoss": false
+    },
+    "Théâtre national de Strasbourg (TNS)": {
+      "nbEnnemies": [
+        25,
+        27,
+        30
+      ],
+      "hordes": [
+        4,
+        5,
+        6
+      ],
+      "hasBoss": false
+    },
+    "Opéra national du Rhin (ONR)": {
+      "nbEnnemies": [
+        30,
+        32,
+        36
+      ],
+      "hordes": [
+        6,
+        7,
+        8
+      ],
+      "hasBoss": true
+    }
+  }
+}

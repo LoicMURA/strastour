@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\InventoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=InventoryRepository::class)
@@ -22,11 +23,13 @@ class Inventory
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Item::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_game"})
      */
     private $item;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user_game"})
      */
     private $quantity;
 
@@ -37,6 +40,7 @@ class Inventory
      *     max=100,
      *     notInRangeMessage="La qualité de l'item doit être compris entre {{ min }} et {{ max }}"
      * )
+     * @Groups({"user_game"})
      */
     private $quality;
 

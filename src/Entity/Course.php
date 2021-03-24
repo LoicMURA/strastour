@@ -22,7 +22,7 @@ class Course
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"course:show", "user:game"})
+     * @Groups({"course:show", "user_game"})
      */
     private $id;
 
@@ -34,7 +34,7 @@ class Course
      *     minMessage="Le nom du parcours doit faire au minimum {{ limit }} caractères",
      *     maxMessage="Le nom du parcours doit faire au maximum {{ limit }} caractères"
      * )
-     * @Groups({"course:show", "user:game"})
+     * @Groups({"course:show", "user_game"})
      */
     private $name;
 
@@ -75,7 +75,7 @@ class Course
 
     /**
      * @ORM\OneToMany(targetEntity=CoursePlace::class, mappedBy="course")
-     * @Groups({"course:show", "user:game"})
+     * @Groups({"course:show"})
      */
     private $places;
 

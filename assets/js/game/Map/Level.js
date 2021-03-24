@@ -1,15 +1,31 @@
+import Player from "../Characters/Player";
+import Room from "./Room";
+
 export default class Level{
     constructor(id) {
-        console.log('level');
         this.difficulty = 'easy';
-        this.rewards = [];
+        this.rewards = null ; // new Item
         this.rooms = [];
-        this.player = null;
+        this.player = new Player();
         this.isCleared = false;
-    }
 
+        this.hydrateLevel(id);
+    }
     async hydrateLevel(id){
-        let query = await fetch(`/datas/levels/${id}`);
-        let datas = await query.json();
+        let query = await fetch(`/assets/gameDatas/Levels.json`);
+        let levels = await query.json();
+        for (const level in levels) {
+            if(level == id){
+                this.hydrateRooms(levels[level]);
+            }
+        }
+    }
+    hydrateRooms(level){
+        for (const rooms in level) {
+            console.log(rooms)
+            // let room = new Room();
+            // room.ennemies = rooms.nbEnnemies
+            // this.rooms = [...this.rooms, new Room(room)]
+        }
     }
 }
