@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Place;
 use App\Form\PlaceType;
 use App\Repository\PlaceRepository;
+use App\Repository\UserPlacesRepository;
 use App\Service\FileService;
+use App\Service\GoogleApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/place")
@@ -43,10 +46,23 @@ class PlaceController extends AbstractController
     /**
      * @Route("/{id}", name="place_show", methods={"GET"})
      */
-    public function show(Place $place): Response
+    public function show(
+        Place $place,
+        GoogleApi $api,
+        Security $security,
+        UserPlacesRepository $repository
+    ): Response
     {
+        $user = $security->getUser();
+        $isPlayer = $user ? $user->getIsPlayer() : false;
+        $checkedPlaces = $repository->findBy(['place' => $place, 'user' => $user]);
+        $check = count($checkedPlaces) > 0;
+
         return $this->render('place/show.html.twig', [
             'place' => $place,
+            'API_KEY' => $api->getKey(),
+            'checkedPlace' => $check,
+            'isPlayer' => $isPlayer
         ]);
     }
 

@@ -2,7 +2,13 @@
 
 {% block title %}{{ course.name }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% include('scripts/courseMap.html.twig') %}
+{% endblock %}
+
 {% block body %}
+    <div id="map"></div>
     <article>
         <h1>{{ course.name }}</h1>
         <p>Dans la catégorie {{ course.theme.name }}</p>
@@ -25,4 +31,9 @@
             {% endfor %}
         </section>
     </article>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&callback=initMap"></script>
 {% endblock %}

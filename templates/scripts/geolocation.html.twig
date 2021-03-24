@@ -1,0 +1,58 @@
+<script>
+    const geo = document.getElementById('geo');
+
+    function checkPosition(response) {
+        if (locationValidate(response, {{ place.latitude }}, {{ place.longitude }})) {
+            fetch("{{ path('check_place', {"id": place.id}) }}", {
+                method: "POST"
+            })
+            .then(response => {
+                response.json().then(json => {
+                    printDatas(document.querySelector('main'), document.getElementById('map'));
+                    document.getElementById('js-unchecked').remove();
+                    document.querySelector('form').remove();
+                })
+            })
+        } else {
+            alert('Oups ! Vous n\'êtes pas au bon endroit');
+        }
+    }
+
+    function getAccuracy(accuracy, latitude, longitude) {
+        let meterAccuracy = 0.0001 / 11.132;
+        let acc = meterAccuracy * accuracy;
+        return {
+            "minLat": latitude - acc,
+            "maxLat": latitude + acc,
+            "minLng": longitude - acc,
+            "maxLng": longitude + acc
+        };
+    }
+
+    function locationValidate(location, latitude, longitude) {
+        let zone = getAccuracy(location.coords.accuracy, location.coords.latitude, location.coords.longitude);
+        if (latitude < zone.maxLat && latitude > zone.minLat) {
+            if (longitude < zone.maxLng && longitude > zone.minLng) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function geolocationDisabled() {
+        alert('Veuillez activé la localisation du téléphone, autrement, la localisation ne fonctionnera pas');
+    }
+
+    function printDatas(parent, sibling) {
+        let div = document.createElement('div');
+        div.innerHTML += `<p>{{ place.description }}</p><img src="{{ link }}" alt="Image de {{ place.name }}">`;
+
+        parent.insertBefore(div, sibling);
+    }
+    document.getElementById('js-geolocalisation')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigator.geolocation.getCurrentPosition((response) => {
+            checkPosition(response);
+        }, geolocationDisabled, {'enableHighAccuracy': true});
+    })
+</script>
