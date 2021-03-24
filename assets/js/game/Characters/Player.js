@@ -10,5 +10,7 @@ export default class Player extends Character{
         this.currentXp = USER.player.xp;
         this.stucks = USER.player.stuck;
         this.activeBonus = []; // [new Item]
+
+        console.log(this);
     }
 }

@@ -15,6 +15,10 @@
             {% endif %}
             <img src="{{ link }}" alt="test">
             <a href="{{ path('course_show', {"id": parcours.id}) }}">Aller au parcours</a>
+            <form method="POST" action="{{ path('game_index') }}">
+                <input name="course" value="{{ parcours.id }}" type="hidden">
+                <button type="submit">Jouer à ce parcours</button>
+            </form>
         </article>
     {% endfor %}
 {% endblock %}
