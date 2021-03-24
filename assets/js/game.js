@@ -1,6 +1,7 @@
 import '../scss/app.scss';
 import Level from "./game/Map/Level.js";
 import Item from "./game/GameObjects/Item";
+import Player from "./game/Characters/Player";
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');

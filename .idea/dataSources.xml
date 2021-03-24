@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="datas.db [2]" uuid="a52f72ae-e7b4-49f4-ab44-1b2a994cf112">
+    <data-source source="LOCAL" name="strastour" uuid="c9e8539f-c57f-424e-8779-780e67440a5f">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/var/datas.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/var/strastour.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
