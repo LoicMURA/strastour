@@ -1,5 +1,7 @@
 export default class Room{
-    constructor(id, difficulty) {
+    constructor(id, difficulty, roomDatas) {
+        this.id = id;
+        this.datas = roomDatas;
         this.name = '';
         this.address = '';
         this.description = '';
@@ -11,4 +13,6 @@ export default class Room{
         this.isActive = false;
         this.cleared = false;
     }
+
+
 }

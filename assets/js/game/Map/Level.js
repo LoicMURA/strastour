@@ -3,13 +3,14 @@ import Item from "../GameObjects/Item";
 import {fetcher} from '../Fetcher';
 
 export default class Level{
-    constructor(id) {
-        this.id = id;
+    constructor(levelId, levelDatas) {
+        this.id = levelId;
+        this.datas = levelDatas;
         this.name = '';
         this.description = '';
         this.difficulty = 'easy';
         this.item = null ; // new Item
-        this.places = {};
+        this.places = [];
         this.rooms = [];
         this.isCleared = false;
     }
@@ -20,10 +21,12 @@ export default class Level{
         fetcher.hydrateData(levelDatas, this);
     }
 
-    async hydrateRooms(){
-        for (const place in this.places) {
-            let room = new Room(this.places[place].place.id);
-            fetcher.hydrateData(this.places[place].place, room);
+    async hydrateRooms(datas){
+        for (const place of this.places) {
+            let placeShort = place.place;
+            //room datas are empty
+            let room = new Room(placeShort.id, this.difficulty, datas[placeShort.id]);
+            fetcher.hydrateData(placeShort, room);
             this.rooms = [...this.rooms, room];
         }
     }
