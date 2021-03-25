@@ -20,7 +20,7 @@ export default class Player extends Character {
             noGun : new Sprite(this.images.noGun)
         }
         this.images.noGun.src = '/assets/image/sprites/male-void.png';
-        fetcher.fetchData(this, '/assets/datas/Character.json', ["player"]);
+        fetcher.fetchData(this, '/assets/datas/Characters.json', ["player"]);
     }
 
     hydrateInventory() {

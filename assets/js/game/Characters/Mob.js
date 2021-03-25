@@ -12,7 +12,7 @@ export default class Mob extends Character {
         this.typeMob = id; // 'mob' => id_mob || 'boss' => id_boss
         this.attacks = []; // [new Attack]
 
-        fetcher.fetchData(this, '/assets/datas/Character.json', [this.type, this.typeMob])
+        fetcher.fetchData(this, '/assets/datas/Characters.json', [this.type, this.typeMob])
             .then(() => {
                 this.hydrateAttacks();
                 console.log(this);
