@@ -50,8 +50,11 @@
         <script>
             const USER = {{ user|json_encode|raw }};
             const ID_LEVEL = {{ course }};
+
             const CANVAS = document.createElement('canvas');
             CANVAS.classList = 'canvasGame';
+            CANVAS.width = 0;
+            CANVAS.height = 0;
             const CTX = CANVAS.getContext('2d');
             const gameContainer = document.getElementById('game_container');
             gameContainer.appendChild(CANVAS);
