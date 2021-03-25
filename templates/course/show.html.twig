@@ -27,7 +27,7 @@
                             {% set link = place.picture %}
                         {% endif %}
                         <img src="{{ link }}" alt="test">
-                        <a href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
+                        <a href="{{ path('place_show', {"course": course.id, "id": place.id}) }}">Lire plus ...</a>
                     </div>
                 {% endfor %}
             </section>

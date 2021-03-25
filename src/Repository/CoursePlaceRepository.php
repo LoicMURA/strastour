@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\CoursePlace;
+use App\Entity\{Course, CoursePlace, Place};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,32 +19,73 @@ class CoursePlaceRepository extends ServiceEntityRepository
         parent::__construct($registry, CoursePlace::class);
     }
 
-    // /**
-    //  * @return CoursePlace[] Returns an array of CoursePlace objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findCourses(Place $place)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $manager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?CoursePlace
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $queryBuilder = ($manager->createQueryBuilder())
+            ->select('c.id')
+            ->from('App\Entity\CoursePlace', 't')
+            ->join('t.course', 'c')
+            ->andWhere('t.place = :place')
+            ->setParameter('place', $place);
+
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
+
+    public function findPlaces(Place $place): array
+    {
+        $courses = $this->findCourses($place);
+        $places = [];
+        foreach ($courses as $course) {
+            $manager = $this->getEntityManager();
+
+            $queryBuilder = ($manager->createQueryBuilder())
+                ->select('p.id')
+                ->from('App\Entity\CoursePlace', 't')
+                ->join('t.place', 'p')
+                ->andWhere('t.course = :course')
+                ->setParameter('course', $course['id']);
+
+            $result = $queryBuilder->getQuery()->getResult();
+            $place = [];
+            foreach ($result as $pl) {
+                array_push($place, $pl['id']);
+            }
+            $places[$course['id']] = $place;
+        }
+
+        return $places;
+    }
+
+    private function findSibling(Course $course, Place $place, string $type): ?Place
+    {
+        $position = ($this->findOneBy([
+            'course' => $course,
+            'place' => $place
+        ]))->getPosition();
+
+        $position = ($type == 'next') ? $position + 1 : $position - 1;
+
+        if ($position >= 0) {
+            $coursePlace = $this->findOneBy([
+                'course' => $course,
+                'position' => $position
+            ]);
+            if ($coursePlace) return $coursePlace->getPlace();
+        }
+
+        return null;
+    }
+
+    public function findNext(Course $course, Place $place): ?Place
+    {
+        return $this->findSibling($course, $place, 'next');
+    }
+
+    public function findPrevious(Course $course, Place $place): ?Place
+    {
+        return $this->findSibling($course, $place, 'previous');
+    }
+
 }

@@ -9,11 +9,12 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% include('scripts/placeMap.html.twig') %}
+    {% include'scripts/placeMap.html.twig' %}
 {% endblock %}
 
 {% block body %}
     <main class="main main__wrap">
+        <a href="{{ path('course_show', {"id": course.id}) }}">Retourner au parcours</a>
         <h1>{{ place.name }}</h1>
         <p>{{ place.address }}</p>
         <p>{{ place.longitude }} / {{ place.latitude }}</p>
@@ -34,12 +35,21 @@
             {% endif %}
         {% endif %}
         <div id="map"></div>
+        <div class="links d-flex justify-content-between">
+            {% if siblings.previous is defined %}
+                <a href="{{ path('place_show', {"course": course.id ,"id" : siblings.previous.id}) }}">Lieu précédent</a>
+            {% endif %}
+            {% if siblings.next is defined %}
+                <a href="{{ path('place_show', {"course": course.id ,"id" : siblings.next.id}) }}">Lieu suivant</a>
+            {% endif %}
+        </div>
     </main>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&callback=initMap"></script>
+    {% include 'scripts/popup.html.twig' %}
 
     {% if is_mobile() %}
         {% include 'scripts/geolocation.html.twig' %}
