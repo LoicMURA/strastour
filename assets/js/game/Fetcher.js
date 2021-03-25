@@ -5,9 +5,8 @@ const fetcher = {
 
         function runSelection(datas, criteria) {
             for (const dataKey in datas) {
-                if(dataKey === criteria) {
+                if(dataKey == criteria) {
                     let data = datas[dataKey];
-
                     if(index < criterias.length - 1) {
                         index++;
                         runSelection(data, criterias[index]);
@@ -20,13 +19,6 @@ const fetcher = {
 
         let index = 0;
         runSelection(datas, criterias[index]);
-
-        /*for (const dataKey in datas) {
-            if(dataKey === id){
-                let data = datas[dataKey];
-                this.hydrateData(data, object);
-            }
-        }*/
     },
     hydrateData(data, object){
         for(const dataProperty in data){
