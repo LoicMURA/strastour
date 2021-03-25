@@ -8,7 +8,7 @@
             })
             .then(response => {
                 response.json().then(json => {
-                    printDatas(document.querySelector('main'), document.getElementById('map'));
+                    printDatas(document.querySelector("#mainDatas"));
                     document.getElementById('js-unchecked').remove();
                     document.querySelector('form').remove();
                     for (let message of json.message) popup('success', message);
@@ -31,7 +31,6 @@
     }
 
     function locationValidate(location, latitude, longitude) {
-        return true;
         let zone = getAccuracy(location.coords.accuracy, location.coords.latitude, location.coords.longitude);
         if (latitude < zone.maxLat && latitude > zone.minLat) {
             if (longitude < zone.maxLng && longitude > zone.minLng) {
@@ -45,11 +44,11 @@
         alert('Veuillez activé la localisation du téléphone, autrement, la localisation ne fonctionnera pas');
     }
 
-    function printDatas(parent, sibling) {
+    function printDatas(parent) {
         let div = document.createElement('div');
         div.innerHTML += `<p>{{ place.description }}</p><img src="{{ link }}" alt="Image de {{ place.name }}">`;
 
-        parent.insertBefore(div, sibling);
+        parent.appendChild(div);
     }
     document.getElementById('js-geolocalisation')?.addEventListener('click', (e) => {
         e.preventDefault();
