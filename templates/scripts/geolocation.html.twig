@@ -11,6 +11,7 @@
                     printDatas(document.querySelector('main'), document.getElementById('map'));
                     document.getElementById('js-unchecked').remove();
                     document.querySelector('form').remove();
+                    for (let message of json.message) popup('success', message);
                 })
             })
         } else {
@@ -30,6 +31,7 @@
     }
 
     function locationValidate(location, latitude, longitude) {
+        return true;
         let zone = getAccuracy(location.coords.accuracy, location.coords.latitude, location.coords.longitude);
         if (latitude < zone.maxLat && latitude > zone.minLat) {
             if (longitude < zone.maxLng && longitude > zone.minLng) {
