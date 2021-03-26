@@ -15,6 +15,17 @@
         flex-flow: row wrap;
         align-items: center;
     }
+
+    &__text{
+        font-size: 0.8rem;
+        color: red;
+    }
+
+    &__hot{
+        color: white;
+        font-size: 1rem;
+        margin: 0 0.5rem
+    }
 }
 
 .items{
