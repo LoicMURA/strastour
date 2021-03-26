@@ -5,18 +5,39 @@ import Sprite from "../Sprite";
 export default class Player extends Character {
     constructor(cols, tileSize) {
         super(cols, tileSize);
+        this.lvl = 1;
         this.gender = USER.player.gender;
         this.pseudo = USER.username;
-        this.currentXp = USER.player.xp;
+        this.xp = USER.player.xp;
+        //each values that needs to be selected based on classes properties
+        this.current = {xp:0,item:0,sprite:0, spriteId:0, maxHp:0};
         this.stucks = USER.player.stuck;
-        this.currentAttack = 0;
         this.inventory = [];
+        //items that are part of the inventory, must be displayed in the HUD
+        this.equipement = [];
+        //store if a weapon or bonus is being used, their relative bonuses to each of those items
         this.activeBonus = [];
         this.hydrateInventory();
         this.setImages();
-        fetcher.fetchData(this, '/assets/datas/Character.json', ["player"]);
-
         this.mouvementController(cols, tileSize, 64);
+    }
+
+    //store data that needs to be calculated based on player's level
+    setCurrent(){
+        //represents the fictive formula to upgrade players data according to it's level
+        this.hp = this.hp * this.lvl; //formula is incorrect
+        this.current.maxHp = this.hp;
+        this.atk = this.atk * this.lvl;
+        this.def = this.def * this.lvl;
+        this.current.xp = this.xp % 2000; //val needed to go to next lvl
+    }
+
+    //use to update player's XP each time
+    updateXp(gainXp) {
+        //formula is incorrect
+        this.xp += gainXp;
+        this.lvl = Math.round(this.xp / 2000);
+        this.current.xp= this.xp % 2000;
     }
 
     /**
@@ -32,8 +53,19 @@ export default class Player extends Character {
 
     hydrateInventory() {
         for (const item of USER.player.inventory) {
-            item.equiped = false;
+            item.equiped = true;
             this.inventory.push(item);
+        }
+        this.updateEquipement();
+    }
+
+    updateEquipement() {
+        let index = 0;
+        for(const item of this.inventory) {
+            if(item.equiped){
+                this.equipement[index] = item;
+                index++;
+            }
         }
     }
 
