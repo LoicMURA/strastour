@@ -6,9 +6,10 @@ export default class HUD{
     healthBar = document.querySelector(".player__health--update");
     healthVal = document.querySelector(".player__health--value");
     level = document.querySelector("#hud-level");
-    constructor(player) {
+    constructor(player, level) {
         this.hydrateEquipement(player);
         this.updateHpBar(player);
+        this.hydrateLevel(level)
     }
 
     //must be called when user changes its equipement
@@ -29,6 +30,14 @@ export default class HUD{
                 index ++;
             }
         });
+    }
+
+    hydrateLevel(level){
+        Array.from(this.level.children).forEach(element => {
+            if(element.innerHTML === 'Parcours:') element.innerHTML += ` <span class="hud__hot">${level.name}</span>`;
+            if(element.innerHTML === 'Étape:') element.innerHTML += ` <span class="hud__hot">${level.currentRoom.name}</span>`;
+            if(element.innerHTML === 'Difficulté:') element.innerHTML += ` <span class="hud__hot">${level.difficulty}</span>`;
+        })
     }
 
     updateHpBar(player){

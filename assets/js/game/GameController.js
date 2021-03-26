@@ -46,18 +46,8 @@ export default class GameController {
                     this.player = new Player(this.datas.boardSizes.cols, this.datas.boardSizes.tile);
                     fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"]).then(()=>{
                         this.player.setCurrent();
-                        this.hud = new HUD(this.player);
+                        this.hud = new HUD(this.player, this.level);
                     });
-                    // this.player.sprites.noGun.drawSprite(
-                    //     0,
-                    //     0,
-                    //     64,
-                    //     64,
-                    //     this.player.position.x,
-                    //     this.player.position.y,
-                    //     this.datas.boardSizes.tile,
-                    //     this.datas.boardSizes.tile
-                    // )
                 })
                 .then(() => {
                     requestAnimationFrame(this.anim.bind(this))
