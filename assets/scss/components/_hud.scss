@@ -21,13 +21,13 @@
     height: 60px;
     width: 60px;
     position: relative;
-    border-radius: 5px;
+    border: 1px solid black;
     max-width: 350px;
 
     &__preview{
         display: block;
         height: 100%;
-        width: 60px;
+        width: 100%;
     }
 
     &__keytouch{
@@ -37,6 +37,27 @@
         right: 0;
         bottom: 0;
     }
+    &__tooltip {
+        display: none;
+        position: absolute;
+        z-index:2;
+        top:110%;
+        padding:0.2rem;
+        left:0;
+        width: max-content;
+        background-color:dimgrey;
+        font-size: 0.6em;
+        font-family:Calibri;
+        p{
+            margin:0;
+        }
+        span{
+            font-weight:bold;
+        }
+    }
+    &:hover > .items__tooltip{
+        display: block;
+    }
 }
 
 .player{
@@ -45,12 +66,26 @@
         justify-content: center;
         align-items: center;
     }
-    &__healt{
+    &__health{
+        position: relative;
         width: 100%;
-        background-color: red;
-        border-radius: 15px;
+        background-color: white;
+        border-radius: 1rem;
         margin: 1rem 0;
-        border: 2px solid black
+        padding:0.2rem;
+        overflow:hidden;
+        &--update{
+            position: absolute;
+            top:0;
+            left:0;
+            height:100%;
+            width: 100%;
+            background-color: red;
+        }
+        &--value{
+            position:relative;
+            margin:0;
+        }
     }
     &__level{
        width: 60px;
@@ -63,8 +98,7 @@
     &__exp{
         flex-grow: 3;
         background-color: lime;
-        border-radius: 15px;
+        border-radius: 1rem;
         max-height: 40px;
-        border-radius: 15px;
     }
 }

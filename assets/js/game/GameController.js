@@ -2,6 +2,8 @@ import Level from "./Map/Level";
 import Player from "./Characters/Player";
 import Board from "./Map/Board";
 import Datas from "./Datas";
+import HUD from "./HUD";
+import {fetcher} from "./Fetcher";
 
 export default class GameController {
     constructor() {
@@ -41,17 +43,21 @@ export default class GameController {
                         })
                 })
                 .then(() => {
-                    this.player = new Player(this.datas.boardSizes.cols, this.datas.boardSizes.tile)
-                    this.player.sprites.noGun.drawSprite(
-                        0,
-                        0,
-                        64,
-                        64,
-                        this.player.position.x,
-                        this.player.position.y,
-                        this.datas.boardSizes.tile,
-                        this.datas.boardSizes.tile
-                    )
+                    this.player = new Player(this.datas.boardSizes.cols, this.datas.boardSizes.tile);
+                    fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"]).then(()=>{
+                        this.player.setCurrent();
+                        this.hud = new HUD(this.player);
+                    });
+                    // this.player.sprites.noGun.drawSprite(
+                    //     0,
+                    //     0,
+                    //     64,
+                    //     64,
+                    //     this.player.position.x,
+                    //     this.player.position.y,
+                    //     this.datas.boardSizes.tile,
+                    //     this.datas.boardSizes.tile
+                    // )
                 })
                 .then(() => {
                     requestAnimationFrame(this.anim.bind(this))
@@ -74,14 +80,14 @@ export default class GameController {
         //     this.boardSizes.tile,
         //     this.boardSizes.tile
         // )
-        this.player.sprites.noGun.animSprite(
-            this.player.indexSprite,
-            this.player.direction,
-            64,
-            this.datas.boardSizes.tile,
-            this.player.position.x,
-            this.player.position.y
-        )
+        // this.player.sprites.noGun.animSprite(
+        //     this.player.indexSprite,
+        //     this.player.direction,
+        //     64,
+        //     this.datas.boardSizes.tile,
+        //     this.player.position.x,
+        //     this.player.position.y
+        // )
         this.player.indexSprite++
         if (this.player.indexSprite === 8) this.player.indexSprite = 0
     }
