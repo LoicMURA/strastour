@@ -13,14 +13,21 @@ export default class Player extends Character {
         this.inventory = [];
         this.activeBonus = [];
         this.hydrateInventory();
+        this.setImages();
+        fetcher.fetchData(this, '/assets/datas/Character.json', ["player"]);
+
+        this.mouvementController(cols, tileSize, 64);
+    }
+
+    /**
+     * Set images for sprite animations
+     */
+    setImages(){
         this.images = {
-            noGun : new Image(512, 512)
+            hand : new Image(576,576),
+            dagger: new Image(576,576)
         }
-        this.sprites = {
-            noGun : new Sprite(this.images.noGun)
-        }
-        this.images.noGun.src = '/assets/image/sprites/male-void.png';
-        fetcher.fetchData(this, '/assets/datas/Characters.json', ["player"]);
+        this.images.hand.src = '/assets/image/sprites/male-void.png';
     }
 
     hydrateInventory() {
@@ -30,9 +37,46 @@ export default class Player extends Character {
         }
     }
 
-    // move(){
-    //     this.position.x += 1
-    //     this.sprites.noGun.drawSprite()
-    // }
+    mouvementController(cols, tileSize, cellSize){
+        window.addEventListener('keydown', (e) => {
+            switch (e.code){
+                case "KeyW":
+                    this.direction = 0
+                    break;
+                case "KeyD":
+                    this.direction = 1
+                    break;
+                case "KeyS":
+                    this.direction = 2
+                    break;
+                case "KeyA":
+                    this.direction = 3
+                    break;
+            }
+            this.move(cols, tileSize);
+            this.animation(cellSize, tileSize);
+        })
+    }
+
+    control(){
+
+    }
+
+    animation(cellSize, tileSize){
+        CTX.beginPath()
+        CTX.drawImage(
+            this.currentSprite,
+            this.indexX * cellSize,
+            this.direction * cellSize,
+            cellSize,
+            cellSize,
+            this.position.x,
+            this.position.y,
+            tileSize,
+            tileSize
+            )
+        CTX.closePath();
+        this.indexX++;
+    }
 
 }

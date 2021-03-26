@@ -9,7 +9,7 @@ export default class Character{
             x : 120,
             y : 80,
         }
-        this.indexSprite = 0;
+        this.currentSprite = 0;
         this.direction = 0;
         this.setIndex(cols, tileSize)
     }
@@ -20,6 +20,11 @@ export default class Character{
         this.position.index =  row * cols + col
     }
 
-    setSpriteFromDirection(){
+    move(cols, tileSize){
+        if(this.direction === 0) this.position.y -= this.moveSpeed
+        if(this.direction === 1) this.position.x += this.moveSpeed
+        if(this.direction === 2) this.position.y += this.moveSpeed
+        if(this.direction === 3) this.position.x -= this.moveSpeed
+        this.setIndex(cols, tileSize)
     }
 }
