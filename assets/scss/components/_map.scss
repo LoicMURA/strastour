@@ -1,3 +1,10 @@
+.canvasGame{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid black;
+}
 #map {
   height: 50vh;
   width: 50vh;
