@@ -10,7 +10,6 @@ export default class GameController {
         this.datas = new Datas();
 
         window.addEventListener('keydown', (e) => {
-            console.log(e.key)
             if (e.key === 's') {
                 this.player.direction = 0
                 this.player.position.y += 5;
@@ -60,16 +59,6 @@ export default class GameController {
         requestAnimationFrame(this.anim.bind(this))
         CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
         this.level.currentRoom.board.drawBackground();
-        // this.player.sprites.noGun.drawSprite(
-        //     0,
-        //     0,
-        //     64,
-        //     64,
-        //     this.player.position.x,
-        //     this.player.position.y,
-        //     this.boardSizes.tile,
-        //     this.boardSizes.tile
-        // )
         // this.player.sprites.noGun.animSprite(
         //     this.player.indexSprite,
         //     this.player.direction,

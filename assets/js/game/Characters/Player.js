@@ -10,7 +10,7 @@ export default class Player extends Character {
         this.pseudo = USER.username;
         this.xp = USER.player.xp;
         //each values that needs to be selected based on classes properties
-        this.current = {xp:0,item:0,sprite:0, spriteId:0, maxHp:0};
+        this.current = {xp:0,item:0,sprite:0, spriteId:0, maxHp:0, maxXp:0};
         this.stucks = USER.player.stuck;
         this.inventory = [];
         //items that are part of the inventory, must be displayed in the HUD
@@ -19,6 +19,7 @@ export default class Player extends Character {
         this.activeBonus = [];
         this.hydrateInventory();
         this.setImages();
+
         this.mouvementController(cols, tileSize, 64);
     }
 
@@ -29,6 +30,7 @@ export default class Player extends Character {
         this.current.maxHp = this.hp;
         this.atk = this.atk * this.lvl;
         this.def = this.def * this.lvl;
+        this.current.maxXp = 2000;
         this.current.xp = this.xp % 2000; //val needed to go to next lvl
     }
 

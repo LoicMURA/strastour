@@ -88,7 +88,6 @@
         &--update{
             position: absolute;
             top:0;
-            left:0;
             height:100%;
             width: 100%;
             background-color: red;
@@ -105,11 +104,30 @@
        border-radius: 100%;
        margin: 0 1rem;
        color: black;
+        &--value{
+            margin:0;
+            font-size:2em;
+            font-weight: bold;
+            font-family:Calibri;
+        }
     }
     &__exp{
+        position:relative;
         flex-grow: 3;
-        background-color: lime;
+        background-color: white;
         border-radius: 1rem;
-        max-height: 40px;
+        padding:0.6rem 0.2rem;
+        overflow:hidden;
+        &--update{
+            position: absolute;
+            top:0;
+            height:100%;
+            width: 100%;
+            background-color: lime;
+        }
+        &--value{
+            position:relative;
+            margin:0;
+        }
     }
 }
