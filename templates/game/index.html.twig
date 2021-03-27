@@ -7,51 +7,16 @@
 {% block header %}{% endblock %}
 {% block body %}
     <main class="d-flex flex-column w-100">
-        <section style="height: 25vh"
-                 class="p-3 bg-dark text-white d-flex justify-content-center align-items-center w-100">
-            <div class="hud hud__items p-1">
-                <div class="items m-1">
-                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=0"/>
-                    <span class="items__keytouch">1</span>
-                </div>
-                <div class="items m-1">
-                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=1"/><span
-                            class="items__keytouch">2</span>
-                </div>
-                <div class="items m-1">
-                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=2"/><span
-                            class="items__keytouch">3</span>
-                </div>
-                <div class="items m-1">
-                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=3"/><span
-                            class="items__keytouch">4</span>
-                </div>
-                <div class="items m-1">
-                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=4"/><span
-                            class="items__keytouch">5</span>
-                </div>
-                <div class="items m-1">
-                    <img alt="item preview" class="items__preview" src="https://picsum.photos/200/300?random=5"/><span
-                            class="items__keytouch">6</span>
-                </div>
-            </div>
-            <div class="hud hud__player">
-                <div class="player__info player__healt">HP</div>
-                <div class="player__info player__level">Niveau</div>
-                <div class="player__info player__exp">Exp</div>
-            </div>
-            <div class="hud hud__level">
-                <p>Parcours:</p>
-                <p>Étape:</p>
-                <p>Difficulté:</p>
-            </div>
-        </section>
+        {% include '/game/hud.html.twig' %}
         <section class="position-relative" style="height: 75vh" id="game_container"></section>
         <script>
             const USER = {{ user|json_encode|raw }};
             const ID_LEVEL = {{ course }};
+
             const CANVAS = document.createElement('canvas');
             CANVAS.classList = 'canvasGame';
+            CANVAS.width = 0;
+            CANVAS.height = 0;
             const CTX = CANVAS.getContext('2d');
             const gameContainer = document.getElementById('game_container');
             gameContainer.appendChild(CANVAS);
