@@ -1,0 +1,87 @@
+$bg-color: #ccccff;
+.hero {
+
+  height: 85vh;
+  background-color: $bg-color;
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+
+  &__strastour {
+    max-width: 40ch;
+  }
+
+  &__courses {
+    max-height: 50vh;
+    overflow-y: scroll;
+    border-radius: 5px;
+    background-color: #ffffff88;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 10px -3px #000;
+  }
+
+  &__course {
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 5px -3px #000;
+    cursor: pointer;
+    line-height: 1.2em;
+
+    &:hover {
+      box-shadow: 0 4px 6px -4px #000;
+    }
+  }
+
+  &__course {
+    &-picture img {
+      border-radius: 10px;
+      border-end-end-radius: unset;
+      border-start-end-radius: unset;
+      vertical-align: bottom;
+      width: 200px;
+    }
+
+    &-btn {
+      height: 100%;
+      border-radius: 10px;
+      border-end-start-radius: unset;
+      border-start-start-radius: unset;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      background-color: $bg-color;
+      overflow: hidden;
+      transition: text-shadow .35s ease-out;
+
+      &:hover {
+        text-shadow:
+          0 1rem 0 #000,
+          0 -1rem 0 #000,
+          0 2rem 0 $bg-danger,
+          0 -2rem 0 $bg-danger,
+          0 3rem 0 #f6f6f6,
+          0 -3rem 0 #f6f6f6,
+          0 4rem 0 #000,
+          0 -4rem 0 #000;
+      }
+    }
+  }
+
+  &__play {
+    width: 10rem;
+    height: 10rem;
+    background-color: $bg-danger;
+    clip-path: circle();
+    cursor: pointer;
+
+    img {
+      margin-left: 6%;
+      width: 25%;
+      text-shadow: 2px 2px 2px #000;
+    }
+  }
+
+  &__game {
+    div {
+      width: 50%;
+    }
+  }
+}
