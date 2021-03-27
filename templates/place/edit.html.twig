@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Place{% endblock %}
+{% block title %}Modifier {{ place.name }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Place</h1>
+    <main class="main main__wrap">
+        <h2 class="h2">Modifier le lieu</h2>
 
-    {{ include('place/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    {{ include('place/_delete_form.html.twig') }}
+        {{ include('place/_form.html.twig', {'button_label': 'Modifier'}) }}
+        {{ include('place/_delete_form.html.twig') }}
+    </main>
 {% endblock %}

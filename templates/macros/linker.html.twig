@@ -1,0 +1,7 @@
+{% macro getLink(bddLink) %}
+    {% set link = asset('assets/image/'~bddLink) %}
+    {% if link matches '{http(s)?://}' %}
+        {% set link = bddLink %}
+    {% endif %}
+    {{ link }}
+{% endmacro %}

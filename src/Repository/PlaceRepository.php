@@ -14,37 +14,29 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PlaceRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $coursePlaceRepository;
+
+    public function __construct(ManagerRegistry $registry, CoursePlaceRepository $coursePlaceRepository)
     {
         parent::__construct($registry, Place::class);
+        $this->coursePlaceRepository = $coursePlaceRepository;
     }
 
-    // /**
-    //  * @return Place[] Returns an array of Place objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findFreePlaces()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $coursePlaces = $this->coursePlaceRepository->findAll();
+        $freePlaces = [];
 
-    /*
-    public function findOneBySomeField($value): ?Place
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        foreach ($coursePlaces as $cp) $freePlaces[] = $cp->getPlace();
+
+        $manager = $this->getEntityManager();
+
+        $queryBuilder = ($manager->createQueryBuilder())
+            ->select('p.id', 'p.name')
+            ->from('App\Entity\Place', 'p')
+            ->where('p.id NOT IN (:places)')
+            ->setParameter('places', $freePlaces);
+
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
 }

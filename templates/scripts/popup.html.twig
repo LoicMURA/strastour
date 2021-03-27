@@ -1,0 +1,18 @@
+<script>
+    function popup(type, message) {
+        const main = document.querySelector('main');
+        const firstChild = main.childNodes[0];
+
+        let popup = document.createElement('div');
+        popup.classList.add('alert', `alert-${type}`);
+        console.log(message);
+        popup.innerHTML = message;
+        console.log(popup);
+
+        main.insertBefore(popup, firstChild);
+
+        setTimeout(() => {
+            popup.remove();
+        }, 2500);
+    }
+</script>

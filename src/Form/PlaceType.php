@@ -18,6 +18,7 @@ class PlaceType extends AbstractType
             ->add('address')
             ->add('picture', FileType::class, [
                 'data_class' => null,
+                'required' => false
             ])
             ->add('latitude')
             ->add('longitude');

@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouveau parcour{% endblock %}
+{% block title %}Nouveau parcours{% endblock %}
 
 {% block body %}
-    <h2>Ajoutee un parcour</h2>
+    <main class="main main__wrap">
+        <h2 class="h2">Ajouter un parcours</h2>
 
-    {{ include('course/_form.html.twig') }}
+        {{ include('course/_form.html.twig') }}
+    </main>
 {% endblock %}

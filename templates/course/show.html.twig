@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import 'macros/linker.html.twig' as linker %}
 
 {% block title %}{{ course.name }}{% endblock %}
 
@@ -22,20 +23,56 @@
                         <p>Adresse : {{ place.address }}</p>
                         <p>{{ place.description }}</p>
                         <p>Au coordonnées : {{ place.longitude }} / {{ place.latitude }}</p>
-                        {% set link = asset('assets/image/'~place.picture) %}
-                        {% if link matches '{http(s)?://}' %}
-                            {% set link = place.picture %}
-                        {% endif %}
-                        <img src="{{ link }}" alt="test">
+                        <img src="{{ linker.getLink(place.picture) }}" alt="test">
                         <a href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
                     </div>
                 {% endfor %}
             </section>
         </article>
+
+        <section id="commentSection">
+
+            {% if is_granted('ROLE_USER') %}
+                {{ include('comment/_form.html.twig') }}
+            {% endif %}
+
+            {% macro comments(commentaires, response) %}
+                {% for coms in commentaires %}
+
+                    <div class="comment" id="{{coms.id}}">
+                        <p>{{ coms.author.username }}</p>
+                        <p class="commentContent">{{ coms.content }}</p>
+                        <p>{{ coms.createdAt|date('d-m-Y') }}
+                            {% if is_granted('ROLE_USER') %}
+                                <div class="d-flex flex-row-reverse">
+                                    {% if response == "true" %}
+                                        <button class="btn btn-primary btn-sm ml-2" onclick="reply
+                                                ({{coms.id}})">Répondre</button>
+                                    {% endif %}
+
+                                    {% if coms.getAuthor().getId() == app.user.id  %}
+                                        <button class="display btn btn-danger btn-sm"
+                                                data-path="{{ path("comment_edit", {"id" : coms.id} ) }}" onclick="modify(this, {{coms.id}})">Modifier</button>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </p>
+
+                        {% if coms.children %}
+                            {{ _self.comments( coms.children, "false" ) }}
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+            {% endmacro %}
+
+            {{ _self.comments(comments, "true") }}
+        </section>
     </main>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&callback=initMap"></script>
+    {% include 'scripts/courseComment.html.twig' %}
 {% endblock %}
