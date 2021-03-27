@@ -5,9 +5,16 @@ $font-serif: 'Merriweather', serif;
 $font-sans: 'Lora', sans-serif;
 
 $font-primary: #161616;
-$bg-primary: #ff0066;
+$font-white: #f2f2f2;
+$bg-primary: #0066cc;
+$bg-danger: #ff0066;
 
 $bg-dark: #003366;
 
-$primary: #0066cc;
-$primary-light: #ccccff;
+$primary: #0056b3;
+$primary-light: #4da2f5;
+
+$custom-file-text: (
+        en: "Browse",
+        fr: "Parcourir"
+);

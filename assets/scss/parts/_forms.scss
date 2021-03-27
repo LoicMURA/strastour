@@ -17,14 +17,20 @@ input[type="checkbox"] {
   }
 }
 
-button.btn.btn-primary:hover {
-  background-color: $bg-primary;
-  border-color: unset;
-  color: $font-primary;
+.form {
+  &__link {
+    &--redirect {
+      color: $primary;
+    }
+  }
+
+  &__image {
+    max-width: 150px;
+  }
 }
 
-.form__link {
-  &--redirect {
-    color: $primary;
+.custom-file-label {
+  &::after {
+    content: 'Parcourir';
   }
 }

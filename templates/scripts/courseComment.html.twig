@@ -1,0 +1,116 @@
+<script>
+
+    let sendButton = document.getElementById("js-form-submit");
+    let form = sendButton.parentNode;
+
+    let idParent = 0
+    let idCom
+    let parent;
+    let path
+
+    function reply(id) {
+        idParent = id
+
+        document.getElementsByName("parentComment")[0].value = id
+
+        form.remove()
+
+        parent = document.getElementById(id);
+        parent.appendChild(form)
+    }
+
+    function modify(button, id) {
+
+        idCom = id
+        let comment = button.parentNode.parentNode
+        let txt = comment.querySelector(".commentContent").innerHTML;
+
+        if (comment.querySelectorAll("button").length === 1) {
+            idParent = comment.parentNode.id
+            document.getElementsByName("parentComment")[0].value = idParent
+        }
+
+        button.style.display = "none"
+
+        form.remove()
+
+        parent = document.getElementById(id);
+
+        parent.appendChild(form)
+
+        form.querySelector("#comment_content").value = txt
+
+        sendButton.id = "js-form-modify"
+
+        path = button.getAttribute("data-path")
+    }
+
+    sendButton.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        formData = new FormData(form)
+
+        if (e.target.id === "js-form-submit"){
+            path = "{{ path('comment_new', {"id": course.id}) }}"
+        }
+
+        fetch( path , {
+            "method" : "POST",
+            "body" : formData
+        }).then(response => {
+            response.json().then(json =>{
+                printComment(idParent, json)
+            })
+        })
+
+        form.remove();
+
+        document.getElementById("commentSection").insertBefore(form, document.getElementById("commentSection").children[0] )
+
+        form.querySelector("#comment_content").value = ""
+        e.target.id = "js-form-submit";
+    })
+
+    function printComment(id, json) {
+        if (json["type"] === "new") {
+            if (id === 0) {
+                parent = document.getElementById("commentSection");
+            } else {
+                parent = document.getElementById(id);
+            }
+
+            let date = json[0].createdAt
+
+            date = date.split('T')[0]
+            date = date.split('-')[2] + "-" + date.split('-')[1] + "-" + date.split('-')[0]
+
+            let txt = `
+                <div class="comment${ id === 0 ? " class='ml-5'" : ''}" id="${json[0].id}">
+                    <p>${json[0].author}</p>
+                    <p class="commentContent">${json[0].content}</p>
+                    <p>${date}
+
+                        <div class="d-flex flex-row-reverse">
+                            ${ (id === 0) ? "<button class='btn btn-primary btn-sm' onclick= reply(" + json[0].id + ") >Répondre</button>" : '' }
+                            <button class="btn btn-danger btn-sm" class="display" data-path="{{ path('comment_edit', {"id": 0 }) }}" onclick="modify(this, ${json[0].id} )">Modifier</button>
+                        </div>
+
+                    </p>
+                </div>`
+            parent.innerHTML += txt;
+
+            let modifyBtn = document.getElementById(json[0].id).querySelector('.btn-danger');
+            let dataPath = modifyBtn.getAttribute('data-path');
+            modifyBtn.setAttribute('data-path', dataPath.replace('/0/', '/' + json[0].id + '/'));
+            console.log(modifyBtn);
+
+        } else if (json["type"] === "edit") {
+            let comment = document.getElementById(json[0]["id"]);
+            let txt = comment.querySelector(".commentContent")
+
+            txt.innerHTML = json[0]["content"]
+
+            comment.querySelector(".display").style.display = "block"
+        }
+    }
+</script>

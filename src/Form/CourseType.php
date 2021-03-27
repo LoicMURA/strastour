@@ -20,6 +20,7 @@ class CourseType extends AbstractType
             ->add('description')
             ->add('picture', FileType::class, [
                 'data_class' => null,
+                'required' => false
             ])
             ->add('theme', EntityType::class, [
                 'class' => Theme::class,

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\UserPlaces;
+use App\Entity\{UserPlaces, User};
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,32 +19,23 @@ class UserPlacesRepository extends ServiceEntityRepository
         parent::__construct($registry, UserPlaces::class);
     }
 
-    // /**
-    //  * @return UserPlaces[] Returns an array of UserPlaces objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    public function findUser(User $user) {
+        $manager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?UserPlaces
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $queryBuilder = ($manager->createQueryBuilder())
+            ->select('p.id')
+            ->from('App\Entity\UserPlaces', 't')
+            ->join('t.place', 'p')
+            ->andWhere('t.user = :user')
+            ->setParameter('user', $user);
+
+        $result = $queryBuilder->getQuery()->getResult();
+        $places = [];
+
+        foreach ($result as $pl) {
+            $places[] = $pl['id'];
+        }
+
+        return $places;
     }
-    */
 }

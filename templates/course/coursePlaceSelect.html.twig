@@ -1,0 +1,51 @@
+{% if coursePlaces is defined %} {# => update #}
+    {% if coursePlaces|length > 0 %} {# déjà des places #}
+        {% set index = 1 %}
+        {% for place, name in coursePlaces|first %}
+            <div class="form-group js-course-place" id="{{ index }}">
+                <label for="place-{{ index }}" class="form__label">Lieu {{ index }}
+                    {% if index == 1 %}
+                        <span class="text-muted small">(Attention chaque lieu est unique et ne peut être dans 2 parcours différent)</span>
+                    {% endif %}
+                </label>
+                <select id="place-{{ index }}" name="place-{{ index }}" class="form-control">
+                    <option value="0"></option>
+                    {% for placeId, placeName in coursePlaces|first %}
+                        <option value="{{ placeId }}" {% if place == placeId %}selected{% endif %}>
+                            {{ placeName }}
+                        </option>
+                    {% endfor %}
+                    {% for freePlace in freePlaces %}
+                        <option value="{{ freePlace.id }}">{{ freePlace.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% set index = index + 1 %}
+        {% endfor %}
+        {% if freePlaces|length == 0 %}
+            <p class="small text-danger">Il n'y a plus de lieux valide. Si vous voulez en ajouter, veuillez d'abord <a href='{{ path('place_new') }}'>ajouter un lieu</a>.</p>
+        {% endif %}
+    {% elseif freePlaces|length > 0 %}
+        <div class="form-group js-course-place" id="1">
+            <label for="place-1" class="form__label">Lieu 1
+                <span class="text-muted small">(Attention chaque lieu est unique et ne peut être dans 2 parcours différent)</span>
+            </label>
+            <select id="place-1" name="place-1" class="form-control">
+                <option value="0"></option>
+                {% for freePlace in freePlaces %}
+                    <option value="{{ freePlace.id }}">{{ freePlace.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endif %}
+{% endif %}
+
+
+
+
+
+
+
+
+
+

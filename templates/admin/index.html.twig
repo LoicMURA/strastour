@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panneau d'administration{% endblock %}
+
+{% block body %}
+    <main class="main main__wrap">
+        <h2 class="h2">Panneau admin</h2>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="h4">Parcours</h3>
+            <a href="{{ path('course_new') }}" class="btn btn-primary btn-lg">Ajouter un parcours</a>
+        </div>
+
+        <table id="courseTable" class="table table-dark table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                        <tr id="{{ course.id }}">
+                            <th scope="row">{{ course.id }}</th>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.description|u.truncate(150, '…') }}</td>
+                            <td>
+                                <a href="{{ path('course_edit', {'id': course.id}) }}" class="btn btn-primary">Modifier</a>
+                            </td>
+                        </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center my-3">
+            <h3 class="h4">Lieux</h3>
+            <a href="{{ path('place_new') }}" class="btn btn-primary btn-lg">Ajouter un lieu</a>
+        </div>
+
+        <table id="placeTable" class="table table-dark table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Latitude</th>
+                    <th scope="col">Longitude</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for place in places %}
+                <tr id="{{ place.id }}">
+                    <th scope="row">{{ place.id }}</th>
+                    <td>{{ place.name }}</td>
+                    <td>{{ place.description|u.truncate(50, '…') }}</td>
+                    <td>{{ place.latitude }}</td>
+                    <td>{{ place.longitude }}</td>
+                    <td>
+                        <a href="{{ path('place_edit', {"id": place.id}) }}" class="btn btn-primary">Modifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script >
+        const courseTable = document.getElementById('courseTable');
+        const placeTable = document.getElementById('placeTable');
+
+        function relocateFromTr(event, route){
+            let target = event.target
+            if (target.tagName !== 'A' && target.tagName !== 'TR') {
+                let row = target.parentNode;
+                if (row.tagName !== 'A' && row.tagName === 'TR' && row.id !== '') {
+                    window.location = window.location.origin + route + row.id;
+                }
+            }
+        }
+
+        courseTable.addEventListener('click', (e) => {
+            relocateFromTr(e, '/parcours/');
+        })
+        placeTable.addEventListener('click', (e) => {
+            relocateFromTr(e, '/lieu/');
+        })
+    </script>
+{% endblock %}

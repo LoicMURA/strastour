@@ -1,0 +1,89 @@
+<script>
+    const addBtn = document.getElementById('js-add-place');
+    const form = document.querySelector('form');
+    let selects = document.querySelectorAll('.js-course-place select');
+
+    function addPlace()
+    {
+        let lastPlace = document.querySelectorAll('.js-course-place');
+        lastPlace = lastPlace[lastPlace.length - 1];
+
+        let newForm = lastPlace.cloneNode(true);
+        let id = parseInt(newForm.id) + 1
+        let newName = `place-${id}`;
+
+        newForm.id = id;
+
+        let label = newForm.querySelector('label');
+        label.setAttribute('for', newName);
+        label.innerHTML = `Lieu ${id}`;
+
+        let select = newForm.querySelector('select');
+        select.id = newName;
+        select.value = 0;
+        select.setAttribute('name', newName);
+
+        document.querySelector('form').insertBefore(newForm, addBtn.parentNode);
+        selects = document.querySelectorAll('.js-course-place select');
+        disableAddBtn();
+        checkOption();
+    }
+
+    function disableAddBtn()
+    {
+        let availablePlaces = document.querySelector('.js-course-place select');
+        let availableLength = availablePlaces.children.length - 1;
+        let currentLength = selects.length;
+
+
+        if (availableLength === currentLength) {
+            let alert = document.createElement('p');
+            alert.classList.add('small', 'text-danger');
+            alert.innerHTML = "Il n'y a plus de lieux valide. Si vous voulez en ajouter, veuillez d'abord <a href='{{ path('place_new') }}'>ajouter un lieu</a>.";
+            if (addBtn) form.replaceChild(alert, addBtn.parentNode);
+        }
+    }
+
+    function disableOption(currentOpt)
+    {
+        for (let select of selects) {
+            let opt = select.querySelector(`option[value="${currentOpt.value}"]`);
+            if (opt !== currentOpt) opt.setAttribute('disabled', 'true');
+        }
+    }
+
+    function enableOption(optionId)
+    {
+        for (let select of selects) {
+            select.querySelector(`option[value="${optionId}"]`)?.removeAttribute('disabled');
+        }
+    }
+
+    function checkOption()
+    {
+        for (let select of selects) {
+            let value = select.value;
+            if (value !== 0) {
+                let currentOpt = select.querySelector(`[value="${value}"]`);
+                disableOption(currentOpt);
+            }
+        }
+    }
+
+    form.addEventListener('change', (e) => {
+        if (e.target.parentNode.classList.contains('js-course-place')) {
+            for (let opt of e.target.querySelectorAll('option')) {
+                enableOption(opt.value);
+            }
+            checkOption();
+        }
+    })
+
+    addBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        addPlace();
+    })
+
+    checkOption();
+    disableAddBtn();
+</script>
