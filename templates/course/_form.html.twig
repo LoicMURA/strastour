@@ -1,13 +1,27 @@
 {% import 'macros/formMacros.html.twig' as appForm %}
+{% import 'macros/linker.html.twig' as linker %}
 
 {{ form_start(form) }}   
 
-    {{ appForm.field(form.name, "Nom du parcour", "Nommez le parcour") }}
-    {{ appForm.field(form.description, "Description", "Description du parcour") }}
-    {{ appForm.field(form.picture, "Image", "Image du parcour") }}
-    {{ appForm.field(form.theme, "Theme", "theme du parcour") }}
-    {{ appForm.field(form.item, "Item", "Item lié au parcour") }}
+    {{ appForm.field(form.name, "Nom du parcours", "Parcours du combatant") }}
+    {{ appForm.field(form.description, "Description", "La parcours fait par ...") }}
+    {{ appForm.field(form.theme, "Theme") }}
+    {{ appForm.field(form.item, "Item gagné") }}
 
+    {% if course.picture != null and course.picture matches '/Temp/' == 0 %}
+        <img class="form__image" src="{{ linker.getLink(course.picture) }}" alt="Image du {{ course.name }}">
+    {% endif %}
+    {{ appForm.field(form.picture, "Image", "Choisir une image") }}
+
+    {% include 'course/coursePlaceSelect.html.twig' %}
+
+    {% if course.id == null %}
+        <p class="small text-danger">Une fois créé, vous pourrez ajouter des lieux à ce parcours</p>
+    {% elseif freePlaces|length > 0 %}
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" id="js-add-place">Ajouter un lieu</button>
+        </div>
+    {% endif %}
     {{ appForm.submit(button_label|default('Ajouter')) }}
 
 {{ form_end(form) }}

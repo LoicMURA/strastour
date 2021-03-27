@@ -2,20 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Place;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\{Place, Course};
 use App\Form\PlaceType;
-use App\Repository\PlaceRepository;
-use App\Repository\UserPlacesRepository;
-use App\Service\FileService;
-use App\Service\GoogleApi;
+use App\Repository\{CommentRepository, CoursePlaceRepository, UserPlacesRepository};
+use App\Service\{FileService, GoogleApi};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
 /**
- * @Route("/place")
+ * @Route("/lieu")
  */
 class PlaceController extends AbstractController
 {
@@ -34,7 +32,7 @@ class PlaceController extends AbstractController
             $entityManager->persist($place);
             $entityManager->flush();
 
-            return $this->redirectToRoute('course_index');
+            return $this->redirectToRoute('admin_index');
         }
 
         return $this->render('place/new.html.twig', [
@@ -50,7 +48,8 @@ class PlaceController extends AbstractController
         Place $place,
         GoogleApi $api,
         Security $security,
-        UserPlacesRepository $repository
+        UserPlacesRepository $repository,
+        CoursePlaceRepository $coursePlaceRepository
     ): Response
     {
         $user = $security->getUser();
@@ -58,11 +57,23 @@ class PlaceController extends AbstractController
         $checkedPlaces = $repository->findBy(['place' => $place, 'user' => $user]);
         $check = count($checkedPlaces) > 0;
 
+        $course = $coursePlaceRepository->findCourse($place);
+
+        $siblings = [];
+        if ($next = $coursePlaceRepository->findNext($course, $place)) {
+            $siblings['next'] = $next;
+        }
+        if ($previous = $coursePlaceRepository->findPrevious($course, $place)) {
+            $siblings['previous'] = $previous;
+        }
+
         return $this->render('place/show.html.twig', [
             'place' => $place,
+            'courseId' => $course,
             'API_KEY' => $api->getKey(),
             'checkedPlace' => $check,
-            'isPlayer' => $isPlayer
+            'isPlayer' => $isPlayer,
+            'siblings' => $siblings
         ]);
     }
 
@@ -89,7 +100,7 @@ class PlaceController extends AbstractController
             
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('course_index');
+            return $this->redirectToRoute('admin_index');
         }
 
         return $this->render('place/edit.html.twig', [
@@ -101,15 +112,24 @@ class PlaceController extends AbstractController
     /**
      * @Route("/{id}", name="place_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Place $place, FileService $file): Response
+    public function delete(
+        Request $request,
+        Place $place,
+        FileService $file,
+        EntityManagerInterface $manager,
+        CoursePlaceRepository $coursePlaceRepository
+    ): Response
     {
         if ($this->isCsrfTokenValid('delete'.$place->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $file->removeFile($place, $this->getParameter('upload_directory'));
-            $entityManager->remove($place);
-            $entityManager->flush();
+
+            $coursePlaces = $coursePlaceRepository->findBy(['place' => $place]);
+            foreach ($coursePlaces as $cp) $manager->remove($cp);
+
+            $manager->remove($place);
+            $manager->flush();
         }
 
-        return $this->redirectToRoute('course_index');
+        return $this->redirectToRoute('admin_index');
     }
 }

@@ -1,9 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier parcour{% endblock %}
+{% block title %}Modification de {{ course.name }}{% endblock %}
 
 {% block body %}
-    <h2>Modifiez le parcour</h2>
+    <main class="main main__wrap">
+        <h2 class="h2">Modifier le parcours</h2>
 
-    {{ include('course/_form.html.twig', {'button_label': 'Modifier'}) }}
+        {{ include('course/_form.html.twig', {'button_label': 'Modifier'}) }}
+        {% include 'course/_delete_form.html.twig' %}
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'scripts/coursePlaceMapping.html.twig' %}
 {% endblock %}

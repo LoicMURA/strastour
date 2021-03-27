@@ -1,0 +1,11 @@
+{% import 'macros/formMacros.html.twig' as appForm %}
+
+{{ form_start(form) }}
+
+    {{ appForm.field(form.content, "Contenue", "Dit nous tout !") }}
+
+    <input name="parentComment" type="hidden" value="0">
+
+    {{ appForm.submit(button_label|default('Publier')) }}
+
+{{ form_end(form) }}

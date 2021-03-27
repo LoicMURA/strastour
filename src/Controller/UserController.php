@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\{CoursePlaceRepository, CourseRepository, UserPlacesRepository};
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\UserType;
-use App\Entity\{Place, User, Character, UserPlaces};
+use App\Entity\{Place, User, Character, UserCourses, UserPlaces};
 use App\Security\AppAuthenticator;
 
 class UserController extends AbstractController
@@ -92,7 +93,10 @@ class UserController extends AbstractController
     public function checkPlace(
         Place $place,
         Security $security,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        UserPlacesRepository $userPlacesRepository,
+        CoursePlaceRepository $coursePlaceRepository,
+        CourseRepository $courseRepository
     ): Response
     {
         $userPlace = (new UserPlaces())
@@ -103,8 +107,35 @@ class UserController extends AbstractController
         $manager->persist($userPlace);
         $manager->flush();
 
+        $message = ['Vous venez de valider <span class="popup__title">'.$place->getName().'</span>!'];
+
+        $checkedPlaces = $userPlacesRepository->findUser($security->getUser());
+        $coursesOfPlace = $coursePlaceRepository->findPlaces($place);
+        foreach ($coursesOfPlace as $id => $course) {
+            $courseChecked = true;
+            foreach ($course as $place => $name) {
+                if (!in_array($place, $checkedPlaces)) {
+                    $courseChecked = false;
+                    break;
+                }
+            }
+            if ($courseChecked) {
+                $course = $courseRepository->find($id);
+                $userCourse = (new UserCourses())
+                    ->setUser($security->getUser())
+                    ->setCourse($course)
+                    ->setInRealLife(true);
+
+                $manager->persist($userCourse);
+                $manager->flush();
+
+                $message[] = 'Bravo ! Vous venez de valider le parcours <span class="popup__title">'.
+                    $course->getName().'</span>!';
+            }
+        }
+
         return $this->json([
-            'message' => 'La place a bien été validé',
+            'message' => $message,
             'code' => 200
         ]);
     }

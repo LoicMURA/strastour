@@ -1,11 +1,11 @@
 *, *:after, *:before {
-	box-sizing: inherit;
-	margin: 0;
-	padding: 0;
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html, body, div, span, applet, object, iframe,
@@ -21,107 +21,143 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 
 input, textarea, button, option {
-	font-family: inherit;
+  font-family: inherit;
 }
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, label, input, textarea, .btn {
-	display: block;
+  display: block;
 }
 
 body {
-	line-height: 1.45rem;
-	font-size: 1.15rem;
-	font-family: $font-sans;
+  line-height: 1.45rem;
+  font-size: 1.15rem;
+  font-family: $font-sans;
 }
 
 ol, ul {
-	list-style: none;
+  list-style: none;
 }
 
 blockquote, q {
-	quotes: none;
+  quotes: none;
 }
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+  content: '';
+  content: none;
 }
 
 table, th, td, tr {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: $font-serif;
-	font-weight: bold;
+  font-family: $font-serif;
+  font-weight: bold;
 }
 
 a, .link {
-	text-decoration: none;
-	color: $font-primary;
-	&:hover {
-		text-decoration: underline;
-	}
+  text-decoration: none;
+  color: $font-primary;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 button, .btn {
-	background-color: $bg-primary;
-	display: inline-block;
-	padding: .75rem 1rem;
-	font: inherit;
-	color: #242424;
-	border: none;
-	outline: none;
-	border-radius: 30px;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	-ms-border-radius: 30px;
-	-o-border-radius: 30px;
-	cursor: pointer;
-	&:hover {
-		text-decoration: none;
-		box-shadow: 0 .2rem .4rem 0 scale-color($color: $bg-primary, $saturation: -50%);
-	}
-	&:focus {
-		border: 1px solid #242424;
-	}
+  font-family: $font-sans;
+  font-size: 1rem;
+  padding: .5rem 1rem;
+  color: #242424;
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  cursor: pointer;
+}
+
+.btn {
+  &-lg {
+    font-size: 1.25rem;
+    padding: .5rem 1.25rem;
+  }
+  &-sm {
+    font-size: .875rem;
+    padding: .35rem .875rem;
+  }
+}
+
+.btn.btn-primary {
+  background-color: $bg-primary;
+  color: $font-white;
+
+  &:hover {
+    text-decoration: none;
+    border-color: unset;
+    color: $font-white;
+    box-shadow: 0 .2rem .4rem 0 scale-color($color: $bg-primary, $saturation: -50%);
+  }
+
+  &:focus {
+    border: 1px solid #242424;
+  }
+}
+
+.btn-danger {
+  color: #fefefe;
+  background-color: $bg-danger;
+
+  &:hover {
+    text-decoration: none;
+    box-shadow: 0 .2rem .4rem 0 scale-color($color: $bg-danger, $saturation: -50%);
+  }
+
+  &:focus {
+    border: 1px solid #242424;
+  }
 }
 
 input[type="text"], input[type="number"], textarea, select {
-	width: 100%;
-	padding: .5rem 1rem;
-	font: inherit;
-	font-size: .8em;
-	border: 1px solid #242424;
-	border-radius: 30px;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	-ms-border-radius: 30px;
-	-o-border-radius: 30px;
-	outline: none;
-	&:focus {
-		border-width: 2px;
-	}
+  width: 100%;
+  padding: .5rem 1rem;
+  font: inherit;
+  font-size: .8em;
+  border: 1px solid #242424;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  outline: none;
+
+  &:focus {
+    border-width: 2px;
+  }
 }
 
 input[type="checkbox"], input[type="radio"] {
-	margin: .35rem;
-	transform: scale(1.5);
-	-webkit-transform: scale(1.5);
-	-moz-transform: scale(1.5);
-	-ms-transform: scale(1.5);
-	-o-transform: scale(1.5);
+  margin: .35rem;
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  -o-transform: scale(1.5);
 }
+
 option:hover {
-	background-color: $bg-primary;
+  background-color: $bg-primary;
 }

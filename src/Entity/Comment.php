@@ -51,6 +51,8 @@ class Comment
      */
     private $parent;
 
+    public $children;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -80,24 +82,24 @@ class Comment
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor()
     {
         return $this->author;
     }
 
-    public function setAuthor(?User $author): self
+    public function setAuthor($author): self
     {
         $this->author = $author;
 
         return $this;
     }
 
-    public function getCourse(): ?Course
+    public function getCourse()
     {
         return $this->course;
     }
 
-    public function setCourse(?Course $course): self
+    public function setCourse($course): self
     {
         $this->course = $course;
 
@@ -114,5 +116,10 @@ class Comment
         $this->parent = $parent;
 
         return $this;
+    }
+
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

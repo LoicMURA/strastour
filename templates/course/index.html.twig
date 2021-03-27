@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import 'macros/linker.html.twig' as linker %}
 
 {% block title %}Accueil{% endblock %}
 
@@ -10,19 +11,14 @@
                 <h2>{{ parcours.name }}</h2>
                 <p>Dans le thème {{ parcours.theme.name }}</p>
                 <p>Description : {{ parcours.description }}</p>
-                {% set link = asset('assets/image/'~parcours.picture) %}
-
-                {% if link matches '{http(s)?://}' %}
-                    {% set link = parcours.picture %}
-                {% endif %}
-                <img src="{{ link }}" alt="test">
+                <img src="{{ linker.getLink(parcours.picture) }}" alt="test">
 
                 <a href="{{ path('course_show', {"id": parcours.id}) }}">Aller au parcours</a>
 
                 {% if is_granted('ROLE_USER') %}
                     <form method="POST" action="{{ path('game_index') }}">
                         <input name="course" value="{{ parcours.id }}" type="hidden">
-                        <button type="submit">Jouer à ce parcours</button>
+                        <button class="btn btn-primary" type="submit">Jouer à ce parcours</button>
                     </form>
                 {% endif %}
             </article>

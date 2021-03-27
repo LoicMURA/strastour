@@ -20,10 +20,11 @@ class FileService
         } else {
             $picture = $product->getPicture();
         }
+
         if (preg_match('/http/', $picture)) return true;
         $fileName = $uploadDir.'/'.$picture;
 
-        if (file_exists($fileName)) return unlink($fileName);
+        if (file_exists($fileName) && $picture != null) return unlink($fileName);
         return false;
     }
 }

@@ -1,13 +1,19 @@
 {% import 'macros/formMacros.html.twig' as appForm %}
+{% import 'macros/linker.html.twig' as linker %}
 
 {{ form_start(form) }}
 
-    {{ appForm.field(form.name, "Nom de la place", "Nommez la place") }}
-    {{ appForm.field(form.address, "Adresse", "Adresse de la place") }}
-    {{ appForm.field(form.longitude, "Longitude", "Longitude de la place") }}
-    {{ appForm.field(form.latitude, "Latitude", "Latitude de la place") }}
-    {{ appForm.field(form.description, "Description", "Description de la place") }}
-    {{ appForm.field(form.picture, "Image", "Image de la place") }}
+    {{ appForm.field(form.name, "Nom du lieu", "Cathédrale de Strasbourg") }}
+    {{ appForm.field(form.address, "Adresse", "12, place de la Cathédrale 67000 Strasbourg") }}
+    {{ appForm.field(form.longitude, "Longitude", "48.00101") }}
+    {{ appForm.field(form.latitude, "Latitude", "7.78513") }}
+    {{ appForm.field(form.description, "Description", "La cathédrale de Strasbourg est un lieu unique ...") }}
+
+    {% if place.picture != null and place.picture matches '{Temp}' == 0 %}
+        <p>Image actuelle :</p>
+        <img src="{{ linker.getLink(place.picture) }}" alt="Image de {{ place.name }}">
+    {% endif %}
+    {{ appForm.field(form.picture, "Image", "Choisir une image") }}
 
     {{ appForm.submit(button_label|default('Ajouter')) }}
 {{ form_end(form) }}
