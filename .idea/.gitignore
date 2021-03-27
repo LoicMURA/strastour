@@ -6,3 +6,5 @@
 /dataSources.*
 # Editor-based HTTP Client requests
 /httpRequests/
+# Watcher Task
+/watcherTasks.xml
