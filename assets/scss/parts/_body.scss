@@ -9,5 +9,8 @@ body {
   &__wrap {
     @extend .mx-auto;
     @extend .w-75;
+    &--left {
+      margin-left: 12rem;
+    }
   }
 }
