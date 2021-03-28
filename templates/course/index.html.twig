@@ -4,24 +4,70 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <main class="main main__wrap">
-        <h2>Accueil</h2>
-        {% for parcours in courses %}
-            <article>
-                <h2>{{ parcours.name }}</h2>
-                <p>Dans le thème {{ parcours.theme.name }}</p>
-                <p>Description : {{ parcours.description }}</p>
-                <img src="{{ linker.getLink(parcours.picture) }}" alt="test">
+    <main class="main hero">
+        <section class="main__wrap | d-flex pt-5">
+            <div class="hero__strastour | pe-4">
+                <h2 class="h2 text-uppercase | hero__title">StrasTour</h2>
+                <p class="hero__description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum rerum sint ut! Accusamus adipisci, alias beatae blanditiis facilis fugiat id illo ipsum maiores molestiae mollitia numquam officiis porro rem repellat reprehenderit tempore voluptatem. Aspernatur consequuntur corporis fugit, harum ipsa maiores, molestiae nemo odit, praesentium qui quis repudiandae tenetur ullam velit!</p>
+            </div>
+            <div class="hero__courses | ml-4 p-4">
+                {% for parcours in courses %}
+                    <article class="mb-3 | hero__course" data-target="{{ path('course_show', {"id": parcours.id}) }}">
+                        <div class="d-flex">
+                            <div class="mr-2 | hero__course-picture">
+                                <img src="{{ linker.getLink(parcours.picture) }}" alt="test">
+                            </div>
+                            <div>
+                                <h3 class="h6 mb-0 mt-1">{{ parcours.name }}</h3>
+                                <p class="text-uppercase text-muted small mb-1">{{ parcours.theme.name }}</p>
+                                <p class="small mb-1">{{ parcours.description|u.truncate(65, '…')
+                                    }}</p>
+                                <a href="{{ path('course_show', {"id": parcours.id}) }}" class="small mb-0">Lire plus</a>
+                            </div>
+                        {% if is_granted('ROLE_USER') %}
+                            <form method="POST" action="{{ path('game_index') }}">
+                                <input name="course" value="{{ parcours.id }}" type="hidden">
+                                <button class="hero__course-btn" type="submit">Jouer</button>
+                            </form>
+                        {% endif %}
+                        </div>
 
-                <a href="{{ path('course_show', {"id": parcours.id}) }}">Aller au parcours</a>
-
-                {% if is_granted('ROLE_USER') %}
-                    <form method="POST" action="{{ path('game_index') }}">
-                        <input name="course" value="{{ parcours.id }}" type="hidden">
-                        <button class="btn btn-primary" type="submit">Jouer à ce parcours</button>
-                    </form>
-                {% endif %}
-            </article>
-        {% endfor %}
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
     </main>
+    <section class="main__wrap">
+        <div class="d-flex align-items-center | hero__game">
+            <div id="js-play-btn" class="d-flex justify-content-center align-items-center" data-target="{{ path
+                ('game_index') }}">
+                <div class="d-flex justify-content-center align-items-center | hero__play">
+                    <img src="{{ asset('assets/image/play-button.svg') }}" alt="Bouton play">
+                </div>
+            </div>
+            <div>
+                <h2 class="h2">Le principe</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa dolores error rerum. Atque aut distinctio eius id iure modi nobis voluptatem? Ad, error, illo? Aliquam consequatur delectus, deserunt error numquam quisquam repellendus. Dolor dolore ipsam odit provident unde! Ad aliquam animi architecto asperiores culpa delectus dolore error eveniet excepturi, iste iure iusto laboriosam laborum magnam minus non odit, officia officiis omnis possimus praesentium quod saepe tempore velit voluptatum! Aliquam amet architecto beatae debitis dolorem ducimus eius eos eveniet facilis in iure laborum minima nihil nisi officiis, perspiciatis possimus quas quibusdam quo tempore totam veniam veritatis vero. Dicta dolor quia quis.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        const courses = document.querySelectorAll('.hero__course');
+        const playBtn = document.getElementById('js-play-btn');
+
+        for (let course of courses) {
+            course.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON') {
+                    window.location = course.getAttribute('data-target');
+                }
+            })
+        }
+        playBtn.addEventListener('click', () => {
+            window.location = playBtn.getAttribute('data-target');
+        })
+    </script>
 {% endblock %}
