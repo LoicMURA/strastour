@@ -3,20 +3,17 @@ import {fetcher} from "../Fetcher";
 import Attack from "./Attack";
 
 export default class Mob extends Character {
-    constructor(type, id) {
-        super();
+    constructor(type, id, datas, diff, cols, tileSize) {
+        super(cols, tileSize);
         this.name = '';
         this.drop = [];
         this.dropChance = 0;
         this.type = type; // 'mob' || 'boss'
         this.typeMob = id; // 'mob' => id_mob || 'boss' => id_boss
         this.attacks = []; // [new Attack]
-
-        fetcher.fetchData(this, '/assets/datas/Characters.json', [this.type, this.typeMob])
-            .then(() => {
-                this.hydrateAttacks();
-                console.log(this);
-            });
+        fetcher.hydrateData(datas[id], this);
+        this.hydrateAttacks();
+        this.setDiff(diff);
     }
 
     hydrateAttacks() {
@@ -29,6 +26,32 @@ export default class Mob extends Character {
                 let rng = Math.floor(Math.random() * (setAtk.length));
                 this.attacks[i] = new Attack(this.typeMob, setAtk[rng]);
                 setAtk.splice(rng, 1);
+            }
+        }
+    }
+
+    diffToId(difficultyString) {
+        let diff;
+        switch (difficultyString) {
+            case "easy":
+                diff = 0;
+                break;
+            case "normal":
+                diff = 1;
+                break;
+            case "hard":
+                diff = 2;
+                break;
+        }
+        return diff;
+    }
+
+    setDiff(difficulty) {
+        let diff = this.diffToId(difficulty);
+        let changes = ["hp"];
+        for (let stat of changes) {
+            if(this[stat] != null) {
+                this[stat] = this[stat][diff];
             }
         }
     }

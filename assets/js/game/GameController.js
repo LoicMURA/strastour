@@ -34,10 +34,9 @@ export default class GameController {
             this.level = new Level(ID_LEVEL ?? 0, this.datas.Levels[ID_LEVEL ?? 0]);
             this.level.hydrateLevel()
                 .then(() => {
-                    this.level.hydrateRooms(this.level.datas)
+                    this.level.hydrateRooms(this.datas.boardSizes, this.datas.Characters)
                         .then(() => {
                             this.level.currentRoom = this.level.rooms[0]
-                            this.level.currentRoom.board = new Board(this.datas.boardSizes.rows, this.datas.boardSizes.cols, this.datas.boardSizes.tile)
                             this.level.currentRoom.board.drawBackground()
                         })
                 })
@@ -49,7 +48,7 @@ export default class GameController {
                     });
                 })
                 .then(() => {
-                    requestAnimationFrame(this.anim.bind(this))
+                    // requestAnimationFrame(this.anim.bind(this))
                     console.log(this);
                 })
         });
