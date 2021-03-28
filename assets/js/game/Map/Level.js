@@ -21,13 +21,21 @@ export default class Level{
         fetcher.hydrateData(levelDatas, this);
     }
 
-    async hydrateRooms(datas){
+    async hydrateRooms(boardDatas, characterDatas){
         for (const place of this.places) {
+            let roomId = this.places.indexOf(place);
             let placeShort = place.place;
-            //room datas are empty
-            let room = new Room(placeShort.id, this.difficulty, datas[placeShort.id]);
+            let room;
+            if(roomId !== this.places.length -1) {
+                //room datas are empty
+                room = new Room(placeShort.id, this.datas[placeShort.id], false, boardDatas, this.difficulty,  this.id, characterDatas);
+            } else {
+                //room hasBoss
+                room = new Room(placeShort.id, this.datas[placeShort.id], true, boardDatas, this.difficulty, this.id, characterDatas);
+            }
             fetcher.hydrateData(placeShort, room);
             this.rooms = [...this.rooms, room];
         }
+        this.places = "hydrated";
     }
 }
