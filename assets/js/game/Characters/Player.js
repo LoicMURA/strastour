@@ -50,7 +50,7 @@ export default class Player extends Character {
             hand : new Image(576,576),
             dagger: new Image(576,576)
         }
-        this.images.hand.src = '/assets/image/sprites/male-void.png';
+        this.images.hand.src = '/assets/image/sprites/character/male/hand.png';
     }
 
     hydrateInventory() {
