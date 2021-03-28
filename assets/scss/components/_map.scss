@@ -1,11 +1,22 @@
-.canvasGame{
+.canvasGame {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border: 2px solid black;
 }
-#map {
-  height: 50vh;
-  width: 50vh;
+
+.googleMap {
+  z-index: 2 !important;
+  min-height: 100%;
+  width: 100%;
+
+  &__course {
+    margin-top: -3rem;
+  }
+
+  &__place {
+    margin-top: -2.5rem;
+    min-width: 100%;
+  }
 }

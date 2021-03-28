@@ -1,0 +1,34 @@
+.course {
+  $width: 40vw;
+  min-width: $width;
+  width: $width;
+  line-height: 1.2em;
+
+  &__description {
+    max-width: 60ch;
+  }
+
+  &__places {
+    height: 50vh;
+    border-radius: 5px;
+    box-shadow: 0 0 5px -2px #000;
+    overflow-y: scroll;
+  }
+  &__place {
+    border-radius: 10px;
+    box-shadow: 0 0 5px -3px #000;
+    cursor: pointer;
+
+    img {
+      width: 175px;
+      vertical-align: bottom;
+      border-radius: 10px;
+      border-end-end-radius: unset;
+      border-start-end-radius: unset;
+    }
+
+    &:hover {
+      box-shadow: 0 4px 6px -4px #000;
+    }
+  }
+}

@@ -8,7 +8,7 @@
             })
             .then(response => {
                 response.json().then(json => {
-                    printDatas(document.querySelector("#mainDatas"));
+                    printDatas();
                     document.getElementById('js-unchecked').remove();
                     document.querySelector('form').remove();
                     for (let message of json.message) popup('success', message);
@@ -44,11 +44,10 @@
         alert('Veuillez activé la localisation du téléphone, autrement, la localisation ne fonctionnera pas');
     }
 
-    function printDatas(parent) {
-        let div = document.createElement('div');
-        div.innerHTML += `<p>{{ place.description }}</p><img src="{{ link }}" alt="Image de {{ place.name }}">`;
-
-        parent.appendChild(div);
+    function printDatas() {
+        let div = document.querySelector('.text__blur');
+        div.innerText = "{{ place.description }}";
+        div.classList.remove('text__blur');
     }
 
     document.getElementById('js-geolocalisation')?.addEventListener('click', (e) => {

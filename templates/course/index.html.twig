@@ -5,12 +5,12 @@
 
 {% block body %}
     <main class="main hero">
-        <section class="main__wrap | d-flex pt-5">
+        <section class="main__wrap | d-flex pt-5 justify-content-between">
             <div class="hero__strastour | pe-4">
                 <h2 class="h2 text-uppercase | hero__title">StrasTour</h2>
                 <p class="hero__description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum rerum sint ut! Accusamus adipisci, alias beatae blanditiis facilis fugiat id illo ipsum maiores molestiae mollitia numquam officiis porro rem repellat reprehenderit tempore voluptatem. Aspernatur consequuntur corporis fugit, harum ipsa maiores, molestiae nemo odit, praesentium qui quis repudiandae tenetur ullam velit!</p>
             </div>
-            <div class="hero__courses | ml-4 p-4">
+            <div class="hero__courses | ml-5 p-4">
                 {% for parcours in courses %}
                     <article class="mb-3 | hero__course" data-target="{{ path('course_show', {"id": parcours.id}) }}">
                         <div class="d-flex">
@@ -20,11 +20,10 @@
                             <div>
                                 <h3 class="h6 mb-0 mt-1">{{ parcours.name }}</h3>
                                 <p class="text-uppercase text-muted small mb-1">{{ parcours.theme.name }}</p>
-                                <p class="small mb-1">{{ parcours.description|u.truncate(65, '…')
-                                    }}</p>
+                                <p class="small mb-1">{{ parcours.description|u.truncate(65, '…') }}</p>
                                 <a href="{{ path('course_show', {"id": parcours.id}) }}" class="small mb-0">Lire plus</a>
                             </div>
-                        {% if is_granted('ROLE_USER') %}
+                        {% if is_granted('ROLE_USER') and app.user.isPlayer %}
                             <form method="POST" action="{{ path('game_index') }}">
                                 <input name="course" value="{{ parcours.id }}" type="hidden">
                                 <button class="hero__course-btn" type="submit">Jouer</button>
@@ -55,6 +54,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {% include 'scripts/popup.html.twig' %}
     <script>
         const courses = document.querySelectorAll('.hero__course');
         const playBtn = document.getElementById('js-play-btn');
@@ -66,8 +66,14 @@
                 }
             })
         }
-        playBtn.addEventListener('click', () => {
-            window.location = playBtn.getAttribute('data-target');
+        playBtn?.addEventListener('click', () => {
+            {% if is_granted('ROLE_USER') %}
+                {% if app.user.isPlayer %}
+                    window.location = playBtn.getAttribute('data-target');
+                {% else %}
+                    popup('danger', 'Vous n\'êtes pas inscrit en tant que joueur, vous ne pouvez donc pas jouer', true);
+                {% endif %}
+            {% endif %}
         })
     </script>
 {% endblock %}
