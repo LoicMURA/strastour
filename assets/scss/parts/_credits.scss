@@ -1,0 +1,16 @@
+.credits {
+  &__description {
+    max-width: 65ch;
+  }
+  &__function {
+    font-family: $font-sans;
+    font-weight: bold;
+  }
+  &__name {
+    font-weight: 300;
+  }
+  &__logo {
+    max-width: 20vw;
+    vertical-align: bottom;
+  }
+}

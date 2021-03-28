@@ -5,11 +5,16 @@ namespace App\Controller;
 use App\Entity\{Course, Comment, CoursePlace, Place};
 use App\Form\{CommentType, CourseType};
 use App\Service\{FileService, GoogleApi};
-use App\Repository\{CourseRepository, CommentRepository, CoursePlaceRepository, PlaceRepository};
+use App\Repository\{CourseRepository,
+    CommentRepository,
+    CoursePlaceRepository,
+    PlaceRepository,
+    UserPlacesRepository};
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class CourseController extends AbstractController
 {
@@ -28,23 +33,31 @@ class CourseController extends AbstractController
     /**
      * @Route("/parcours/{id}", name="course_show", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function show(Course $course, GoogleApi $api, Request $request, CommentRepository $repository): Response
+    public function show(
+        Course $course,
+        GoogleApi $api,
+        Request $request,
+        CommentRepository $repository,
+        UserPlacesRepository $userPlacesRepository,
+        Security $security
+    ): Response
     {
         $comments = $repository->findBy(['course' => $course]);
 
         $comments_by_id = [];
-
         foreach ($comments as $comment) {
             $comments_by_id[$comment->getId()] = $comment;
         }
 
         foreach ($comments as $k => $comment) {
-
             if ($comment->getParent() != null) {
                 $comments_by_id[$comment->getParent()->getId()]->children[] = $comment;
                 unset($comments[$k]);
             }
         }
+
+        $checkedPlaces = ($user = $security->getUser()) ? $userPlacesRepository->findUser
+    ($user) : '';
 
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -54,7 +67,8 @@ class CourseController extends AbstractController
             'course' => $course,
             'comments' => $comments,
             'form' => $form->createView(),
-            'API_KEY' => $api->getKey()
+            'API_KEY' => $api->getKey(),
+            'checkedPlaces' => $checkedPlaces
         ]);
     }
 

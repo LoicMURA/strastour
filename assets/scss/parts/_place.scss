@@ -1,6 +1,32 @@
 .link__arrow {
+  margin-top: -2px;
+  height: 1rem;
 
-  &--left {
-    height: 1rem;
+  &--right {
+    transform: rotate(180deg);
+  }
+}
+
+.links {
+  height: 2rem;
+  position: relative;
+
+  .nav__link{
+    position: absolute;
+    top: 1rem;
+
+    &--previous {
+      left: 0;
+    }
+
+    &--next {
+      right: 0;
+    }
+  }
+}
+
+.place {
+  &__picture {
+    width: 100%;
   }
 }

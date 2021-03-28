@@ -9,70 +9,93 @@
 {% endblock %}
 
 {% block body %}
-    <main class="main main__wrap">
-        <div id="map"></div>
-        <article>
-            <h1>{{ course.name }}</h1>
-            <p>Dans la catégorie {{ course.theme.name }}</p>
-            <p>{{ course.description }}</p>
-            <section>
-                {% for place in course.places %}
-                    {% set place = place.place %}
-                    <div>
-                        <h2>{{ place.name }}</h2>
-                        <p>Adresse : {{ place.address }}</p>
-                        <p>{{ place.description }}</p>
-                        <p>Au coordonnées : {{ place.longitude }} / {{ place.latitude }}</p>
-                        <img src="{{ linker.getLink(place.picture) }}" alt="test">
-                        <a href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
-                    </div>
-                {% endfor %}
-            </section>
-        </article>
+    <main class="main main__wrap--left pt-5">
+        <div class="d-flex flex-row-reverse">
+            <div class="googleMap googleMap__course" id="map"></div>
+            <article class="course | pr-4">
+                <h2 class="h2 m-0">{{ course.name }}</h2>
+                <p class="text-muted text-uppercase">{{ course.theme.name }}</p>
+                <p class="course__description">{{ course.description }}</p>
+                <section class="course__places | p-3">
+                    {% for place in course.places %}
+                        {% set place = place.place %}
+                        <article class="course__place | mb-2" data-target="{{ path('place_show',
+                            {"id": place.id}) }}">
+                            <div class="d-flex">
+                                <div>
+                                    <img class="course__place--picture" src="{{ linker.getLink(place
+                                    .picture) }}" alt="test">
+                                </div>
+                                <div class="px-2">
+                                    <h4 class="h6 pt-3 m-0">{{ place.name }}</h4>
+                                    {% if is_granted('ROLE_USER') and place.id not in checkedPlaces %}
+                                        <p class="small mb-2 | text__blur">
+                                            {{ place.description|u.truncate(75, '…') }}
+                                        </p>
+                                    {% else %}
+                                        <p class="small mb-2">
+                                            {{ place.description|u.truncate(75, '…') }}
+                                        </p>
+                                    {% endif %}
+                                    <a class="small" href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
+                                </div>
+                            </div>
 
-        <section id="commentSection">
-
-            {% if is_granted('ROLE_USER') %}
-                {{ include('comment/_form.html.twig') }}
-            {% endif %}
-
+                        </article>
+                    {% endfor %}
+                </section>
+            </article>
+        </div>
+    </main>
+    <section class="comments | pt-5 w-50 mx-auto" id="commentSection">
+        <h3 class="h3 text-center">Vos commentaires</h3>
+        {% if is_granted('ROLE_USER') %}
+            {{ include('comment/_form.html.twig') }}
+        {% endif %}
+        <hr>
+        <div class="pt-2">
             {% macro comments(commentaires, response) %}
                 {% for coms in commentaires %}
+                    <div class="comment {% if response == 'false' %}comment__response{% endif%}
+                    | card mb-2" id="{{coms.id}}">
+                        <p class="pl-2 pt-2">Commentaire de <span class="font-weight-bold">{{ coms.author.username }}</span><span class="small"> posté le <span class="font-weight-bold">{{ coms.createdAt|date('d/m/Y') }}</span></span></p>
+                        <p class="small pl-2 | commentContent">{{ coms.content }}</p>
+                        {% if is_granted('ROLE_USER') %}
+                            <div class="d-flex flex-row-reverse card-footer">
+                                {% if response == "true" %}
+                                    <button class="btn btn-primary btn-sm ml-2" onclick="reply({{coms.id}})">Répondre</button>
+                                {% endif %}
 
-                    <div class="comment" id="{{coms.id}}">
-                        <p>{{ coms.author.username }}</p>
-                        <p class="commentContent">{{ coms.content }}</p>
-                        <p>{{ coms.createdAt|date('d-m-Y') }}
-                            {% if is_granted('ROLE_USER') %}
-                                <div class="d-flex flex-row-reverse">
-                                    {% if response == "true" %}
-                                        <button class="btn btn-primary btn-sm ml-2" onclick="reply
-                                                ({{coms.id}})">Répondre</button>
-                                    {% endif %}
-
-                                    {% if coms.getAuthor().getId() == app.user.id  %}
-                                        <button class="display btn btn-danger btn-sm"
-                                                data-path="{{ path("comment_edit", {"id" : coms.id} ) }}" onclick="modify(this, {{coms.id}})">Modifier</button>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        </p>
-
-                        {% if coms.children %}
-                            {{ _self.comments( coms.children, "false" ) }}
+                                {% if coms.getAuthor().getId() == app.user.id  %}
+                                    <button class="display btn btn-danger btn-sm"
+                                            data-path="{{ path("comment_edit", {"id" : coms.id} ) }}" onclick="modify(this, {{coms.id}})">Modifier</button>
+                                {% endif %}
+                            </div>
                         {% endif %}
                     </div>
 
+                    {% if coms.children %}
+                        {{ _self.comments( coms.children, "false" ) }}
+                    {% endif %}
                 {% endfor %}
             {% endmacro %}
-
             {{ _self.comments(comments, "true") }}
-        </section>
-    </main>
+        </div>
+
+    </section>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&callback=initMap"></script>
+    <script>
+        const cards = document.querySelectorAll('.course__place');
+
+        for (let place of cards) {
+            place.addEventListener('click', () => {
+                window.location = place.getAttribute('data-target');
+            })
+        }
+    </script>
     {% include 'scripts/courseComment.html.twig' %}
 {% endblock %}

@@ -1,15 +1,14 @@
 <script>
-    function popup(type, message) {
-        const main = document.querySelector('main');
+    function popup(type, message, isFixed = false) {
+        const main = isFixed ? document.body : document.querySelector('main');
         const firstChild = main.childNodes[0];
 
         let popup = document.createElement('div');
-        popup.classList.add('alert', `alert-${type}`);
-        console.log(message);
+        popup.classList.add('popup', 'alert', `alert-${type}`);
+        if (isFixed) popup.classList.add('w-75', 'popup__fixed');
         popup.innerHTML = message;
-        console.log(popup);
 
-        main.insertBefore(popup, firstChild);
+        isFixed ? main.appendChild(popup) : main.insertBefore(popup, firstChild);
 
         setTimeout(() => {
             popup.remove();

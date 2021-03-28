@@ -1,5 +1,8 @@
 .comment {
-  .comment {
-    padding-left: 3rem ;
+  margin-top: 1rem;
+
+  &__response {
+    margin-top: 0;
+    margin-left: 5rem;
   }
 }

@@ -1,5 +1,23 @@
 .popup {
+  animation: popup 2.6s ease-in-out;
+
   &__title {
     font-weight: bold;
+  }
+
+  &__fixed {
+    position: fixed;
+    top: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes popup {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 85% {
+    opacity: 1;
   }
 }

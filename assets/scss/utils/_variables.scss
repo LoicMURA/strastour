@@ -10,7 +10,8 @@ $font-sans: 'Poppins', sans-serif;
 $font-primary: #161616;
 $font-white: #f2f2f2;
 $bg-primary: #0066cc;
-$bg-danger: #ff0066;
+$danger: #ff0066;
+$bg-danger: $danger;
 
 $bg-dark: #003366;
 
