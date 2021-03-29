@@ -8,6 +8,7 @@ export default class Tile{
             y: y
         }
         this.state = state;
-        this.background = null; // new Sprite
     }
+
+
 }

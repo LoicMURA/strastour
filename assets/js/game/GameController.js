@@ -12,28 +12,29 @@ export default class GameController {
 
     initGame() {
         this.datas.hydrateDatas(this.datas).then(() => {
-            this.level = new Level(ID_LEVEL ?? 0, this.datas.Levels[ID_LEVEL ?? 0]);
-            this.level.hydrateLevel()
-                .then(() => {
-                    this.level.hydrateRooms(this.datas.boardSizes, this.datas.Characters)
-                        .then(() => {
-                            this.level.currentRoom = this.level.rooms[0]
-                            this.level.currentRoom.board.drawBackground()
-                        })
-                })
-                .then(() => {
-                    this.player = new Player(this.datas.Items, this.datas.Weapons, this.datas.boardSizes.cols, this.datas.boardSizes.tile);
-                    fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"])
-                        .then(() => {
-                            this.player.upgradeToCurrentStats();
-                            // this.player.action();
-                            this.hud = new HUD(this.player, this.level);
+            this.datas.hydrateCurrentLevel(ID_LEVEL).then(() => {
+                this.level = new Level(ID_LEVEL ?? 0, this.datas.Level);
+                this.level.hydrateLevel()
+                    .then(() => {
+                        this.level.hydrateRooms(this.datas.boardSizes, this.datas.Characters)
+                            .then(() => {
+                                this.level.currentRoom = this.level.rooms[0];
+                                this.level.currentRoom.board.draw();
+                            })
+                    })
+                    .then(() => {
+                        this.player = new Player(this.datas.Items, this.datas.Weapons,this.datas.boardSizes.cols, this.datas.boardSizes.tile);
+                        fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"])
+                            .then(() => {
+                                this.player.upgradeToCurrentStats();
+                                this.hud = new HUD(this.player, this.level);
                         });
-                })
-                .then(() => {
-                    // requestAnimationFrame(this.anim.bind(this))
-                    console.log(this);
-                })
+                    })
+                    .then(() => {
+                        // requestAnimationFrame(this.anim.bind(this))
+                        console.log(this);
+                    })
+            })
         });
     }
 

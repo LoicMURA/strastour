@@ -9,16 +9,12 @@ export default class Room {
         this.address = '';
         this.description = '';
         this.enemies = [];
-        this.board = null;
+        this.board = new Board(boardDatas.rows, boardDatas.cols, boardDatas.tile, this.datas.image, this.datas.states);
         this.hordes = 0;
         this.hasBoss = boss;
         this.isActive = false;
         this.cleared = false;
-        this.hydrateBoard(boardDatas);
         this.hydrateEnemies(difficulty, levelId, characterDatas);
-    }
-    hydrateBoard(datas) {
-        this.board = new Board(datas.rows, datas.cols, datas.tile);
     }
 
     hydrateEnemies(diff, levelId, datas) {
@@ -84,5 +80,4 @@ export default class Room {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-
 }

@@ -1,11 +1,9 @@
-import {fetcher} from "./Fetcher";
-
 export default class Datas {
     constructor() {
         this.Characters = null;
         this.Items = null;
         this.Weapons = null;
-        this.Levels = null;
+        this.Level = null;
         this.boardSizes = {
             rows: 11,
             cols: 20,
@@ -13,8 +11,15 @@ export default class Datas {
         }
     }
 
+    async hydrateCurrentLevel(id){
+        let query = await fetch(`/assets/datas/levels/${id}.json`);
+        let datas = await query.json();
+        this.Level = datas;
+        console.log(datas);
+    }
+
     async hydrateDatas(object) {
-        let dataJson = ["Characters", "Items", "Weapons", "Levels"];
+        let dataJson = ["Characters", "Items", "Weapons"];
         for (const dataFile of dataJson) {
             let query = await fetch("/assets/datas/" + dataFile + ".json");
             let datas = await query.json();
