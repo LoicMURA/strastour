@@ -23,9 +23,9 @@ class Character
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=1.json)
+     * @ORM\Column(type="string", length=1)
      * @Assert\Regex(
-     *     pattern="/^[fFhH]{1.json,1.json}$/",
+     *     pattern="/^[fFhH]{1,1}$/",
      *     message="Le genre doit être 'f', 'F', 'h' ou 'H'"
      * )
      * @Groups({"user_game"})

@@ -50,7 +50,7 @@ class Place
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Regex(
-     *     pattern="/^(?=(\d{1.json,4})?[,]?[\'\ \wÀ-ÿ]+)([\w\d À-ÿ,\-']){10,}$/",
+     *     pattern="/^(?=(\d{1,4})?[,]?[\'\ \wÀ-ÿ]+)([\w\d À-ÿ,\-']){10,}$/",
      *     message="L'adresse '{{ value }}' n'est pas valide"
      * )
      * @Groups({"course:show"})

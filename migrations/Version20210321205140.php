@@ -12,16 +12,16 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210321205140 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE bonus (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
-        $this->addSql('CREATE TABLE "character" (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER DEFAULT NULL, gender VARCHAR(1.json) NOT NULL, xp INTEGER NOT NULL, stuck INTEGER NOT NULL, tutorial_done BOOLEAN NOT NULL)');
+        $this->addSql('CREATE TABLE "character" (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER DEFAULT NULL, gender VARCHAR(1) NOT NULL, xp INTEGER NOT NULL, stuck INTEGER NOT NULL, tutorial_done BOOLEAN NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_937AB034A76ED395 ON "character" (user_id)');
         $this->addSql('CREATE TABLE comment (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, author_id INTEGER NOT NULL, course_id INTEGER NOT NULL, parent_id INTEGER DEFAULT NULL, content CLOB NOT NULL, created_at DATETIME NOT NULL)');
         $this->addSql('CREATE INDEX IDX_9474526CF675F31B ON comment (author_id)');
@@ -59,7 +59,7 @@ final class Version20210321205140 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9BFD7768A76ED395 ON user_places (user_id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE bonus');
