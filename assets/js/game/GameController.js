@@ -25,7 +25,7 @@ export default class GameController {
                     this.player = new Player(this.datas.Items, this.datas.Weapons, this.datas.boardSizes.cols, this.datas.boardSizes.tile);
                     fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"])
                         .then(() => {
-                            this.player.setCurrent();
+                            this.player.upgradeToCurrentStats();
                             // this.player.action();
                             this.hud = new HUD(this.player, this.level);
                         });

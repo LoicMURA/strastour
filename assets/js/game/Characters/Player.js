@@ -30,6 +30,7 @@ export default class Player extends Character {
         this.equipement = [];
         //store if a weapon or bonus is being used, their relative bonuses to each of those items
         this.activeBonus = [];
+
         this.hydrateInventory(itemDatas, weaponDatas);
         this.setImages();
 
@@ -37,13 +38,13 @@ export default class Player extends Character {
     }
 
     //store data that needs to be calculated based on player's level
-    setCurrent(){
-        //represents the fictive formula to upgrade players data according to it's level
-        this.hp = this.hp * this.lvl; //formula is incorrect
+    upgradeToCurrentStats(){
+        this.lvl = this.getLevel(this.xp);
+        this.current.maxXp = this.getMaxXp(this.lvl);
+        this.hp = this.getLife(this.lvl);
         this.current.maxHp = this.hp;
-        this.atk = this.atk * this.lvl;
-        this.def = this.def * this.lvl;
-        this.current.maxXp = 2000;
+        this.atk = this.getAtk(this.lvl);
+        this.def = this.getDef(this.lvl);
         this.current.xp = this.xp % 2000; //val needed to go to next lvl
     }
 
@@ -51,12 +52,42 @@ export default class Player extends Character {
         return this.equipement[this.current.item];
     }
 
-    //use to update player's XP each time
+    getLevel(xp)
+    {
+        let lvl = 1;
+        while (92.32*Math.exp(0.0794*lvl) <= xp) {
+            lvl++;
+        }
+        return lvl;
+    }
+
+    getMaxXp(lvl)
+    {
+        return Math.round(92.32 * Math.exp(0.0794*lvl));
+    }
+
+    getLife(lvl)
+    {
+        lvl = lvl - 1;
+        return Math.floor(0.0401 * Math.pow(lvl, 2) + 5.6331 * lvl + 100);
+    }
+
+    getAtk(lvl)
+    {
+        lvl = lvl - 1;
+        return Math.floor(0.0146 * Math.pow(lvl, 2) + 2.0704 * lvl + 20);
+    }
+
+    getDef(lvl)
+    {
+        lvl = lvl - 1;
+        return Math.floor(0.0146 * Math.pow(lvl, 2) + 2.0704 * lvl + 20);
+    }
+
+    //use to update player's XP each time he wins some
     updateXp(gainXp) {
-        //formula is incorrect
         this.xp += gainXp;
-        this.lvl = Math.round(this.xp / 2000);
-        this.current.xp= this.xp % 2000;
+        this.current.xp = this.xp % this.current.maxXp;
     }
 
     /**
