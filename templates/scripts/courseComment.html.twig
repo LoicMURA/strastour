@@ -11,12 +11,11 @@
     function reply(id) {
         idParent = id
 
-        document.getElementsByName("parentComment")[0].value = id
-
         form.remove()
-
         parent = document.getElementById(id);
         parent.appendChild(form)
+
+        document.getElementsByName("parentComment")[1].value = id
     }
 
     function modify(button, id) {
