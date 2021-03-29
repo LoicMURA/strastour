@@ -1,6 +1,6 @@
 {
   "1": {
-    "typeDescDesc": "Potion de vie",
+    "typeDesc": "Potion de vie",
     "name": "Bretzel",
     "image": "https://picsum.photos/300/200?random=1",
     "description" : "Rend un peu de vie au joueur",
@@ -13,7 +13,7 @@
     }
   },
   "2": {
-    "typeDescDesc": "Potion de vie",
+    "typeDesc": "Potion de vie",
     "name": "Paire de Knacks",
     "image": "https://picsum.photos/300/200?random=2",
     "description" : "Rend de la vie au joueur",
