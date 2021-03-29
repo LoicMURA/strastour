@@ -1,0 +1,24 @@
+<header class="shadow-sm | header--mobile">
+    <nav id="js-mobile-menu" data-state="closed" class="px-2 d-flex justify-content-between">
+        <a class="my-3 mx-2" href="{{ path('course_index') }}">
+            <img src="{{ asset('assets/image/logo.png') }}" alt="Logo" height="40">
+        </a>
+        <a class="font-serif text-uppercase | header--mobile__logotype" href="{{ path('course_index') }}">Strastour</a>
+        <div class="mx-2 | header--mobile__logotype header--mobile__toggle" id="js-menu-toggle">
+            <img src="{{ asset('assets/image/menu-closed.svg') }}" alt="Bouton d'ouverture du menu">
+            <img class="d-none" src="{{ asset('assets/image/menu-opened.svg') }}" alt="Bouton de fermeture du menu">
+        </div>
+        <div id="js-menu-content" class="header--mobile__menu">
+            <a class="header--mobile__link" href="{{ path('course_index') }}">Accueil</a>
+            <a href="{{ path('course_showall') }}" class="header--mobile__link">Les parcours</a>
+            {% if not is_granted('ROLE_USER') %}
+                <a class="header--mobile__link" href="{{ path('user_login') }}">Se connecter</a>
+                <a class="header--mobile__link" href="{{ path('user_new') }}">S'inscrire</a>
+            {% else %}
+                <span class="header--mobile__link header--mobile__username" >{{ app.user.username
+                    }}</span>
+                <a class="header--mobile__link" href="{{ path('user_logout') }}">Se déconnecter</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>

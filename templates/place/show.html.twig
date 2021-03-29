@@ -10,12 +10,16 @@
 {% endblock %}
 
 {% block body %}
-    <main class="main main__wrap--left">
+    {% if not is_mobile() %}
+        <main class="main main__wrap--left">
+    {% else %}
+        <main class="main main__wrap">
+    {% endif %}
         <a href="{{ path('course_show', {"id": courseId}) }}">
             {{ svg.leftArrow() }}
             Retourner au parcours
         </a>
-        <div class="d-flex justify-content-between">
+        <div class="d-block d-lg-flex justify-content-between">
             <div class="ch-50">
                 <h2 class="mt-4 mb-0 h2">{{ place.name }}</h2>
                 <p class="m-0 text-muted">{{ place.address }}</p>
@@ -24,6 +28,11 @@
                      alt="Image de {{ place.name }}">
 
                 {% if not isPlayer or checkedPlace %}
+                    {% if is_mobile() %}
+                        <div class="mb-3">
+                            <div class="googleMap googleMap__place" id="map"></div>
+                        </div>
+                    {% endif %}
                     <p>{{ place.description }}</p>
                 {% else %}
                     <p id="js-unchecked">
@@ -40,15 +49,21 @@
                         </form>
                         <div id="geo"></div>
                     {% endif %}
+                    {% if is_mobile() %}
+                        <div class="mb-3">
+                            <div class="googleMap googleMap__place" id="map"></div>
+                        </div>
+                    {% endif %}
                     <p class="text__blur">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio doloribus hic illo incidunt iusto maiores molestiae, nihil rem tempore. Blanditiis dolor dolores esse mollitia perferendis porro saepe ut vel? Debitis delectus deserunt eaque incidunt inventore, laudantium necessitatibus obcaecati officiis optio perspiciatis placeat quam ratione recusandae repellendus veniam. Eos illum nulla officiis sequi totam? A aliquam aliquid culpa itaque iure, modi molestiae nam nihil, nisi nostrum officiis pariatur perferendis quaerat quo, quod repudiandae tenetur unde vero? Aliquid aperiam aut blanditiis cupiditate dolore iste labore magni, minima nisi nostrum officia praesentium quo, velit. Ad aliquid illum iusto laborum perspiciatis, quis sit voluptatem!
                     </p>
                 {% endif %}
             </div>
-
-            <div class="ml-5 w-100">
-                <div class="mh-100 | googleMap googleMap__place" id="map"></div>
-            </div>
+            {% if not is_mobile() %}
+                <div class="ml-lg-5 w-100">
+                    <div class="mh-100 | googleMap googleMap__place" id="map"></div>
+                </div>
+            {% endif %}
         </div>
     </main>
     <nav class="links font-weight-bold main__wrap">

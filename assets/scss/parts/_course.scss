@@ -1,34 +1,100 @@
 .course {
-  $width: 40vw;
-  min-width: $width;
-  width: $width;
+  width: 100%;
+  @media screen and (min-width: 769px) {
+    min-width: 40vw;
+    width: 40vw;
+  }
   line-height: 1.2em;
 
   &__description {
     max-width: 60ch;
   }
 
-  &__places {
-    height: 50vh;
-    border-radius: 5px;
-    box-shadow: 0 0 5px -2px #000;
-    overflow-y: scroll;
+  &--large {
+    @media screen and (min-width: 769px) {
+      box-shadow: 0 0 5px -2px #000;
+      border-radius: 10px;
+      cursor: pointer;
+      &:hover {
+        box-shadow: 0 0 10px -2px #000;
+      }
+    }
+
+    img {
+      @media screen and (min-width: 769px) {
+        border-radius: 10px;
+        border-end-end-radius: unset;
+        border-start-end-radius: unset;
+        vertical-align: bottom;
+        width: 200px;
+      }
+    }
   }
+
+  &__places {
+    @media screen and (min-width: 769px) {
+      height: 50vh;
+      border-radius: 5px;
+      box-shadow: 0 0 5px -2px #000;
+      overflow-y: scroll;
+    }
+  }
+
   &__place {
     border-radius: 10px;
     box-shadow: 0 0 5px -3px #000;
     cursor: pointer;
 
     img {
-      width: 175px;
-      vertical-align: bottom;
-      border-radius: 10px;
-      border-end-end-radius: unset;
-      border-start-end-radius: unset;
+      @media screen and (min-width: 769px) {
+        width: 175px;
+        vertical-align: bottom;
+        border-radius: 10px;
+        border-end-end-radius: unset;
+        border-start-end-radius: unset;
+      }
     }
 
     &:hover {
       box-shadow: 0 4px 6px -4px #000;
+    }
+  }
+
+  &__play-btn {
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: $bg-color;
+    overflow: hidden;
+    transition: text-shadow .35s ease-out;
+
+    &:hover {
+      text-shadow: 0 1rem 0 #000,
+      0 -1rem 0 #000,
+      0 2rem 0 $bg-danger,
+      0 -2rem 0 $bg-danger,
+      0 3rem 0 #f6f6f6,
+      0 -3rem 0 #f6f6f6,
+      0 4rem 0 #000,
+      0 -4rem 0 #000,
+      -12rem 0 0 #000,
+      -12rem 1rem 0 $bg-danger,
+      -12rem -1rem 0 $bg-danger,
+      -12rem 2rem 0 #f6f6f6,
+      -12rem -2rem 0 #f6f6f6,
+      -12rem 3rem 0 #000,
+      -12rem -3rem 0 #000,
+      -12rem 4rem 0 #f6f6f6,
+      -12rem -4rem 0 #f6f6f6,
+      12rem 0 0 #000,
+      12rem 1rem 0 $bg-danger,
+      12rem -1rem 0 $bg-danger,
+      12rem 2rem 0 #f6f6f6,
+      12rem -2rem 0 #f6f6f6,
+      12rem 3rem 0 #000,
+      12rem -3rem 0 #000,
+      12rem 4rem 0 #f6f6f6,
+      12rem -4rem 0 #f6f6f6;
     }
   }
 }

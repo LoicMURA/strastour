@@ -1,18 +1,27 @@
 $bg-color: #ccccff;
 .hero {
-
-  height: 85vh;
+  height: 175vh;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+  @media screen and (min-width: 768px) {
+    height: 85vh;
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+  }
   background-color: $bg-color;
-  clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
 
   &__strastour {
-    max-width: 55ch;
+    @media screen and (min-width: 768px) {
+      max-width: 55ch;
+    }
   }
 
   &__courses {
     min-width: 55%;
-    max-height: 50vh;
+    max-height: 85vh;
+    @media screen and (min-width: 768px) {
+      max-height: 50vh;
+    }
     overflow-y: scroll;
+    overflow-x: hidden;
     border-radius: 5px;
     background-color: #ffffff88;
     backdrop-filter: blur(15px);
@@ -58,15 +67,14 @@ $bg-color: #ccccff;
       transition: text-shadow .35s ease-out;
 
       &:hover {
-        text-shadow:
-          0 1rem 0 #000,
-          0 -1rem 0 #000,
-          0 2rem 0 $bg-danger,
-          0 -2rem 0 $bg-danger,
-          0 3rem 0 #f6f6f6,
-          0 -3rem 0 #f6f6f6,
-          0 4rem 0 #000,
-          0 -4rem 0 #000;
+        text-shadow: 0 1rem 0 #000,
+        0 -1rem 0 #000,
+        0 2rem 0 $bg-danger,
+        0 -2rem 0 $bg-danger,
+        0 3rem 0 #f6f6f6,
+        0 -3rem 0 #f6f6f6,
+        0 4rem 0 #000,
+        0 -4rem 0 #000;
       }
     }
   }
@@ -86,8 +94,10 @@ $bg-color: #ccccff;
   }
 
   &__game {
-    div {
-      width: 50%;
+    @media screen and (min-width: 769px) {
+      div {
+        width: 50%;
+      }
     }
   }
 }

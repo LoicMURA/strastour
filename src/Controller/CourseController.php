@@ -31,6 +31,18 @@ class CourseController extends AbstractController
     }
 
     /**
+     * @Route("/parcours", name="course_showall")
+     */
+    public function showall(CourseRepository $repository): Response
+    {
+        $courses = $repository->findAll();
+
+        return $this->render('course/showall.html.twig', [
+            'courses' => $courses
+        ]);
+    }
+
+    /**
      * @Route("/parcours/{id}", name="course_show", requirements={"id"="\d+"}, methods={"GET"})
      */
     public function show(

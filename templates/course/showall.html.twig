@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% import 'macros/linker.html.twig' as linker %}
+
+{% block title %}Les parcours{% endblock %}
+
+{% block body %}
+    <main class="main main__wrap pt-4 pb-3">
+        <h2>Tous les parcours "StrasTour"</h2>
+        {% for course in courses %}
+            <article class="mb-3 | course--large js-course" data-target="{{ path('course_show',
+                {"id":
+                course.id}) }}">
+                {% if not is_mobile() %}
+                    <div class="d-flex">
+                        <img src="{{ linker.getLink(course.picture) }}" alt="Image de {{ course.name }}">
+                        <div class="card-body">
+                            <h3>{{ course.name }}</h3>
+                            <p class="m-0 text-uppercase text-muted">{{ course.theme.name }}</p>
+                            <p class="card-text">{{ course.description|u.truncate(200, '...') }}</p>
+                            <a href="{{ path('course_show', {"id": course.id}) }}">Lire plus …</a>
+                        </div>
+                        {% if is_granted('ROLE_USER') and app.user.isPlayer %}
+                            <form method="POST" action="{{ path('game_index') }}">
+                                <input name="course" value="{{ course.id }}" type="hidden">
+                                <button class="hero__course-btn" type="submit">Jouer</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="card">
+                        <img class="card-img-top" src="{{ linker.getLink(course.picture) }}" alt="Image de {{ course.name }}">
+                        <div class="card-body">
+                            <h3>{{ course.name }}</h3>
+                            <p class="m-0 text-uppercase text-muted">{{ course.theme.name }}</p>
+                            <p class="card-text">{{ course.description|u.truncate(200, '...') }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ path('course_show', {"id": course.id}) }}">Lire plus …</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        const courses = document.querySelectorAll('.js-course');
+
+        for (let course of courses) {
+            course.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON') {
+                    window.location = course.getAttribute('data-target');
+                }
+            })
+        }
+    </script>
+{% endblock %}
