@@ -25,7 +25,7 @@ export default class Sprite {
         }
 
         let image = new Image();
-        image.src = 'assets/image/sprites/maps/1.png';
+        image.src = 'assets/image/sprites/maps/1.json.png';
 
         image.onload = () => {
             CTX.beginPath();
