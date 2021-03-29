@@ -5,7 +5,12 @@
         </a>
         <div class="d-flex align-items-center">
             <a class="header__link" href="{{ path('course_index') }}">Accueil</a>
-            <a class="header__link" href="{{ path('game_index') }}">Jeu</a>
+            <a href="{{ path('course_showall') }}" class="header__link">Les parcours</a>
+            {% if app.user %}
+                {% if app.user.isPlayer %}
+                    <a class="header__link" href="{{ path('game_index') }}">Jeu</a>
+                {% endif %}
+            {% endif %}
 
             <div class="header__separator"></div>
 

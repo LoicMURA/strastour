@@ -5,6 +5,12 @@
   }
 }
 
+.font {
+  &-serif {
+    font-family: $font-serif;
+  }
+}
+
 @for $i from 1 to 10 {
   $length: $i * 10;
   .ch-#{$length} {
