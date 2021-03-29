@@ -10,7 +10,18 @@ export default class Player extends Character {
         this.pseudo = USER.username;
         this.xp = USER.player.xp;
         //each values that needs to be selected based on classes properties
-        this.current = {xp:0,item:0,sprite:0, spriteId:0, maxHp:0, maxXp:0};
+        this.current = {
+            xp: 0,
+            item: 0,
+            sprite: {
+                equiped: 0,
+                indexX: 0,
+                indexY: 0,
+            },
+            maxHp: 0,
+            maxXp: 0
+        };
+        this.current.sprite.maxIndexX = this.current.sprite.equiped.limitX ?? 0
         this.stucks = USER.player.stuck;
         this.inventory = [];
         //items that are part of the inventory, must be displayed in the HUD
@@ -47,10 +58,30 @@ export default class Player extends Character {
      */
     setImages(){
         this.images = {
-            hand : new Image(576,576),
-            dagger: new Image(576,576)
+            hand: {
+                limitX: 9
+            },
+            dagger: {
+                limitX: 9
+            },
+            sword: {
+                limitX: 9
+            },
+            spear: {
+                limitX: 9
+            },
+            bow: {
+                limitX: 9
+            },
         }
         this.images.hand.src = '/assets/image/sprites/character/male/hand.png';
+        // let gender = this.gender === 'f' ? 'female' : 'male';
+        for (const property in this.images) {
+            if (this.images.hasOwnProperty(property)) {
+                this.images[property].sprite = new Image();
+                this.images[property].sprite.src = `/assets/image/sprites/character/male/${property}.png`;
+            }
+        }
     }
 
     hydrateInventory() {
@@ -71,44 +102,47 @@ export default class Player extends Character {
         }
     }
 
-    mouvementController(cols, tileSize, cellSize){
+    mouvementController(cols, tileSize, cellSize) {
         window.addEventListener('keydown', (e) => {
-            switch (e.code){
-                case "KeyW":
-                    this.direction = 0
-                    break;
-                case "KeyD":
-                    this.direction = 1
-                    break;
-                case "KeyS":
-                    this.direction = 2
-                    break;
-                case "KeyA":
-                    this.direction = 3
-                    break;
-            }
+            if (e.code === "KeyW") this.direction = this.current.sprite.indexY = 0;
+            if (e.code === "KeyD") this.direction = this.current.sprite.indexY = 1;
+            if (e.code === "KeyS") this.direction = this.current.sprite.indexY = 2;
+            if (e.code === "KeyA") this.direction = this.current.sprite.indexY = 3;
             this.move(cols, tileSize);
             this.animation(cellSize, tileSize);
         })
     }
 
-    control(){
-
+    controlActions() {
+        window.addEventListener('keydown', (e) => {
+            if (e.code === "ArrowUp") {
+            }
+            ;
+            if (e.code === "ArrowDown") {
+            }
+            ;
+            if (e.code === "ArrowLeft") {
+            }
+            ;
+            if (e.code === "ArrowRight") {
+            }
+            ;
+        })
     }
 
-    animation(cellSize, tileSize){
+    animation(cellSize, tileSize) {
         CTX.beginPath()
         CTX.drawImage(
-            this.currentSprite,
-            this.indexX * cellSize,
-            this.direction * cellSize,
+            this.current.sprite.equiped,
+            this.current.sprite.indexX * cellSize,
+            this.current.sprite.indexY * cellSize,
             cellSize,
             cellSize,
             this.position.x,
             this.position.y,
             tileSize,
             tileSize
-            )
+        )
         CTX.closePath();
         this.indexX++;
     }
