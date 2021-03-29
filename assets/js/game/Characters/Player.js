@@ -1,11 +1,13 @@
 import Character from "./Character";
 import {fetcher} from "../Fetcher";
-import Sprite from "../Sprite";
+import Bonus from "../GameObjects/Bonus";
+import Weapon from "../GameObjects/Weapon";
 
 export default class Player extends Character {
-    constructor(cols, tileSize) {
+    constructor(itemDatas, weaponDatas, cols, tileSize) {
         super(cols, tileSize);
         this.lvl = 1;
+        this.type = "player";
         this.gender = USER.player.gender;
         this.pseudo = USER.username;
         this.xp = USER.player.xp;
@@ -28,7 +30,7 @@ export default class Player extends Character {
         this.equipement = [];
         //store if a weapon or bonus is being used, their relative bonuses to each of those items
         this.activeBonus = [];
-        this.hydrateInventory();
+        this.hydrateInventory(itemDatas, weaponDatas);
         this.setImages();
 
         this.mouvementController(cols, tileSize, 64);
@@ -43,6 +45,10 @@ export default class Player extends Character {
         this.def = this.def * this.lvl;
         this.current.maxXp = 2000;
         this.current.xp = this.xp % 2000; //val needed to go to next lvl
+    }
+
+    getCurrentItem(){
+        return this.equipement[this.current.item];
     }
 
     //use to update player's XP each time
@@ -84,25 +90,65 @@ export default class Player extends Character {
         }
     }
 
-    hydrateInventory() {
-        for (const item of USER.player.inventory) {
-            item.equiped = true;
-            this.inventory.push(item);
+    hydrateInventory(bonusDatas, weaponDatas) {
+        let index = 0;
+        for (const itemData of USER.player.inventory) {
+            // to delete later on
+            itemData.equiped = true;
+            if(index === 0) itemData.item.type.name = "health";
+            if(index === 1) {
+                // TRICHERIE MASSIVE
+                itemData.item.type.name = "sword";
+                itemData.item.type.id = 3;
+            }
+            if(index === 2) itemData.item.type.name = "speed";
+            //
+            let id = itemData.item.type.id;
+            if(this.itemIsBonus(itemData.item)) {
+                itemData.item = new Bonus(bonusDatas[id]);
+            } else if (this.itemIsWeapon(itemData.item)) {
+                itemData.item = new Weapon(weaponDatas[id]);
+            }
+            this.inventory.push(itemData);
+            index++;
         }
         this.updateEquipement();
     }
 
     updateEquipement() {
         let index = 0;
-        for(const item of this.inventory) {
-            if(item.equiped){
-                this.equipement[index] = item;
+        for(const itemData of this.inventory) {
+            if(itemData.equiped){
+                this.equipement[index] = itemData.item;
                 index++;
             }
         }
     }
 
-    mouvementController(cols, tileSize, cellSize) {
+    itemIsBonus(item) {
+        let names = ["health", "attack", "defense", "speed", "map"];
+        let check = item.type.name;
+        for(let i = 0; i < names.length; i++) {
+            if(check === names[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    itemIsWeapon(item) {
+        // names stored in database for each weapon type
+        let names = ["sword", "dagger", "spear", "bow"];
+        let check = item.type.name;
+        for(let i = 0; i < names.length; i++) {
+            if(check === names[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    mouvementController(cols, tileSize, cellSize){
         window.addEventListener('keydown', (e) => {
             if (e.code === "KeyW") this.direction = this.current.sprite.indexY = 0;
             if (e.code === "KeyD") this.direction = this.current.sprite.indexY = 1;
@@ -117,16 +163,12 @@ export default class Player extends Character {
         window.addEventListener('keydown', (e) => {
             if (e.code === "ArrowUp") {
             }
-            ;
             if (e.code === "ArrowDown") {
             }
-            ;
             if (e.code === "ArrowLeft") {
             }
-            ;
             if (e.code === "ArrowRight") {
             }
-            ;
         })
     }
 
