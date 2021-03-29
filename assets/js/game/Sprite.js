@@ -34,17 +34,6 @@ export default class Sprite {
 			CANVAS.height = Board.rows * Board.tileSize;
 		}
 
-		let image = new Image();
-		image.src = "assets/image/sprites/maps/1.png";
-
-		image.onload = () => {
-			CTX.beginPath();
-			CTX.drawImage(image, 0, 0, CANVAS.width, CANVAS.height);
-			CTX.closePath();
-			let data = CANVAS.toDataURL();
-			console.log(data);
-		};
-
 		// for (const tileKey in Board.tiles) {
 		//     CTX.strokeRect(Board.tiles[tileKey].position.x, Board.tiles[tileKey].position.y, Board.tileSize, Board.tileSize);
 		// }
