@@ -14,7 +14,9 @@ export default class HUD{
         this.updateHpBar(player);
         this.updateXpBar(player);
         this.updateLvlIndicator(player);
-        this.hydrateLevel(level);
+        this.updateLevel(level)
+        this.updateRoom(level.currentRoom)
+        this.updateDifficulty(level.difficulty)
     }
 
     //must be called when user changes its equipement
@@ -47,12 +49,16 @@ export default class HUD{
         this.xpVal.innerHTML = `${player.current.xp} / ${player.current.maxXp} XP`;
     }
 
-    hydrateLevel(level){
-        Array.from(this.level.children).forEach(element => {
-            if(element.innerHTML === 'Parcours:') element.innerHTML += ` <span class="hud__hot">${level.name}</span>`;
-            if(element.innerHTML === 'Étape:') element.innerHTML += ` <span class="hud__hot">${level.currentRoom.name}</span>`;
-            if(element.innerHTML === 'Difficulté:') element.innerHTML += ` <span class="hud__hot">${level.difficulty}</span>`;
-        })
+    updateLevel(level){
+        this.level.querySelector('#course').innerHTML += ` <span class="hud__hot">${level.name}</span>`;
+    }
+
+    updateRoom(room){
+        this.level.querySelector('#place').innerHTML += ` <span class="hud__hot">${room.name}</span>`
+    }
+
+    updateDifficulty(difficulty){
+        this.level.querySelector('#difficulty').innerHTML += ` <span class="hud__hot">${difficulty}</span>`
     }
 
     updateLvlIndicator(player){

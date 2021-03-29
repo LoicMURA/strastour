@@ -8,25 +8,6 @@ import {fetcher} from "./Fetcher";
 export default class GameController {
     constructor() {
         this.datas = new Datas();
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 's') {
-                this.player.direction = 0
-                this.player.position.y += 5;
-            }
-            if (e.key === 'z') {
-                this.player.direction = 2
-                this.player.position.y -= 5;
-            }
-            if (e.key === 'q') {
-                this.player.direction = 3
-                this.player.position.x -= 5;
-            }
-            if (e.key === 'd') {
-                this.player.direction = 1
-                this.player.position.x += 5;
-            }
-        })
     }
 
     initGame() {
@@ -58,15 +39,5 @@ export default class GameController {
         requestAnimationFrame(this.anim.bind(this))
         CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
         this.level.currentRoom.board.drawBackground();
-        // this.player.sprites.noGun.animSprite(
-        //     this.player.indexSprite,
-        //     this.player.direction,
-        //     64,
-        //     this.datas.boardSizes.tile,
-        //     this.player.position.x,
-        //     this.player.position.y
-        // )
-        this.player.indexSprite++
-        if (this.player.indexSprite === 8) this.player.indexSprite = 0
     }
 }
