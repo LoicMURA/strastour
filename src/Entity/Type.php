@@ -21,7 +21,7 @@ class Type
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $id;
 

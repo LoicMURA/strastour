@@ -24,11 +24,11 @@ export default class HUD{
         let index = 0;
         Array.from(this.equipement.children).forEach(equipement => {
             if(index < player.equipement.length) {
-                let item = player.equipement[index].item;
+                let item = player.equipement[index];
                 let itemImage = document.createElement("img");
                 itemImage.alt = "item preview";
                 itemImage.classList.add("items__preview");
-                itemImage.src = item.picture;
+                itemImage.src = item.image;
                 let desc = document.createElement("div");
                 desc.classList.add("items__tooltip");
                 desc.innerHTML = `<p><span>Item:</span> ${item.name}</p><p><span>Type:</span> ${item.type.name}</p>`;
