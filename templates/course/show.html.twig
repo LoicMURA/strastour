@@ -9,24 +9,48 @@
 {% endblock %}
 
 {% block body %}
+    {% if not is_mobile() %}
     <main class="main main__wrap--left pt-5">
         <div class="d-flex flex-row-reverse">
+    {% else %}
+    <main class="main main__wrap">
+        <div>
+    {% endif %}
             <div class="googleMap googleMap__course" id="map"></div>
-            <article class="course | pr-4">
+            <article class="course | pt-3 pt-md-0 pr-lg-4">
                 <h2 class="h2 m-0">{{ course.name }}</h2>
                 <p class="text-muted text-uppercase">{{ course.theme.name }}</p>
                 <p class="course__description">{{ course.description }}</p>
-                <section class="course__places | p-3">
+                <section class="course__places | p-lg-3">
                     {% for place in course.places %}
                         {% set place = place.place %}
-                        <article class="course__place | mb-2" data-target="{{ path('place_show',
-                            {"id": place.id}) }}">
-                            <div class="d-flex">
-                                <div>
-                                    <img class="course__place--picture" src="{{ linker.getLink(place
-                                    .picture) }}" alt="test">
+                        {% if not is_mobile() %}
+                            <article class="course__place js-course-place | mb-2" data-target="{{ path('place_show', {"id": place.id}) }}">
+                                <div class="d-flex">
+                                    <div>
+                                        <img class="course__place--picture" src="{{ linker.getLink(place
+                                        .picture) }}" alt="test">
+                                    </div>
+                                    <div class="px-2">
+                                        <h4 class="h6 pt-3 m-0">{{ place.name }}</h4>
+                                        {% if is_granted('ROLE_USER') and place.id not in checkedPlaces %}
+                                            <p class="small mb-2 | text__blur">
+                                                {{ place.description|u.truncate(75, '…') }}
+                                            </p>
+                                        {% else %}
+                                            <p class="small mb-2">
+                                                {{ place.description|u.truncate(75, '…') }}
+                                            </p>
+                                        {% endif %}
+                                        <a class="small" href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
+                                    </div>
                                 </div>
-                                <div class="px-2">
+                            </article>
+                        {% else %}
+                            <article class="course__place js-course-place | mb-4" data-target="{{
+                             path('place_show', {"id": place.id}) }}">
+                                <img class="card-img-top" src="{{ linker.getLink(place.picture) }}" alt="test">
+                                <div class="card-body">
                                     <h4 class="h6 pt-3 m-0">{{ place.name }}</h4>
                                     {% if is_granted('ROLE_USER') and place.id not in checkedPlaces %}
                                         <p class="small mb-2 | text__blur">
@@ -37,17 +61,27 @@
                                             {{ place.description|u.truncate(75, '…') }}
                                         </p>
                                     {% endif %}
+                                </div>
+                                <div class="card-footer">
                                     <a class="small" href="{{ path('place_show', {"id": place.id}) }}">Lire plus ...</a>
                                 </div>
-                            </div>
-
-                        </article>
+                            </article>
+                        {% endif %}
                     {% endfor %}
                 </section>
             </article>
         </div>
     </main>
-    <section class="comments | pt-5 w-50 mx-auto" id="commentSection">
+    {% if is_granted('ROLE_USER') and app.user.isPlayer and not is_mobile() %}
+        <div class="pt-4 mx-auto w-50">
+            <form method="POST" action="{{ path('game_index') }}">
+                <input name="course" value="{{ course.id }}" type="hidden">
+                <button class="d-block w-100 course__play-btn" type="submit">Jouer ce
+                parcours</button>
+            </form>
+        </div>
+    {% endif %}
+    <section class="comments | pt-4 mx-auto" id="commentSection">
         <h3 class="h3 text-center">Vos commentaires</h3>
         {% if is_granted('ROLE_USER') %}
             {{ include('comment/_form.html.twig') }}
@@ -77,6 +111,8 @@
                     {% if coms.children %}
                         {{ _self.comments( coms.children, "false" ) }}
                     {% endif %}
+                {% else %}
+                    <p class="text-center">Aucun commentaire n'as encore été posté pour ce parcours</p>
                 {% endfor %}
             {% endmacro %}
             {{ _self.comments(comments, "true") }}
@@ -89,7 +125,7 @@
     {{ parent() }}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&callback=initMap"></script>
     <script>
-        const cards = document.querySelectorAll('.course__place');
+        const cards = document.querySelectorAll('.js-course-place');
 
         for (let place of cards) {
             place.addEventListener('click', () => {

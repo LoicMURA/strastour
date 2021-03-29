@@ -1,0 +1,35 @@
+<script>
+    const menuToggler = document.getElementById('js-menu-toggle');
+    const menuContent = document.getElementById('js-menu-content');
+    const menu = document.getElementById("js-mobile-menu");
+
+    let menuState = false;
+
+    function toggleIcon()
+    {
+        for (let img of menuToggler.children) {
+            img.classList.toggle('d-none');
+        }
+
+        let parent = menuToggler.parentNode
+        let newState = (parent.getAttribute('data-state') === 'closed') ? 'open' : 'closed';
+        parent.setAttribute('data-state', newState);
+    }
+
+    function toggleMenu()
+    {
+        menuContent.classList.toggle('header--mobile__menu--open');
+    }
+
+    window.addEventListener('scroll', (e) => {
+        if (menuState) {
+            window.scrollTo(0, 0);
+        }
+    })
+
+    menuToggler.addEventListener('click', (e) => {
+        menuState = !menuState;
+        toggleIcon();
+        toggleMenu();
+    })
+</script>

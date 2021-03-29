@@ -27,4 +27,52 @@
     background-color: transparent;
     box-shadow: 0 0 5px $bg-dark;
   }
+
+  &--mobile {
+    &__logotype {
+      line-height: calc(40px + 2rem);
+
+      &:active, &:hover {
+        text-decoration: none;
+      }
+    }
+
+    &__toggle img {
+      height: 30px;
+      margin: calc(1rem + 5px) 0;
+    }
+
+    &__menu {
+      position: absolute;
+      height: calc(100vh - 40px + 2rem);
+      width: 0;
+      left: 0;
+      top: calc(40px + 2rem);
+      background-color: #fff;
+      z-index: 999;
+      overflow: hidden;
+      transition: width 0.3s ease-in;
+
+      &--open {
+        width: 100%;
+      }
+    }
+
+    &__link {
+      display: block;
+      margin-bottom: 4rem;
+      text-align: center;
+      font-size: 2rem;
+      &:nth-child(1) {
+        margin-top: 5rem;
+      }
+    }
+
+    &__username {
+      margin-bottom: 2rem;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+  }
 }
