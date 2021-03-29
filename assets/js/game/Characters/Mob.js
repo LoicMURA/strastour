@@ -20,13 +20,7 @@ export default class Mob extends Character {
         if (this.type === "mob") {
             this.attacks[0] = new Attack(this.type, this.typeMob);
         } else if (this.type === "boss") {
-            //list of available attack names for bosses, must correspond to atk name in Attack class switch
-            let setAtk = ["laserBeam", "shockWave", "closeRangeHit", "jump"];
-            for (let i = 0; i < 3; i++) {
-                let rng = Math.floor(Math.random() * (setAtk.length));
-                this.attacks[i] = new Attack(this.typeMob, setAtk[rng]);
-                setAtk.splice(rng, 1);
-            }
+            this.rngBossAttacks();
         }
     }
 
@@ -50,9 +44,22 @@ export default class Mob extends Character {
         let diff = this.diffToId(difficulty);
         let changes = ["hp"];
         for (let stat of changes) {
-            if(this[stat] != null) {
+            if(Array.isArray(this[stat])) {
                 this[stat] = this[stat][diff];
             }
+        }
+    }
+
+    rngBossAttacks() {
+        let nbAttack = 5;
+        let setAtk = [];
+        for(let i = 0; i < nbAttack; i++) {
+            setAtk[i] = i+1;
+        }
+        for (let i = 0; i < 3; i++) {
+            let rng = Math.floor(Math.random() * (setAtk.length));
+            this.attacks[i] = new Attack(this.type, setAtk[rng]);
+            setAtk.splice(rng, 1);
         }
     }
 }

@@ -1,22 +1,42 @@
 {
-  "dagger" : {
+  "1" : {
+    "name": "Dague",
+    "typeDesc": "Corp à corp",
+    "image": "https://picsum.photos/300/200?random=11",
+    "description": "Arme rapide infligeant peu de dégats",
+    "sprite": null,
     "atk" : 14,
-    "nbHitMax": 100,
-    "fireRate" : 250
+    "fireRate" : 250,
+    "qualityMax": 100
   },
-  "spear" : {
+  "2" : {
+    "name": "spear",
+    "typeDesc": "Corp à corp / range",
+    "image": "https://picsum.photos/300/200?random=12",
+    "description": "Arme rapide infligeant des dégats droit en face du joueur sur 3 cases",
+    "sprite": null,
     "atk" : 30,
-    "nbHitMax": 40,
-    "fireRate" : 800
+    "fireRate" : 800,
+    "qualityMax": 40
   },
-  "long sword" : {
+  "3" : {
+    "name": "sword",
+    "typeDesc": "Corp à corp",
+    "image": "https://picsum.photos/300/200?random=13",
+    "description": "Arme lourde infligeant des dégats perpendiculairement au joueur sur 3 cases",
+    "sprite": null,
     "atk" : 45,
-    "nbHitMax": 80,
-    "fireRate" : 1200
+    "fireRate" : 1200,
+    "qualityMax": 80
   },
-  "bow" : {
+  "4" : {
+    "name": "bow",
+    "typeDesc": "Distance",
+    "image": "https://picsum.photos/300/200?random=14",
+    "description": "Arme légère infligeant des dégats à distance",
+    "sprite": null,
     "atk" : 38,
-    "nbHitMax": 60,
-    "fireRate" : 500
+    "fireRate" : 500,
+    "qualityMax": 60
   }
 }

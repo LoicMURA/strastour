@@ -48,7 +48,7 @@ class Item
      *     minMessage="La description de l'item doit faire au minimum {{ limit }} carctères",
      *     maxMessage="La description de l'item doit faire au maximum {{ limit }} carctères"
      * )
-     * @Groups({"course:show"})
+     * @Groups({"course:show", "user_game"})
      */
     private $description;
 

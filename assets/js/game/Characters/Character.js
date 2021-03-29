@@ -27,4 +27,50 @@ export default class Character{
         if(this.direction === 3) this.position.x -= this.moveSpeed
         this.setIndex(cols, tileSize)
     }
+
+    action() {
+        switch (this.type) {
+            case "player":
+                console.log(this.getCurrentItem().item);
+                //attack is instantiated in Weapon class
+                switch (this.getCurrentItem().item.id) {
+                    //logic for each Weapon attack
+                }
+                break;
+            case "mob":
+                //attack is direrctly related to a Mob (no Weapon class between)
+                switch (this.info.atk) {
+                    //logic for each mob atk
+                    case 1:
+                        this.voleurAtk();
+                        break;
+                    case 2:
+                        this.cyclistAtk();
+                        break;
+                    case 3:
+                        this.piegonAtk();
+                        break;
+                    case 4:
+                        this.nuageAtk();
+                        break;
+                }
+                break;
+            case "boss":
+                //same as mob
+                switch (this.info.atk) {
+                    //logic for each boss atk (assuming they are different from mobs
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
+                break;
+        }
+    }
 }

@@ -22,11 +22,13 @@ export default class GameController {
                         })
                 })
                 .then(() => {
-                    this.player = new Player(this.datas.boardSizes.cols, this.datas.boardSizes.tile);
-                    fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"]).then(()=>{
-                        this.player.setCurrent();
-                        this.hud = new HUD(this.player, this.level);
-                    });
+                    this.player = new Player(this.datas.Items, this.datas.Weapons, this.datas.boardSizes.cols, this.datas.boardSizes.tile);
+                    fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"])
+                        .then(() => {
+                            this.player.setCurrent();
+                            // this.player.action();
+                            this.hud = new HUD(this.player, this.level);
+                        });
                 })
                 .then(() => {
                     // requestAnimationFrame(this.anim.bind(this))

@@ -1,79 +1,93 @@
 {
   "1": {
-    "price": 15,
-    "effect": {
-      "property": "HP",
-      "value": 15
-    },
-    "timer": 500,
+    "typeDescDesc": "Potion de vie",
+    "name": "Bretzel",
     "image": "https://picsum.photos/300/200?random=1",
+    "description" : "Rend un peu de vie au joueur",
     "sprite": null,
-    "description" : "Lorem ipssum"
+    "price": 15,
+    "timer": 500,
+    "effect": {
+      "property": "hp",
+      "value": 15
+    }
   },
   "2": {
-    "price": 25,
-    "effect": {
-      "property": "HP",
-      "value": 25
-    },
-    "timer": 500,
+    "typeDescDesc": "Potion de vie",
+    "name": "Paire de Knacks",
     "image": "https://picsum.photos/300/200?random=2",
+    "description" : "Rend de la vie au joueur",
     "sprite": null,
-    "description" : "Lorem ipssum"
+    "price": 25,
+    "timer": 500,
+    "effect": {
+      "property": "hp",
+      "value": 25
+    }
   },
   "3": {
-    "price": 50,
-    "effect": {
-      "property": "HP",
-      "value": 50
-    },
-    "timer": 500,
+    "typeDesc": "Potion de vie",
+    "name": "Choucroute caustaude",
     "image": "https://picsum.photos/300/200?random=3",
+    "description" : "Rend beaucoup de vie au joueur",
     "sprite": null,
-    "description" : "Lorem ipssum"
+    "price": 50,
+    "timer": 500,
+    "effect": {
+      "property": "hp",
+      "value": 50
+    }
   },
   "4": {
-    "price": 35,
-    "effect": {
-      "property": "ATK",
-      "value": 35
-    },
-    "timer": 15000,
+    "typeDesc": "Potion de dégats",
+    "name": "Nectar alsacien",
     "image": "https://picsum.photos/300/200?random=4",
+    "description" : "Augmente les dégats d'attaque du joueur",
     "sprite": null,
-    "description" : "Lorem ipssum"
+    "price": 35,
+    "timer": 15000,
+    "effect": {
+      "property": "atk",
+      "value": 35
+    }
   },
   "5": {
-    "price": 35,
-    "effect": {
-      "property": "DEF",
-      "value": 50
-    },
-    "timer": 15000,
+    "typeDesc": "Potion de défense",
+    "name": "Jus de raisins",
     "image": "https://picsum.photos/300/200?random=5",
+    "description" : "Augmente la défense du joueur",
     "sprite": null,
-    "description" : "Lorem ipssum"
+    "price": 35,
+    "timer": 15000,
+    "effect": {
+      "property": "def",
+      "value": 50
+    }
   },
   "6": {
-    "price": 40,
-    "effect": {
-      "property": "SPEED",
-      "value": 50
-    },
-    "timer": 10000,
+    "typeDesc": "Potion de vitesse",
+    "name": "Vél'hopla",
     "image": "https://picsum.photos/300/200?random=6",
+    "description" : "Augmente la vitesse de déplacement du joueur",
     "sprite": null,
-    "description" : "Lorem ipssum"
+    "price": 40,
+    "timer": 10000,
+    "effect": {
+      "property": "moveSpeed",
+      "value": 50
+    }
   },
   "7": {
-    "price": 50,
-    "effect": {
-      "property": "MAP",
-      "value": null
-    },
-    "timer": null,
+    "typeDesc": "Carte",
+    "name": "C'est la carte",
     "image": "https://picsum.photos/300/200?random=7",
+    "description" : "Carte du niveau actuel",
     "sprite": null,
-    "description" : "Lorem ipssum"
+    "price": 50,
+    "timer": null,
+    "effect": {
+      "property": "map",
+      "value": null
+    }
   }
 }
