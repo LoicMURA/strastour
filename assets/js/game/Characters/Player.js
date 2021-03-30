@@ -36,59 +36,7 @@ export default class Player extends Character {
         this.mouvementController(cols, tileSize, 64);
     }
 
-    //store data that needs to be calculated based on player's level
-    upgradeToCurrentStats(){
-        this.lvl = this.getLevel(this.xp);
-        this.current.maxXp = this.getMaxXp(this.lvl);
-        this.hp = this.getLife(this.lvl);
-        this.current.maxHp = this.hp;
-        this.atk = this.getAtk(this.lvl);
-        this.def = this.getDef(this.lvl);
-        this.current.xp = this.xp % 2000; //val needed to go to next lvl
-    }
-
-    getCurrentItem(){
-        return this.equipement[this.current.item];
-    }
-
-    getLevel(xp)
-    {
-        let lvl = 1;
-        while (92.32*Math.exp(0.0794*lvl) <= xp) {
-            lvl++;
-        }
-        return lvl;
-    }
-
-    getMaxXp(lvl)
-    {
-        return Math.round(92.32 * Math.exp(0.0794*lvl));
-    }
-
-    getLife(lvl)
-    {
-        lvl = lvl - 1;
-        return Math.floor(0.0401 * Math.pow(lvl, 2) + 5.6331 * lvl + 100);
-    }
-
-    getAtk(lvl)
-    {
-        lvl = lvl - 1;
-        return Math.floor(0.0146 * Math.pow(lvl, 2) + 2.0704 * lvl + 20);
-    }
-
-    getDef(lvl)
-    {
-        lvl = lvl - 1;
-        return Math.floor(0.0146 * Math.pow(lvl, 2) + 2.0704 * lvl + 20);
-    }
-
-    //use to update player's XP each time he wins some
-    updateXp(gainXp) {
-        this.xp += gainXp;
-        this.current.xp = this.xp % this.current.maxXp;
-    }
-
+    // --- Hydrating class datas ---
     hydrateInventory(bonusDatas, weaponDatas) {
         let index = 0;
         for (const itemData of USER.player.inventory) {
@@ -114,14 +62,54 @@ export default class Player extends Character {
         this.updateEquipement();
     }
 
-    updateEquipement() {
-        let index = 0;
-        for(const itemData of this.inventory) {
-            if(itemData.equiped){
-                this.equipement[index] = itemData.item;
-                index++;
-            }
+    //store data that needs to be calculated based on player's level
+    upgradeToCurrentStats(){
+        this.lvl = this.getLevel(this.xp);
+        this.current.maxXp = this.getMaxXp(this.lvl);
+        this.hp = this.getPlayerLife(this.lvl);
+        this.current.maxHp = this.hp;
+        this.atk = this.getPlayerAtk(this.lvl);
+        this.def = this.getPlayerDef(this.lvl);
+        this.current.xp = this.xp % 2000; //val needed to go to next lvl
+    }
+    // -----------------------------------
+
+
+    // --- Getting current class datas ---
+    getCurrentItem(){
+        return this.equipement[this.current.item];
+    }
+
+    getLevel(xp)
+    {
+        let lvl = 1;
+        while (92.32*Math.exp(0.0794*lvl) <= xp) {
+            lvl++;
         }
+        return lvl;
+    }
+
+    getMaxXp(lvl)
+    {
+        return Math.round(92.32 * Math.exp(0.0794*lvl));
+    }
+
+    getPlayerLife(lvl)
+    {
+        lvl = lvl - 1;
+        return Math.floor(this.polynome2(100, 5.6331, 0.0401, lvl ))
+    }
+
+    getPlayerAtk(lvl)
+    {
+        lvl = lvl - 1;
+        return Math.floor(this.polynome2(20, 2.0704, 0.0146, lvl ))
+    }
+
+    getPlayerDef(lvl)
+    {
+        lvl = lvl - 1;
+        return Math.floor(this.polynome2(20, 2.0704, 0.0146, lvl ))
     }
 
     itemIsBonus(item) {
@@ -146,7 +134,76 @@ export default class Player extends Character {
         }
         return false;
     }
+    //-----------------------------
 
+    // --- Updating class datas ---
+    updateEquipement() {
+        let index = 0;
+        for(const itemData of this.inventory) {
+            if(itemData.equiped){
+                this.equipement[index] = itemData.item;
+                index++;
+            }
+        }
+    }
+
+    earnMoney(stucks)
+    {
+        this.stucks += stucks * 1
+    }
+
+    spendMoney(stucks)
+    {
+        if (this.stucks - stucks > 0) {
+            this.stucks -= stucks
+            return true
+        }
+        return false
+    }
+    //----------------------------------
+
+    // --- Sending class datas to Db ---
+    updateStucks(stucks)
+    {
+        let path = window.location.href.replace('jeu', 'profile/stuck-update');
+        let datas = new FormData();
+        datas.append('stucks', stucks);
+        fetch(path, {
+            method: "POST",
+            body: datas
+        })
+    }
+
+    updateXp(xp)
+    {
+        let path = window.location.href.replace('jeu', 'profile/xp-update');
+        let datas = new FormData();
+        datas.append('xp', xp);
+        fetch(path, {
+            method: "POST",
+            body: datas
+        })
+    }
+
+    // precise each items that have been modified, even those who aren't possessed anymore
+    updateInventory(inventory)
+    {
+        let path = window.location.href.replace('jeu', 'profile/inventory-update')
+        let datas = new FormData()
+        let i = 1;
+        for (let item of inventory) {
+            // item au format {id: 1, quantity: 1, quality:100}
+            datas.append(`inventory-${i}`, JSON.stringify(item))
+            i++
+        }
+        fetch(path, {
+            method: "POST",
+            body: datas
+        })
+    }
+    //-----------------------------------
+
+    // --- Movements & animations ---
     mouvementController(cols, tileSize){
         window.addEventListener('keypress', (e) => {
             if (e.code === "KeyW") this.direction = this.current.sprite.indexY = 0;
@@ -196,5 +253,6 @@ export default class Player extends Character {
         this.oldPosition[0] = this.position.x;
         this.oldPosition[1] = this.position.y;
     }
+    //----------------------------------------
 
 }

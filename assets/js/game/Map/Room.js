@@ -14,10 +14,9 @@ export default class Room {
         this.hasBoss = boss;
         this.isActive = false;
         this.cleared = false;
-        this.hydrateEnemies(difficulty, levelId, characterDatas);
     }
 
-    hydrateEnemies(diff, levelId, datas) {
+    hydrateEnemies(diff, levelId, datas, playerLvl) {
         let diffDatas = {
             easy: {
                 mobMin: 4,
@@ -37,7 +36,7 @@ export default class Room {
             hard: {}
         }
         if(this.hasBoss) {
-            this.enemies[0] = new Mob("boss", levelId, datas["boss"], diff, 0, 0);
+            this.enemies[0] = new Mob("boss", levelId, datas["boss"], diff, this.board.cols, this.board.tileSize, playerLvl);
         } else {
             let nbHordes = this.rng(diffDatas[diff], "hordes");
             this.hordes = nbHordes;
@@ -46,7 +45,7 @@ export default class Room {
                 this.enemies[i] = [];
                 for (let j = 0; j < nbMob; j++) {
                     let idMob = this.rng(diffDatas[diff], "id");
-                    this.enemies[i] = [...this.enemies[i], new Mob("mob", idMob, datas["mob"], diff, this.board.cols, this.board.tileSize)];
+                    this.enemies[i] = [...this.enemies[i], new Mob("mob", idMob, datas["mob"], diff, this.board.cols, this.board.tileSize, playerLvl)];
                 }
             }
         }
