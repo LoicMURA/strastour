@@ -25,38 +25,32 @@ export default class Board{
             this.tiles = [...this.tiles, new Tile(j * this.tileSize, i * this.tileSize)];
             }
         }
-
         for (let i = 0; i < this.tiles.length; i++){
             this.tiles[i].state = states[i];
         }
-
-        console.log(this.tiles);
     }
 
     draw(){
         CANVAS.width = this.cols * this.tileSize;
         CANVAS.height = this.rows * this.tileSize;
 
-        this.background.onload = () => {
-            CTX.beginPath();
-            CTX.drawImage(this.background, 0, 0, CANVAS.width, CANVAS.height);
-            CTX.closePath();
+        CTX.beginPath();
+        CTX.drawImage(this.background, 0, 0, CANVAS.width, CANVAS.height);
+        CTX.closePath();
 
-            this.rect = CANVAS.getBoundingClientRect();
-
-            CANVAS.addEventListener("click", (e) => {
-                let x = Math.floor((e.clientX - this.rect.left) / 40);
-                let y = Math.floor((e.clientY - this.rect.top) / 40);
-                console.log(x, y);
-                this.getCellState(x, y);
-            });
-
-            for (let i = 0; i <this.tiles.length; i++){
-                CTX.fillStyle = 'white'
-                CTX.fillText(this.tiles[i].state, this.tiles[i].position.x + 20, this.tiles[i].position.y + 20)
-            }
-        };
-
+            // this.rect = CANVAS.getBoundingClientRect();
+            //
+            // CANVAS.addEventListener("click", (e) => {
+            //     let x = Math.floor((e.clientX - this.rect.left) / 40);
+            //     let y = Math.floor((e.clientY - this.rect.top) / 40);
+            //     console.log(x, y);
+            //     this.getCellState(x, y);
+            // });
+            //
+            // for (let i = 0; i <this.tiles.length; i++){
+            //     CTX.fillStyle = 'white'
+            //     CTX.fillText(this.tiles[i].state, this.tiles[i].position.x + 20, this.tiles[i].position.y + 20)
+            // }
     }
 
     getCellState(row, col) {
