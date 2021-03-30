@@ -20,17 +20,16 @@ class PlaceController extends AbstractController
     /**
      * @Route("/new", name="place_new", methods={"GET","POST"})
      */
-    public function new(Request $request, FileService $file): Response
+    public function new(Request $request, FileService $file, EntityManagerInterface $manager): Response
     {
         $place = new Place();
         $form = $this->createForm(PlaceType::class, $place);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $file->uploadFile($place, $this->getParameter('upload_directory'));
-            $entityManager->persist($place);
-            $entityManager->flush();
+            $manager->persist($place);
+            $manager->flush();
 
             return $this->redirectToRoute('admin_index');
         }

@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Character;
-use App\Entity\Inventory;
+use App\Entity\{Character, Inventory};
 use App\Repository\{CharacterRepository, InventoryRepository, ItemRepository};
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

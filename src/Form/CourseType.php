@@ -2,13 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\Course;
-use App\Entity\Theme;
-use App\Entity\Item;
+use App\Entity\{Course, Theme, Item};
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CourseType extends AbstractType

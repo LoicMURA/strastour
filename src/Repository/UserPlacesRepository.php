@@ -19,7 +19,9 @@ class UserPlacesRepository extends ServiceEntityRepository
         parent::__construct($registry, UserPlaces::class);
     }
 
-    public function findUser(User $user) {
+    // Return the ids of all the places that are checked by the user
+    public function findUser(User $user): array
+    {
         $manager = $this->getEntityManager();
 
         $queryBuilder = ($manager->createQueryBuilder())
@@ -32,8 +34,8 @@ class UserPlacesRepository extends ServiceEntityRepository
         $result = $queryBuilder->getQuery()->getResult();
         $places = [];
 
-        foreach ($result as $pl) {
-            $places[] = $pl['id'];
+        foreach ($result as $place) {
+            $places[] = $place['id'];
         }
 
         return $places;

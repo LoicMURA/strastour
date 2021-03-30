@@ -3,8 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Type;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\{AbstractType, FormBuilderInterface};
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TypeType extends AbstractType
