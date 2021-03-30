@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\Bonus;
 use App\Form\BonusType;
 use App\Repository\BonusRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,16 +18,15 @@ class BonusController extends AbstractController
     /**
      * @Route("/new", name="bonus_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $bonus = new Bonus();
         $form = $this->createForm(BonusType::class, $bonus);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($bonus);
-            $entityManager->flush();
+            $manager->persist($bonus);
+            $manager->flush();
 
             return $this->redirectToRoute('course_index');
         }

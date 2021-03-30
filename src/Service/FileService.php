@@ -5,20 +5,20 @@ namespace App\Service;
 
 class FileService
 {
-    public function uploadFile($product, string $uploadDir)
+    public function uploadFile($object, string $uploadDir)
     {
-        $file = $product->getPicture();
+        $file = $object->getPicture();
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
         $file->move($uploadDir, $fileName);
-        $product->setPicture($fileName);
+        $object->setPicture($fileName);
     }
 
-    public function removeFile($product, string $uploadDir): bool
+    public function removeFile($object, string $uploadDir): bool
     {
-        if (is_string($product)) {
-            $picture = $product;
+        if (is_string($object)) {
+            $picture = $object;
         } else {
-            $picture = $product->getPicture();
+            $picture = $object->getPicture();
         }
 
         if (preg_match('/http/', $picture)) return true;

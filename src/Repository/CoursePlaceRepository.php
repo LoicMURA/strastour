@@ -22,29 +22,18 @@ class CoursePlaceRepository extends ServiceEntityRepository
         $this->courseRepository = $courseRepository;
     }
 
+    // Return the id of the place's course
     public function findCourse(Place $place): int
     {
         return ($this->findOneBy(['place' => $place]))->getCourse()->getId();
     }
 
-//    public function findCourses(Place $place)
-//    {
-//        $manager = $this->getEntityManager();
-//
-//        $queryBuilder = ($manager->createQueryBuilder())
-//            ->select('c.id')
-//            ->from('App\Entity\CoursePlace', 't')
-//            ->join('t.course', 'c')
-//            ->andWhere('t.place = :place')
-//            ->setParameter('place', $place);
-//
-//        return $queryBuilder->getQuery()->getResult();
-//    }
-
-    public function findPlaces($place): array
+    // Return the id and name of all the places that are in the same(s) course
+    // than the place or course given
+    public function findPlaces($entity): array
     {
-        if ($place instanceof Course) $course = $place->getId();
-        else $course = $this->findCourse($place);
+        if ($entity instanceof Course) $course = $entity->getId();
+        else $course = $this->findCourse($entity);
 
         $manager = $this->getEntityManager();
 
@@ -58,21 +47,22 @@ class CoursePlaceRepository extends ServiceEntityRepository
         $result = $queryBuilder->getQuery()->getResult();
 
         $places = [];
-        foreach ($result as $pl) {
-            $places[$course][$pl['id']] = $pl['name'];
+        foreach ($result as $place) {
+            $places[$course][$place['id']] = $place['name'];
         }
 
         return $places;
     }
 
+    // Return the sibling of a place in a course
     private function findSibling($course, Place $place, string $type): ?Place
     {
-        $position = ($this->findOneBy([
+        $currentPosition = ($this->findOneBy([
             'course' => $course,
             'place' => $place
         ]))->getPosition();
 
-        $position = ($type == 'next') ? $position + 1 : $position - 1;
+        $position = ($type == 'next') ? $currentPosition + 1 : $currentPosition - 1;
 
         if ($position >= 0) {
             $coursePlace = $this->findOneBy([
@@ -94,5 +84,4 @@ class CoursePlaceRepository extends ServiceEntityRepository
     {
         return $this->findSibling($course, $place, 'previous');
     }
-
 }

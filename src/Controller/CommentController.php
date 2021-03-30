@@ -6,6 +6,7 @@ use App\Entity\{Comment, Course};
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +21,13 @@ class CommentController extends AbstractController
     /**
      * @Route("/new/{id}", name="comment_new", methods={"GET","POST"})
      */
-    public function new(CommentRepository $commentRepository, Course $course, Security $security, Request $request): Response
+    public function new(
+        CommentRepository $commentRepository,
+        Course $course,
+        Security $security,
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -32,10 +39,8 @@ class CommentController extends AbstractController
             $comment->setCourse($course);
             $comment->setParent($commentRepository->find($request->request->get("parentComment")));
 
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($comment);
-            $entityManager->flush();
+            $manager->persist($comment);
+            $manager->flush();
 
             $comment->setAuthor($comment->getAuthor()->getUsername());
             $comment->setCourse($course->getId());
@@ -50,15 +55,12 @@ class CommentController extends AbstractController
     /**
      * @Route("/{id}/edit", name="comment_edit", methods={"GET","POST"})
      */
-    public function edit(int $id, Request $request): Response
+    public function edit(int $id, Request $request, EntityManagerInterface $manager): Response
     {
-        $commentManager = $this->getDoctrine()->getManager();
-        $comment = $commentManager->getRepository(Comment::class)->find($id);
-
+        $comment = $manager->getRepository(Comment::class)->find($id);
 
         $comment->setContent($request->request->get("comment")["content"]);
-        $commentManager->flush();
-
+        $manager->flush();
 
         return $this->json(["type" => "edit", ["id" => $comment->getId(), "content" => $comment->getContent()]]);
     }
@@ -66,12 +68,11 @@ class CommentController extends AbstractController
     /**
      * @Route("/{id}", name="comment_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Comment $comment): Response
+    public function delete(Request $request, Comment $comment, EntityManagerInterface $manager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($comment);
-            $entityManager->flush();
+            $manager->remove($comment);
+            $manager->flush();
         }
 
         return $this->redirectToRoute('comment_index');
