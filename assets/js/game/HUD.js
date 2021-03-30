@@ -18,6 +18,26 @@ export default class HUD {
         this.updateLevel(level)
         this.updateRoom(level.currentRoom)
         this.updateDifficulty(level.difficulty)
+        this.setActiveItem(this.equipement.children[0], player)
+
+        this.equipement.addEventListener('click', (e) => {
+            let parent = e.target.parentNode
+            if (parent.classList.contains('items') && parent.children.length === 4) {
+                this.setActiveItem(parent, player)
+            }
+        })
+        window.addEventListener('keypress', (key) => {
+            if (key.code.match(/Numpad|Digit/)) {
+                let equipementId = 1;
+                equipementId = parseInt(key.code.replace(/Numpad|Digit/, ''))
+                if (equipementId > 0 && equipementId <= 6) {
+                    let itemBox = this.equipement.children[equipementId - 1];
+                    if (itemBox.children.length === 4) {
+                        this.setActiveItem(this.equipement.children[equipementId - 1], player)
+                    }
+                }
+            }
+        })
     }
 
     //must be called when user changes its equipement
@@ -26,8 +46,9 @@ export default class HUD {
         Array.from(this.equipement.children).forEach(equipement => {
             if (index < player.equipement.length) {
                 let item = player.equipement[index];
+                equipement.setAttribute('data-item', item.id);
                 let itemImage = document.createElement("img");
-                itemImage.alt = "item preview";
+                itemImage.alt =`Image de l'item ${item.name}`;
                 itemImage.classList.add("items__preview");
                 itemImage.src = item.image;
                 let desc = document.createElement("div");
@@ -69,4 +90,15 @@ export default class HUD {
         this.lvlVal.innerHTML = player.lvl;
     }
 
+    setActiveItem(current, player) {
+        let currentItemId = parseInt(current.getAttribute('data-item'));
+        player.current.item = currentItemId;
+        for (let item of this.equipement.children) {
+            if (item !== current) {
+                item.classList.remove('items__active')
+            } else {
+                item.classList.add('items__active')
+            }
+        }
+    }
 }
