@@ -25,6 +25,7 @@ export default class GameController {
                                         fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"])
                                             .then(() => {
                                                 this.player.upgradeToCurrentStats();
+                                                this.level.currentRoom.hydrateEnemies(this.level.difficulty,this.level.id, this.datas.Characters, this.player.lvl);
                                                 this.hud = new HUD(this.player, this.level);
                                             })
                                             .then(() => {

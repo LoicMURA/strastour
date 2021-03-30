@@ -25,6 +25,7 @@ export default class Board{
             this.tiles = [...this.tiles, new Tile(j * this.tileSize, i * this.tileSize)];
             }
         }
+
         for (let i = 0; i < this.tiles.length; i++){
             this.tiles[i].state = states[i];
         }

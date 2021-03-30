@@ -73,4 +73,9 @@ export default class Character{
                 break;
         }
     }
+
+    polynome2(exp0, exp1, exp2, x)
+    {
+        return exp2 * Math.pow(x, 2) + exp1 * x + exp0
+    }
 }
