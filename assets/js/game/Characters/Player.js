@@ -5,7 +5,7 @@ import Weapon from "../GameObjects/Weapon";
 
 export default class Player extends Character {
     constructor(itemDatas, weaponDatas, cols, tileSize) {
-        super(cols, tileSize);
+        super(cols, tileSize, `/assets/image/sprites/character/male/hand.png`);
         this.lvl = 1;
         this.type = "player";
         this.gender = USER.player.gender;
@@ -15,16 +15,10 @@ export default class Player extends Character {
         this.current = {
             xp: 0,
             item: 0,
-            sprite: {
-                image: new Image(),
-                indexX: 0,
-                indexY: 0,
-            },
             maxHp: 0,
             maxXp: 0
         };
         // let gender = this.gender === 'f' ? 'female' : 'male';
-        this.current.sprite.image.src = `/assets/image/sprites/character/male/hand.png`;
         this.stucks = USER.player.stuck;
         this.inventory = [];
         //items that are part of the inventory, must be displayed in the HUD
@@ -33,8 +27,8 @@ export default class Player extends Character {
         this.activeBonus = [];
         this.oldPosition = [null, null];
         this.hydrateInventory(itemDatas, weaponDatas);
-
         this.mouvementController(cols, tileSize, 64);
+        console.log(this);
     }
 
     // --- Hydrating class datas ---
@@ -52,8 +46,8 @@ export default class Player extends Character {
             if(index === 2) itemData.item.type.name = "speed";
             //
             let id = itemData.item.type.id;
-            bonusDatas[id].id = id
-            weaponDatas[id].id = id
+            bonusDatas[id].id = id;
+            weaponDatas[id].id = id;
             if(this.itemIsBonus(itemData.item)) {
                 itemData.item = new Bonus(bonusDatas[id]);
             } else if (this.itemIsWeapon(itemData.item)) {
@@ -209,10 +203,10 @@ export default class Player extends Character {
     // --- Movements & animations ---
     mouvementController(){
         window.addEventListener('keydown', (e) => {
-            if (e.code === "KeyW") this.direction = this.current.sprite.indexY = 0;
-            else if(e.code === "KeyD") this.direction = this.current.sprite.indexY = 1;
-            else if (e.code === "KeyS") this.direction = this.current.sprite.indexY = 2;
-            else if (e.code === "KeyA") this.direction = this.current.sprite.indexY = 3;
+            if (e.code === "KeyW") this.direction = this.sprite.indexY = 0;
+            else if(e.code === "KeyD") this.direction = this.sprite.indexY = 1;
+            else if (e.code === "KeyS") this.direction = this.sprite.indexY = 2;
+            else if (e.code === "KeyA") this.direction = this.sprite.indexY = 3;
             else this.direction = null;
         })
 
@@ -239,32 +233,12 @@ export default class Player extends Character {
         })
     }
 
-    checkPosition(board){
-        let nextPosition = this.checkNextPosition(board.tileSize)
-        let playerX = Math.floor((nextPosition[0] + (board.tileSize / 2)) / board.tileSize);
-        let playerY = Math.floor((nextPosition[1] + (board.tileSize / 2)) / board.tileSize);
-
-        for (let i = 0; i < board.tiles.length; i++){
-            let tileX = board.tiles[i].position.x;
-            let tileY = board.tiles[i].position.y;
-
-            if(playerX === tileX && playerY === tileY){
-                if(board.tiles[i].state === 3){
-                    console.log("salut la porte !")
-                }else if(board.tiles[i].state === 1){
-                    this.direction = null;
-                }
-            }
-        }
-
-    }
-
     animation(cellSize, tileSize) {
         CTX.beginPath()
         CTX.drawImage(
-            this.current.sprite.image,
-            this.current.sprite.indexX * cellSize,
-            this.current.sprite.indexY * cellSize,
+            this.sprite.image,
+            this.sprite.indexX * cellSize,
+            this.sprite.indexY * cellSize,
             cellSize,
             cellSize,
             this.position.x,
@@ -275,9 +249,9 @@ export default class Player extends Character {
         CTX.closePath();
 
         if(this.oldPosition[0] !== this.position.x || this.oldPosition[1] !== this.position.y){
-            this.current.sprite.indexX++;
+            this.sprite.indexX++;
         }
-        if(this.current.sprite.indexX >= 9) this.current.sprite.indexX = 0;
+        if(this.sprite.indexX >= 9) this.sprite.indexX = 0;
 
         this.oldPosition[0] = this.position.x;
         this.oldPosition[1] = this.position.y;

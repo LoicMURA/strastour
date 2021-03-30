@@ -42,7 +42,7 @@ export default class GameController {
         requestAnimationFrame(this.anim.bind(this))
         CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
         this.level.currentRoom.board.draw();
-        this.player.checkPosition(this.level.currentRoom.board);
+        this.player.checkPosition(this.level.currentRoom.board, this.level);
         this.player.move();
         this.player.animation(64 ,this.datas.boardSizes.tile);
     }

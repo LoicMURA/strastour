@@ -28,14 +28,25 @@ export default class Level{
             let room;
             if(roomId !== this.places.length -1) {
                 //room datas are empty
-                room = new Room(placeShort.id, this.datas[placeShort.id], false, boardDatas, this.difficulty,  this.id, characterDatas);
+                room = new Room(placeShort.id, this.datas[placeShort.id], false, boardDatas);
             } else {
                 //room hasBoss
-                room = new Room(placeShort.id, this.datas[placeShort.id], true, boardDatas, this.difficulty, this.id, characterDatas);
+                room = new Room(placeShort.id, this.datas[placeShort.id], true, boardDatas);
             }
             fetcher.hydrateData(placeShort, room);
             this.rooms = [...this.rooms, room];
         }
         this.places = "hydrated";
+    }
+
+    switchRoom(door, player){
+        // if(door.room === -1){
+        //     this.currentRoom = controlleur.accueil
+        // }else{
+        // }
+        this.currentRoom = this.rooms[door.room];
+        let nextDoor = this.currentRoom.board.doors[door.door];
+        player.position.x = nextDoor.position.x * this.currentRoom.board.tileSize
+        player.position.y = nextDoor.position.y * this.currentRoom.board.tileSize
     }
 }
