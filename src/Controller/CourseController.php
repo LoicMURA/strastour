@@ -87,17 +87,16 @@ class CourseController extends AbstractController
     /**
      * @Route("/parcours/new", name="course_new", methods={"GET","POST"})
      */
-    public function new(Request $request, FileService $file): Response
+    public function new(Request $request, FileService $file, EntityManagerInterface $manager): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $file->uploadFile($course, $this->getParameter('upload_directory'));
-            $entityManager->persist($course);
-            $entityManager->flush();
+            $manager->persist($course);
+            $manager->flush();
 
             return $this->redirectToRoute('course_edit', ['id' => $course->getId()]);
         }

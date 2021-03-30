@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Item;
 use App\Form\ItemType;
-use App\Repository\ItemRepository;
 use App\Service\FileService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

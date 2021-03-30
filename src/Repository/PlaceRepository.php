@@ -22,6 +22,7 @@ class PlaceRepository extends ServiceEntityRepository
         $this->coursePlaceRepository = $coursePlaceRepository;
     }
 
+    // Return the id and name of all the places that aren't yet in a course
     public function findFreePlaces()
     {
         $coursePlaces = $this->coursePlaceRepository->findAll();
