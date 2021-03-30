@@ -1,133 +1,182 @@
-.hud{
-    margin: 2rem;
-    &__items{
-        width: fit-content;
-        display: grid;
-        grid-template: repeat(2, 1fr) / repeat(3, 1fr);
-        row-gap: 0.25rem;
-        column-gap: 0.25rem;
-        place-items: center;
-    }
+.hud {
+  margin: 2rem;
 
-    &__player{
-        width: 40%;
-        display: flex;
-        flex-flow: row wrap;
-        align-items: center;
-    }
+  &__items {
+    width: fit-content;
+    display: grid;
+    grid-template: repeat(2, 1fr) / repeat(3, 1fr);
+    row-gap: 0.25rem;
+    column-gap: 0.25rem;
+    place-items: center;
+  }
 
-    &__text{
-        font-size: 0.8rem;
-        color: red;
-    }
+  &__player {
+    width: 40%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
 
-    &__hot{
-        color: white;
-        font-size: 1rem;
-        margin: 0 0.5rem
-    }
+  &__text {
+    font-size: 0.85rem;
+    color: $danger;
+  }
+
+  &__hot {
+    color: white;
+    font-size: 1rem;
+    margin: 0 0.5rem
+  }
+
+  &__full {
+    background-color: $bg-dark;
+  }
 }
 
-.items{
-    height: 60px;
-    width: 60px;
+.items {
+  height: 60px;
+  width: 60px;
+  position: relative;
+  border: 1px solid black;
+  max-width: 350px;
+
+  &__preview {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  &__quantity {
+    $size: 15px;
+    position: absolute;
+    padding: 0.125rem 0.25rem;
+    right: 0;
+    bottom: 0;
+    font-size: .75rem;
+    color: #161616;
+    text-align: center;
+    line-height: $size;
+    background-color: #f6f6f6;
+    border-start-start-radius: 5px;
+    box-shadow: 0 0 2px 0 #000, 0 0 4px #000;
+  }
+
+  &__keytouch {
+    $size: 20px;
+    position: absolute;
+    width: $size;
+    height: $size;
+    top: 0;
+    left: 0;
+    font-size: 1rem;
+    color: #161616;
+    text-align: center;
+    line-height: $size;
+    background-color: #f6f6f688;
+  }
+
+  &__active {
+    border: 4px outset $bg-danger;
+  }
+
+  &__tooltip {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 110%;
+    padding: 0 0.35rem;
+    left: 0;
+    width: max-content;
+    max-width: 500%;
+    font-size: 0.75em;
+    color: #161616;
+    background-color: rgba($bg-secondary, .9);
+
+    p {
+      margin: 0;
+    }
+
+    span {
+      font-weight: bold;
+    }
+  }
+
+  &:hover > .items__tooltip {
+    display: block;
+  }
+}
+
+.player {
+  &__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__health {
     position: relative;
-    border: 1px solid black;
-    max-width: 350px;
+    width: 100%;
+    background-color: white;
+    border-radius: 1rem;
+    margin: 1rem 0;
+    padding: 0.2rem;
+    overflow: hidden;
 
-    &__preview{
-        display: block;
-        height: 100%;
-        width: 100%;
+    &--update {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background-color: $danger;
     }
 
-    &__keytouch{
-        position: absolute;
-        width: 15px;
-        height: 15px;
-        right: 0;
-        bottom: 0;
+    &--value {
+      position: relative;
+      margin: 0;
     }
-    &__tooltip {
-        display: none;
-        position: absolute;
-        z-index:2;
-        top:110%;
-        padding:0.2rem;
-        left:0;
-        width: max-content;
-        background-color:dimgrey;
-        font-size: 0.6em;
-        font-family:Calibri;
-        p{
-            margin:0;
-        }
-        span{
-            font-weight:bold;
-        }
+  }
+
+  &__level {
+    $size: 60px;
+    width: $size;
+    height: $size;
+    background-color: $bg-secondary;
+    border-radius: 100%;
+    margin: 0 1rem;
+    color: #161616;
+
+    &--value {
+      margin: 0;
+      line-height: $size;
+      text-align: center;
+      font-size: 1.75em;
     }
-    &:hover > .items__tooltip{
-        display: block;
+  }
+
+  &__exp {
+    position: relative;
+    flex-grow: 3;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 0.2rem 0.6rem;
+    overflow: hidden;
+
+    &--update {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background-color: $bg-secondary;
     }
+
+    &--value {
+      color: #161616;
+      position: relative;
+      margin: 0;
+    }
+  }
 }
 
-.player{
-    &__info{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    &__health{
-        position: relative;
-        width: 100%;
-        background-color: white;
-        border-radius: 1rem;
-        margin: 1rem 0;
-        padding:0.2rem;
-        overflow:hidden;
-        &--update{
-            position: absolute;
-            top:0;
-            height:100%;
-            width: 100%;
-            background-color: red;
-        }
-        &--value{
-            position:relative;
-            margin:0;
-        }
-    }
-    &__level{
-       width: 60px;
-       height: 60px;
-       background-color: white;
-       border-radius: 100%;
-       margin: 0 1rem;
-       color: black;
-        &--value{
-            margin:0;
-            font-size:2em;
-            font-weight: bold;
-            font-family:Calibri;
-        }
-    }
-    &__exp{
-        position:relative;
-        flex-grow: 3;
-        background-color: white;
-        border-radius: 1rem;
-        padding:0.6rem 0.2rem;
-        overflow:hidden;
-        &--update{
-            position: absolute;
-            top:0;
-            height:100%;
-            width: 100%;
-            background-color: lime;
-        }
-        &--value{
-            position:relative;
-            margin:0;
-        }
-    }
+#game_container {
+  background: url('/public/assets/image/wave-strastour.svg') no-repeat 0 100%;
 }
