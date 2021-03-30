@@ -52,6 +52,8 @@ export default class Player extends Character {
             if(index === 2) itemData.item.type.name = "speed";
             //
             let id = itemData.item.type.id;
+            bonusDatas[id].id = id
+            weaponDatas[id].id = id
             if(this.itemIsBonus(itemData.item)) {
                 itemData.item = new Bonus(bonusDatas[id]);
             } else if (this.itemIsWeapon(itemData.item)) {
