@@ -6,7 +6,7 @@ export default class Character{
         this.moveSpeed = 0;
         this.sprite = null; // new Sprite
         this.position = {
-            x : 120,
+            x : 160,
             y : 80,
         }
         this.currentSprite = 0;

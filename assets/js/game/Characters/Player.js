@@ -16,24 +16,23 @@ export default class Player extends Character {
             xp: 0,
             item: 0,
             sprite: {
-                equiped: 0,
+                image: new Image(),
                 indexX: 0,
                 indexY: 0,
             },
             maxHp: 0,
             maxXp: 0
         };
-        this.current.sprite.maxIndexX = this.current.sprite.equiped.limitX ?? 0
+        // let gender = this.gender === 'f' ? 'female' : 'male';
+        this.current.sprite.image.src = `/assets/image/sprites/character/male/hand.png`;
         this.stucks = USER.player.stuck;
         this.inventory = [];
         //items that are part of the inventory, must be displayed in the HUD
         this.equipement = [];
         //store if a weapon or bonus is being used, their relative bonuses to each of those items
         this.activeBonus = [];
-
+        this.oldPosition = [null, null];
         this.hydrateInventory(itemDatas, weaponDatas);
-        this.setImages();
-
         this.mouvementController(cols, tileSize, 64);
     }
 
@@ -88,37 +87,6 @@ export default class Player extends Character {
     updateXp(gainXp) {
         this.xp += gainXp;
         this.current.xp = this.xp % this.current.maxXp;
-    }
-
-    /**
-     * Set images for sprite animations
-     */
-    setImages(){
-        this.images = {
-            hand: {
-                limitX: 9
-            },
-            dagger: {
-                limitX: 9
-            },
-            sword: {
-                limitX: 9
-            },
-            spear: {
-                limitX: 9
-            },
-            bow: {
-                limitX: 9
-            },
-        }
-        this.images.hand.src = '/assets/image/sprites/character/male/hand.png';
-        // let gender = this.gender === 'f' ? 'female' : 'male';
-        for (const property in this.images) {
-            if (this.images.hasOwnProperty(property)) {
-                this.images[property].sprite = new Image();
-                this.images[property].sprite.src = `/assets/image/sprites/character/male/${property}.png`;
-            }
-        }
     }
 
     hydrateInventory(bonusDatas, weaponDatas) {
@@ -179,14 +147,16 @@ export default class Player extends Character {
         return false;
     }
 
-    mouvementController(cols, tileSize, cellSize){
-        window.addEventListener('keydown', (e) => {
+    mouvementController(cols, tileSize){
+        window.addEventListener('keypress', (e) => {
             if (e.code === "KeyW") this.direction = this.current.sprite.indexY = 0;
             if (e.code === "KeyD") this.direction = this.current.sprite.indexY = 1;
             if (e.code === "KeyS") this.direction = this.current.sprite.indexY = 2;
             if (e.code === "KeyA") this.direction = this.current.sprite.indexY = 3;
-            this.move(cols, tileSize);
-            this.animation(cellSize, tileSize);
+        })
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === "KeyW" || e.code === "KeyD" || e.code === "KeyS" || e.code === "KeyA") this.move()
         })
     }
 
@@ -206,7 +176,7 @@ export default class Player extends Character {
     animation(cellSize, tileSize) {
         CTX.beginPath()
         CTX.drawImage(
-            this.current.sprite.equiped,
+            this.current.sprite.image,
             this.current.sprite.indexX * cellSize,
             this.current.sprite.indexY * cellSize,
             cellSize,
@@ -217,7 +187,14 @@ export default class Player extends Character {
             tileSize
         )
         CTX.closePath();
-        this.indexX++;
+
+        if(this.oldPosition[0] !== this.position.x || this.oldPosition[1] !== this.position.y){
+            this.current.sprite.indexX++;
+        }
+        if(this.current.sprite.indexX >= 9) this.current.sprite.indexX = 0;
+
+        this.oldPosition[0] = this.position.x;
+        this.oldPosition[1] = this.position.y;
     }
 
 }

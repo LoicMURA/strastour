@@ -3,7 +3,7 @@
     "hp": 100,
     "atk": 20,
     "def": 10,
-    "moveSpeed": 1,
+    "moveSpeed": 5,
     "sprite": null
   },
   "mob": {
