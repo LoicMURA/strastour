@@ -3,7 +3,7 @@
 import Tile from "./Tile";
 
 export default class Board{
-    constructor(rows, cols, tileSize, img, states){
+    constructor(rows, cols, tileSize, img, states, doors){
         this.rows = rows;
         this.cols = cols;
         this.tileSize = tileSize;
@@ -13,20 +13,32 @@ export default class Board{
         this.doors = [];
         this.background = new Image();
         this.background.src = img;
-        this.hydrateTiles(states);
+        this.hydrateTiles(states, doors);
     }
 
     /**
      * Create Tiles for each grid cell
      */
-    async hydrateTiles(states){
+    async hydrateTiles(states, doors){
+
+        // hydrate tiles position
         for (let i = 0; i < this.rows;  i++){
             for (let j = 0; j < this.cols;  j++){
             this.tiles = [...this.tiles, new Tile(j * this.tileSize, i * this.tileSize)];
             }
         }
+
+        // hydrate tiles state
         for (let i = 0; i < this.tiles.length; i++){
             this.tiles[i].state = states[i];
+            if(states[i] === 3 ){
+                this.doors = [...this.doors, this.tiles[i]];
+            }
+        }
+
+        // hydrate doors
+        for(let i = 0; i < this.doors.length; i++){
+            this.doors[i].door = doors[i]
         }
     }
 

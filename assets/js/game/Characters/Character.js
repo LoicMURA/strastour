@@ -1,16 +1,20 @@
 export default class Character{
-    constructor(cols, tileSize) {
+    constructor(cols, tileSize, src) {
         this.hp = 0;
         this.atk = 0;
         this.def = 0;
         this.moveSpeed = 0;
-        this.sprite = null; // new Sprite
+        this.sprite = {
+            image: new Image(),
+            indexX: 0,
+            indexY: 0
+        }
+        this.sprite.image.src = src;
         this.position = {
             x : 160,
             y : 80,
         }
-        this.currentSprite = 0;
-        this.direction = 0;
+        this.direction = null;
         this.setIndex(cols, tileSize)
     }
 
@@ -28,6 +32,33 @@ export default class Character{
             if (this.direction === 3) this.position.x -= this.moveSpeed
         }
         this.setIndex(cols, tileSize)
+    }
+
+    checkPosition(board, level){
+        let nextPosition = this.checkNextPosition(board.tileSize)
+        let playerX = Math.floor((nextPosition[0] + (board.tileSize / 2)) / board.tileSize);
+        let playerY = Math.floor((nextPosition[1] + (board.tileSize / 2)) / board.tileSize);
+
+        for (let i = 0; i < board.tiles.length; i++){
+            let tileX = board.tiles[i].position.x;
+            let tileY = board.tiles[i].position.y;
+
+            if(playerX === tileX && playerY === tileY){
+                if(board.tiles[i].state === 3){
+                    let playerCoordinateX = Math.floor(this.position.x / board.tileSize)
+                    let playerCoordinateY = Math.floor(this.position.y / board.tileSize)
+                    if(playerCoordinateX === 0 && this.direction === 3 ||
+                        playerCoordinateX === board.cols - 1 && this.direction === 1 ||
+                        playerCoordinateY === board.rows - 1 && this.direction === 2 ||
+                        playerCoordinateY === 0 && this.direction === 0
+                    ){
+                        level.switchRoom(board.tiles[i].door, this)
+                    }
+                }else if(board.tiles[i].state === 1){
+                    this.direction = null;
+                }
+            }
+        }
     }
 
     checkNextPosition(tileSize) {
