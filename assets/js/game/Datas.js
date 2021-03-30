@@ -15,7 +15,6 @@ export default class Datas {
         let query = await fetch(`/assets/datas/levels/${id}.json`);
         let datas = await query.json();
         this.Level = datas;
-        console.log(datas);
     }
 
     async hydrateDatas(object) {
