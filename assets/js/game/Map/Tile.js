@@ -8,6 +8,7 @@ export default class Tile{
             y: y / 40
         }
         this.state = state;
+        this.door = null;
     }
 
 

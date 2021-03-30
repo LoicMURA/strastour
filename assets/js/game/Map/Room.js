@@ -2,14 +2,14 @@ import Board from "./Board";
 import Mob from "../Characters/Mob";
 
 export default class Room {
-    constructor(id, roomDatas, boss, boardDatas, difficulty, levelId, characterDatas) {
+    constructor(id, roomDatas, boss, boardDatas) {
         this.id = id;
         this.datas = roomDatas;
         this.name = '';
         this.address = '';
         this.description = '';
         this.enemies = [];
-        this.board = new Board(boardDatas.rows, boardDatas.cols, boardDatas.tile, this.datas.image, this.datas.states);
+        this.board = new Board(boardDatas.rows, boardDatas.cols, boardDatas.tile, this.datas.image, this.datas.states, this.datas.idDoors);
         this.hordes = 0;
         this.hasBoss = boss;
         this.isActive = false;
