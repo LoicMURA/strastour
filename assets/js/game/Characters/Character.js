@@ -20,12 +20,29 @@ export default class Character{
         this.position.index =  row * cols + col
     }
 
-    move(cols, tileSize){
-        if(this.direction === 0) this.position.y -= this.moveSpeed
-        if(this.direction === 1) this.position.x += this.moveSpeed
-        if(this.direction === 2) this.position.y += this.moveSpeed
-        if(this.direction === 3) this.position.x -= this.moveSpeed
+    move(cols, tileSize) {
+        if (this.direction !== null) {
+            if (this.direction === 0) this.position.y -= this.moveSpeed
+            if (this.direction === 1) this.position.x += this.moveSpeed
+            if (this.direction === 2) this.position.y += this.moveSpeed
+            if (this.direction === 3) this.position.x -= this.moveSpeed
+        }
         this.setIndex(cols, tileSize)
+    }
+
+    checkNextPosition(tileSize) {
+        switch (this.direction) {
+            case 0 :
+                return [this.position.x, this.position.y - (tileSize / 4)];
+            case 1 :
+                return [this.position.x + (tileSize / 4), this.position.y];
+            case 2 :
+                return [this.position.x,  this.position.y + (tileSize / 4)];
+            case 3 :
+                return [this.position.x - (tileSize / 4),  this.position.y];
+            case null :
+                return [this.position.x, this.position.y];
+        }
     }
 
     action() {
