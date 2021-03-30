@@ -33,6 +33,7 @@ export default class Player extends Character {
         this.activeBonus = [];
         this.oldPosition = [null, null];
         this.hydrateInventory(itemDatas, weaponDatas);
+
         this.mouvementController(cols, tileSize, 64);
     }
 
@@ -162,7 +163,7 @@ export default class Player extends Character {
     }
     //----------------------------------
 
-    // --- Sending class datas to Db ---
+
     updateStucks(stucks)
     {
         let path = window.location.href.replace('jeu', 'profile/stuck-update');
@@ -204,16 +205,22 @@ export default class Player extends Character {
     //-----------------------------------
 
     // --- Movements & animations ---
-    mouvementController(cols, tileSize){
-        window.addEventListener('keypress', (e) => {
+    mouvementController(){
+        window.addEventListener('keydown', (e) => {
             if (e.code === "KeyW") this.direction = this.current.sprite.indexY = 0;
-            if (e.code === "KeyD") this.direction = this.current.sprite.indexY = 1;
-            if (e.code === "KeyS") this.direction = this.current.sprite.indexY = 2;
-            if (e.code === "KeyA") this.direction = this.current.sprite.indexY = 3;
+            else if(e.code === "KeyD") this.direction = this.current.sprite.indexY = 1;
+            else if (e.code === "KeyS") this.direction = this.current.sprite.indexY = 2;
+            else if (e.code === "KeyA") this.direction = this.current.sprite.indexY = 3;
+            else this.direction = null;
         })
 
-        window.addEventListener('keydown', (e) => {
-            if (e.code === "KeyW" || e.code === "KeyD" || e.code === "KeyS" || e.code === "KeyA") this.move()
+        // window.addEventListener('keypress', (e) => {
+        //     if (e.code === "KeyW" || e.code === "KeyD" || e.code === "KeyS" || e.code === "KeyA") this.move();
+        // })
+
+        window.addEventListener("keyup", (e) => {
+            if (e.code === "KeyW" || e.code === "KeyD" || e.code === "KeyS" || e.code === "KeyA")
+                this.direction = null;
         })
     }
 
@@ -228,6 +235,26 @@ export default class Player extends Character {
             if (e.code === "ArrowRight") {
             }
         })
+    }
+
+    checkPosition(board){
+        let nextPosition = this.checkNextPosition(board.tileSize)
+        let playerX = Math.floor((nextPosition[0] + (board.tileSize / 2)) / board.tileSize);
+        let playerY = Math.floor((nextPosition[1] + (board.tileSize / 2)) / board.tileSize);
+
+        for (let i = 0; i < board.tiles.length; i++){
+            let tileX = board.tiles[i].position.x;
+            let tileY = board.tiles[i].position.y;
+
+            if(playerX === tileX && playerY === tileY){
+                if(board.tiles[i].state === 3){
+                    console.log("salut la porte !")
+                }else if(board.tiles[i].state === 1){
+                    this.direction = null;
+                }
+            }
+        }
+
     }
 
     animation(cellSize, tileSize) {
@@ -253,6 +280,5 @@ export default class Player extends Character {
         this.oldPosition[0] = this.position.x;
         this.oldPosition[1] = this.position.y;
     }
-    //----------------------------------------
 
 }
