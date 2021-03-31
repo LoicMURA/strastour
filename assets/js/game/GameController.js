@@ -155,7 +155,7 @@ export default class GameController {
                         enemy.hp -= enemy.applyDamage(enemy.def);
                     }
                 }
-                if(enemy.hp <= 0){
+                if(enemy.hp <= 0 && enemy.name !== "nuages"){
                     this.level.currentRoom.enemies[this.level.currentRoom.currentHorde].splice(i, 1)
                     this.player.earnXp(enemy.drop.xp, this.hud);
                 }

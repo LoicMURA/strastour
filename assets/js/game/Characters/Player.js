@@ -197,7 +197,6 @@ export default class Player extends Character {
             this.levelUp(hud);
         }
         hud.updateXpBar(this);
-
     }
 
     levelUp(hud) {
