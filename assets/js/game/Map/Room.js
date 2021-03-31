@@ -39,17 +39,17 @@ export default class Room {
             normal: {},
             hard: {}
         }
-        if(this.hasBoss) {
-            this.enemies[0] = new Mob("boss", levelId, datas["boss"], diff, this.board.cols, this.board.tileSize, playerLvl);
+        if (this.hasBoss) {
+            this.enemies[0] = new Mob("boss", levelId, datas["boss"], diff, this.board.cols, this.board.tileSize, playerLvl, '', this.board);
         } else {
             let nbHordes = this.rng(diffDatas[diff], "hordes");
             this.hordes = nbHordes;
-            for(let i = 0; i < nbHordes; i++) {
+            for (let i = 0; i < nbHordes; i++) {
                 let nbMob = this.rng(diffDatas[diff], "mobs");
                 this.enemies[i] = [];
                 for (let j = 0; j < nbMob; j++) {
                     let idMob = this.rng(diffDatas[diff], "id");
-                    this.enemies[i] = [...this.enemies[i], new Mob("mob", idMob, datas["mob"], diff, this.board.cols, this.board.tileSize, playerLvl)];
+                    this.enemies[i] = [...this.enemies[i], new Mob("mob", idMob, datas["mob"], diff, this.board.cols, this.board.tileSize, playerLvl, '', this.board)];
                 }
             }
         }
@@ -84,73 +84,35 @@ export default class Room {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    showEnnemies(player, controlleur){
-        for(let i = 0; i < this.enemies[this.currentHorde].length; i++){
+    showEnnemies(player, controlleur) {
+        for (let i = 0; i < this.enemies[this.currentHorde].length; i++) {
             let enemy = this.enemies[this.currentHorde][i];
-            if(enemy.name === 'voleurs'){
-                enemy.checkBoundsCollision(this.board);
+            enemy.checkBoundsCollision(this.board);
+
+            if (enemy.name !== 'nuages') {
+                enemy.showHp(enemy.hp);
+            }
+
+            if (enemy.name === 'voleurs') {
                 enemy.checkObstaclesCollision(this.board);
                 enemy.followTarget(
                     player.position.x,
                     player.position.y,
-                    () => enemy.voleurAtk(64, this.board.tileSize, 5).then(() => enemy.isAttacking = false));
-                enemy.showHp(enemy.hp);
-                enemy.move();
-                if(!enemy.isAttacking) enemy.animation(64, this.board.tileSize);
-            }else if(enemy.name === 'nuages'){
-                // random pour le temps d'affichage
-                if(this.time === 0){
-                    this.time = this.randomInt(60*2, 60*10)
-                }
-
-                if (this.lifeTime <= this.time) {
-                    //dessin du nuage
-                    CTX.beginPath()
-                    CTX.drawImage(
-                        enemy.sprite.image,
-                        enemy.position.x,
-                        enemy.position.y,
-                        2 * this.board.tileSize,
-                        2 * this.board.tileSize
-                    )
-                    CTX.closePath()
-
-                    //case pour les dégats
-                    let startPosAtkX1 = enemy.position.x;
-                    let startPosAtkX2 = enemy.position.x + this.board.tileSize;
-                    let startPosAtkY = enemy.position.y + 1 * this.board.tileSize;
-
-                    let index1 = Math.round(startPosAtkY / this.board.tileSize) * this.board.cols + Math.round(startPosAtkX1 / this.board.tileSize)
-                    let index2 = Math.round(startPosAtkY / this.board.tileSize) * this.board.cols + Math.round(startPosAtkX2 / this.board.tileSize)
-                    if (index1 === player.position.index || index2 === player.position.index) {
-                        player.hp -= enemy.atk;
-                        console.log(player.hp);
-                    }
-
-                    //direction aleatoir
-                    if(enemy.direction){
-                        enemy.move()
-                    }else{
-                        enemy.direction = this.randomInt(0,3)
-                    }
-
-                    enemy.checkBoundsCollision(this.board)
-                    enemy.followTarget(player.position.x, player.position.y, () => {
-                        player.hp -= enemy.atk;
+                    () => {
+                        enemy.animationAttack(64, this.board.tileSize, 5)
+                        enemy.isAttacking = false;
+                        player.hp -= player.applyDamage(player.def);
                         controlleur.hud.updateHpBar(player);
-                    })
+                    }
+                );
+                enemy.move();
+                if (!enemy.isAttacking) enemy.animation(64, this.board.tileSize);
+            }else{
+                enemy.draw(this.board);
+            }
 
-                    this.lifeTime++
-                }else{
-                    // temps d'attente avant réaparition
-                    let timeStop = this.randomInt(4000,6000)
-                    enemy.direction = null;
-                    setTimeout(() => {
-                        this.lifeTime = 0
-                        this.time = 0
-                    }, timeStop);
-                }
-
+            if (enemy.name === 'nuages') {
+               enemy.nuageAtk(player, this.board);
             }
         }
     }

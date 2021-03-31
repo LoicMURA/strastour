@@ -63,6 +63,7 @@ export default class Player extends Character {
             index++;
         }
         this.updateEquipement();
+        this.setSpritesAttacks();
     }
 
     //store data that needs to be calculated based on player's level
@@ -227,6 +228,32 @@ export default class Player extends Character {
             if (e.code === "ArrowDown") this.attackDirection = this.sprite.indexY = 2;
             if (e.code === "ArrowRight") this.attackDirection = this.sprite.indexY = 3;
         })
+
+        window.addEventListener('keydown', (e => {
+            if(e.code === "ArrowUp" || e.code === "ArrowDown" || e.code === "ArrowLeft" || e.code === "ArrowRight"){
+                this.isAttacking = true;
+            }
+        }))
+    }
+
+    updateSpriteAttack(){
+
+    }
+
+    async setSpritesAttacks(){
+        this.spritesAttacks = {
+            dagger: new Image(),
+            bow: new Image(),
+            spear: new Image(),
+            sword: new Image(),
+            indexX : 0,
+            indexY : 0
+        }
+
+        this.spritesAttacks.dagger.src = 'assets/image/sprites/character/male/attacks/dagger.png';
+        this.spritesAttacks.bow.src = 'assets/image/sprites/character/male/attacks/bow.png';
+        this.spritesAttacks.spear.src = 'assets/image/sprites/character/male/attacks/spear.png';
+        this.spritesAttacks.sword.src = 'assets/image/sprites/character/male/attacks/sword.png';
     }
 
     checkDoorCollision(board, level, controller){
