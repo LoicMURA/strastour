@@ -37,21 +37,28 @@ export default class Player extends Character {
         let index = 0;
         for (const itemData of USER.player.inventory) {
             // to delete later on
-            itemData.equiped = true;
-            if(index === 0) itemData.item.type.name = "health";
+            (index > 5) ? itemData.equiped = false : itemData.equiped = true;
+            // A mettre à jour w/ BDD
+            if(index === 0 || index === 4) itemData.item.type.name = "health";
             if(index === 1) {
-                // TRICHERIE MASSIVE
                 itemData.item.type.name = "sword";
                 itemData.item.type.id = 3;
             }
-            if(index === 2) itemData.item.type.name = "speed";
+            if(index === 5) {
+                itemData.item.type.name = "bow";
+                itemData.item.type.id = 4;
+            }
+            if(index === 2 || index === 3) itemData.item.type.name = "speed";
 
             let id = itemData.item.type.id;
-            if(this.itemIsBonus(itemData.item)) {
+            let itemId = itemData.item.id;
+
+            if (this.itemIsBonus(itemData.item)) {
                 itemData.item = new Bonus(bonusDatas[id]);
             } else if (this.itemIsWeapon(itemData.item)) {
                 itemData.item = new Weapon(weaponDatas[id]);
             }
+            itemData.item.id = itemId;
             this.inventory.push(itemData);
             index++;
         }
