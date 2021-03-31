@@ -199,7 +199,7 @@ export default class Character {
         CTX.fill();
     }
 
-    dead(cellSize, tileSize, callback){
+    dead(cellSize, tileSize){
         this.direction = null;
         this.sprite.indexY = 4;
         for(let i = 0; i < 6; i++){
@@ -216,7 +216,6 @@ export default class Character {
             )
             this.sprite.indexX++
         }
-        callback();
     }
 
     animateSprite() {
