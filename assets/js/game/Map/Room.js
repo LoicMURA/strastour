@@ -30,10 +30,10 @@ export default class Room {
                 chances: {
                     //defines each mob type chances to appear in room
                     //only multiples of 5 are allowed
-                    1: 60,
-                    2: 25,
-                    3: 10,
-                    4: 5
+                    1: 84,
+                    2: 0,
+                    3: 1,
+                    4: 15
                 }
             },
             normal: {},
