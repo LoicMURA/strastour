@@ -12,8 +12,8 @@ export default class Character {
         }
         this.type = null;
         this.sprite.image.src = src;
-        let x = this.randomInt(0, CANVAS.width)
-        let y = this.randomInt(0, CANVAS.height)
+        let x = this.randomInt(20, CANVAS.width - 20)
+        let y = this.randomInt(20, CANVAS.height - 20)
         this.position = {
             x: x,
             y: y
