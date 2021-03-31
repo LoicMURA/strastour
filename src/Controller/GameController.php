@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Course;
+use App\Repository\CourseRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
@@ -19,13 +20,15 @@ class GameController extends AbstractController
     public function index(
         Request $request,
         UserRepository $userRepository,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        CourseRepository $courseRepository
     ): Response
     {
+        $courses = $courseRepository->findAllForGame();
         $user = $userRepository->findOneBy(['username' => $this->getUser()->getUsername()]);
         $user = $normalizer->normalize($user, 'json', ['groups' => 'user_game']);
         $id = $request->request->get("course") ?? 0;
-        return $this->render('game/index.html.twig', ['user' => $user, 'course' => $id]);
+        return $this->render('game/index.html.twig', ['courses'=>$courses, 'user' => $user, 'course' => $id]);
     }
 
     /**

@@ -9,15 +9,26 @@ export default class HUD {
     xpBar = document.querySelector(".player__exp--update");
     xpVal = document.querySelector(".player__exp--value");
     level = document.querySelector("#hud-level");
+    interactivePanel = document.querySelector("#hud-interactive-panel");
+    interactivePanels = {
+        selectLevel:
+            {
+                panel: document.querySelector("#hud-select-level"),
+                triggered: false,
+            }
+    }
+    interacting = false;
 
     constructor(player, level) {
         this.hydrateEquipement(player);
         this.updateHpBar(player);
         this.updateXpBar(player);
         this.updateLvlIndicator(player);
-        this.updateLevel(level)
-        this.updateRoom(level.currentRoom)
-        this.updateDifficulty(level.difficulty)
+        if(level.id !== 0) {
+            this.updateLevel(level)
+            this.updateRoom(level.currentRoom)
+            this.updateDifficulty(level.difficulty)
+        }
         this.setActiveItem(this.equipement.children[0], player)
 
         this.equipement.addEventListener('click', (e) => {
@@ -124,5 +135,88 @@ export default class HUD {
             }
         }
         if (quantity >= 0) itemBox.querySelector('.items__quantity').innerText = quantity
+    }
+
+    //=======================================
+    // CONTEXTUAL PANELS DISPLAYED ON TRIGGER
+    //=======================================
+    panelInteractionsController(player, controller) {
+        window.addEventListener("keydown", (e) => {
+            if (e.code === "KeyJ") this.showInteractivePanel(this.interactivePanels.selectLevel, controller);
+            else if (e.code === "KeyB") {
+            } else if (e.code === "KeyN") {
+            } else if (e.code === "Escape" && this.interacting) {
+                this.closeInteractivePanel();
+            }
+        })
+        let leaveInteractivePanel = this.interactivePanel.querySelector(".quit");
+        leaveInteractivePanel.addEventListener("click", ()=>{
+            this.closeInteractivePanel();
+        })
+    }
+
+    requestInteraction(player, which) {
+        if (!player.interacting) {
+            player.interacting = true;
+            player.showCommandInfos(which);
+        }
+    }
+
+    showCommandInfos(request) {
+        let commands = document.querySelector("#command-infos");
+        let command = document.createElement("div");
+        command.classList.add("command__infos");
+        let msg;
+        switch (request) {
+            case "selectLevel":
+                msg = "Appuyez sur J pour selectionner un niveau";
+                break;
+        }
+        command.innerHTML = msg;
+        this.interactionInfos = command;
+        commands.append(command);
+    }
+
+    hideCommandInfos(player) {
+        player.interactionInfos.remove();
+        player.interacting = false;
+    }
+
+    showInteractivePanel(panelDatas, controller) {
+        // if(this.interacting){
+        //     this.closeInteractivePanel();
+        // } else  {
+        //     this.interacting = true;
+        // }
+        this.interacting ? this.closeInteractivePanel() : this.interacting = true;
+        if(this.interacting) {
+            this.interactivePanel.classList.replace("panel--hidden", "panel--active");
+            panelDatas.panel.classList.replace("panel--hidden", "panel--active");
+            if(panelDatas.panel.getAttribute("id") === "hud-select-level" && !panelDatas.triggered){
+                this.addSelectLevelEvent(controller);
+                panelDatas.triggered = true;
+            }
+        }
+    }
+
+    closeInteractivePanel() {
+        this.interacting = false;
+        this.interactivePanel.classList.replace("panel--active","panel--hidden");
+        for(let panelDatas in this.interactivePanels) {
+            let panel = this.interactivePanels[panelDatas].panel;
+            if(panel.classList.contains("panel--active")) {
+                panel.classList.replace("panel--active", "panel--hidden");
+            }
+        }
+    }
+
+    addSelectLevelEvent(controller) {
+        let eventBtns = this.interactivePanel.querySelectorAll("#select-level");
+        eventBtns.forEach(btn=>{
+            btn.addEventListener("click", ()=>{
+                ID_LEVEL = btn.dataset.id;
+                controller.switchLevel();
+            })
+        })
     }
 }

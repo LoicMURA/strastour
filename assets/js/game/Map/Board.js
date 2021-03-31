@@ -22,7 +22,6 @@ export default class Board{
      * Create Tiles for each grid cell
      */
     async hydrateTiles(states, doors){
-
         let index = 0;
         for (let i = 0; i < this.rows;  i++){
             for (let j = 0; j < this.cols;  j++){
@@ -44,6 +43,8 @@ export default class Board{
     }
 
     draw(){
+        CANVAS.width = this.cols * this.tileSize;
+        CANVAS.height = this.rows * this.tileSize;
 
         CTX.beginPath();
         CTX.drawImage(this.background, 0, 0, CANVAS.width, CANVAS.height);
