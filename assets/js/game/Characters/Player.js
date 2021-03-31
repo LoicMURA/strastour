@@ -36,31 +36,39 @@ export default class Player extends Character {
     hydrateInventory(bonusDatas, weaponDatas) {
         let index = 0;
         for (const itemData of USER.player.inventory) {
-            // to delete later on
-            (index > 5) ? itemData.equiped = false : itemData.equiped = true;
-            // A mettre à jour w/ BDD
-            if(index === 0 || index === 4) itemData.item.type.name = "health";
-            if(index === 1) {
-                itemData.item.type.name = "sword";
-                itemData.item.type.id = 3;
-            }
-            if(index === 5) {
-                itemData.item.type.name = "bow";
-                itemData.item.type.id = 4;
-            }
-            if(index === 2 || index === 3) itemData.item.type.name = "speed";
+        //     to delete later on
+            if (index < 4) {
+                (index > 5) ? itemData.equiped = false : itemData.equiped = true;
+                // A mettre à jour w/ BDD
+                let name;
+                let id = index + 1;
 
-            let id = itemData.item.type.id;
-            let itemId = itemData.item.id;
+                switch (index) {
+                    case 0:
+                        name = 'dagger';
+                        break;
+                    case 1:
+                        name = 'spear';
+                        break;
+                    case 2:
+                        name = 'sword';
+                        break;
+                    case 3:
+                        name = 'bow';
+                        break;
+                }
+                itemData.item.type.name = name;
+                itemData.item.type.id = id;
 
-            if (this.itemIsBonus(itemData.item)) {
-                itemData.item = new Bonus(bonusDatas[id]);
-            } else if (this.itemIsWeapon(itemData.item)) {
-                itemData.item = new Weapon(weaponDatas[id]);
+                if (this.itemIsBonus(itemData.item)) {
+                    itemData.item = new Bonus(bonusDatas[id]);
+                } else if (this.itemIsWeapon(itemData.item)) {
+                    itemData.item = new Weapon(weaponDatas[id]);
+                }
+                itemData.item.id = id;
+                this.inventory.push(itemData);
+                index++;
             }
-            itemData.item.id = itemId;
-            this.inventory.push(itemData);
-            index++;
         }
         this.updateEquipement();
         this.setSpritesAttacks();
