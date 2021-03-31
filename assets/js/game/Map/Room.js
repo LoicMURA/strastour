@@ -15,6 +15,9 @@ export default class Room {
         this.hasBoss = boss;
         this.isActive = false;
         this.cleared = false;
+
+        this.time = 0
+        this.lifeTime = 0
     }
 
     hydrateEnemies(diff, levelId, datas, playerLvl) {
@@ -91,6 +94,55 @@ export default class Room {
                 enemy.showHp(enemy.hp);
                 enemy.move();
                 enemy.animation(64, this.board.tileSize);
+            }else if(enemy.name === 'nuages'){
+                // random pour le temps d'affichage
+                if(this.time == 0){
+                    this.time = this.randomInt(60*2, 60*10)
+                }
+
+                if (this.lifeTime <= this.time) {
+                    //dessin du nuage
+                    CTX.beginPath()
+                    CTX.drawImage(
+                        enemy.sprite.image,
+                        enemy.position.x,
+                        enemy.position.y,
+                        2 * this.board.tileSize,
+                        2 * this.board.tileSize
+                    )
+                    CTX.closePath()
+                    
+                    //case pour les dégats
+                    let startPosAtkX1 = enemy.position.x;
+                    let startPosAtkX2 = enemy.position.x + this.board.tileSize;
+                    let startPosAtkY = enemy.position.y + 1 * this.board.tileSize;
+                    
+                    let index1 = Math.round(startPosAtkY / this.board.tileSize) * this.board.cols + Math.round(startPosAtkX1 / this.board.tileSize)
+                    let index2 = Math.round(startPosAtkY / this.board.tileSize) * this.board.cols + Math.round(startPosAtkX2 / this.board.tileSize)
+                    if (index1 === player.position.index || index2 === player.position.index) {
+                        nuageAtk();
+                    }
+                    
+                    //direction aleatoir
+                    if(enemy.direction){
+                        enemy.move()
+                    }else{
+                        enemy.direction = this.randomInt(0,3)
+                    }
+
+                    enemy.checkBoundsCollision(this.board)
+
+                    this.lifeTime++
+                }else{
+                    // temps d'attente avant réaparition
+                    let timeStop = this.randomInt(4000,6000)
+                    enemy.direction = null;
+                    setTimeout(() => {
+                        this.lifeTime = 0
+                        this.time = 0
+                    }, timeStop);
+                }
+                
             }
         }
     }
