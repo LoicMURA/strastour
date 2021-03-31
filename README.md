@@ -11,7 +11,7 @@ accompagné de notre narrateur **Théodore Van Strass**.
 
 ## Comment installer le projet
 
-une fois le projet téléchargé sur votre poste de travail.
+Une fois le projet téléchargé sur votre poste de travail.
 Avant de le lancez sur votre navigateur, ouvrez un terminal dans le dossier racine.
 
 1.  Installer les packets
@@ -22,7 +22,7 @@ Avant de le lancez sur votre navigateur, ouvrez un terminal dans le dossier raci
 
 2.  Mettre en place la base de donnée
 
-    importer le fichier "strastour.sql" (A la racine du fichier) et ***modifier le fichier ".env"*** (A la racine du fichier) pour corespondre avec votre base de donnée
+    Importer le fichier "strastour.sql" (A la racine du dossier) et ***modifier le fichier ".env"*** (A la racine du fichier) pour correspondre avec votre base de donnée
 
 3.  Compiler les assets
 
