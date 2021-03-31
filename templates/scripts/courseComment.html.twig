@@ -1,7 +1,7 @@
 <script>
 
     let sendButton = document.getElementById("js-form-submit");
-    let form = sendButton.parentNode;
+    let form = sendButton?.parentNode;
 
     let idParent = 0
     let idCom
@@ -44,7 +44,7 @@
         path = button.getAttribute("data-path")
     }
 
-    sendButton.addEventListener("click", (e) => {
+    sendButton?.addEventListener("click", (e) => {
         e.preventDefault();
 
         formData = new FormData(form)
