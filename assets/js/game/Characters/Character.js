@@ -22,6 +22,7 @@ export default class Character {
         this.oldPosition = [null, null];
         this.attackDirection = null;
         this.setIndex(cols, tileSize)
+        this.canFollow = 0;
     }
 
     /**
@@ -57,7 +58,6 @@ export default class Character {
     /**
      * Check collision with canvas borders
      * @param board
-     * @param level
      */
     checkBoundsCollision(board) {
 
@@ -73,36 +73,44 @@ export default class Character {
         }
     }
 
-    followTarget(destX, destY, canMove, callback) {
-        if(canMove){
+    followTarget(destX, destY, callback) {
+        if (this.canFollow === 0){
             let distance = this.getDistance(destX, destY);
-            if(distance < 20){
+            if(distance <= 25 && this.canFollow === 0){
                 this.direction = null;
-                callback();
+                // callback();
             }
             else if(distance <= 120) {
-                if (this.position.x >= destX) {
-                    this.position.x--;
-                    this.direction = 3;
-                } else {
-                    this.position.x++;
-                    this.direction = 1;
+                let posX = Math.round(this.position.x)
+                if (!(posX <= destX + 5 && posX >= destX - 5)) {
+                    if (this.position.x > destX) {
+                        this.position.x--;
+                        this.direction = 3;
+                    } else if (this.position.x < destX) {
+                        this.position.x++;
+                        this.direction = 1;
+                    }
                 }
 
-                if (this.position.y >= destY) {
-                    this.position.y--;
-                    this.direction = 0;
-                } else {
-                    this.position.y++;
-                    this.direction = 2;
+                let posY = Math.round(this.position.y)
+                if (!(posY <= destY + 5 && posY >= destY - 5)) {
+                    if (this.position.y > destY) {
+                        this.position.y--;
+                        this.direction = 0;
+                    } else if (this.position.y < destY) {
+                        this.position.y++;
+                        this.direction = 2;
+                    }
                 }
             }
+        } else {
+            this.canFollow = this.canFollow - 1;
         }
     }
 
     getDistance(destX, destY) {
         let vector = [this.position.x - destX, this.position.y - destY]
-        return Math.sqrt(Math.pow(vector[0], 2) + Math.pow([1], 2));
+        return Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
     }
 
     showHp(currentHp) {
@@ -137,26 +145,14 @@ export default class Character {
      */
     checkObstaclesCollision(board) {
         let coordinates = this.getNextPosition(board);
-        let canMove = true;
         for (let i = 0; i < board.obstacles.length; i++){
             let obstacle = board.obstacles[i];
             if (coordinates.col === obstacle.position.x && coordinates.row === obstacle.position.y) {
                 if (this.type === "mob") {
-                    canMove = false;
-                } else {
-                    this.direction = null;
-                }
-            }
-        }
-        return canMove;
-    }
-
-    checkCurrentPosition(){
-        for (let i = 0; i < board.obstacles.length; i++){
-            let obstacle = board.obstacles[i];
-            if (coordinates.col === obstacle.position.x && coordinates.row === obstacle.position.y) {
-                if (this.type === "mob") {
-                    canMove = false;
+                    this.canFollow = 20;
+                    let newDirection = this.randomInt(0, 3);
+                    if (this.direction === newDirection) this.direction = (this.direction + 2) % 3;
+                    else this.direction = newDirection;
                 } else {
                     this.direction = null;
                 }
