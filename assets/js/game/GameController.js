@@ -9,6 +9,8 @@ import {fetcher} from "./Fetcher";
  */
 export default class GameController {
     constructor() {
+        this.timestamp = 0;
+        this.gameSpeed = 30;
         this.datas = new Datas();
         this.animationId = 0;
     }
@@ -37,7 +39,7 @@ export default class GameController {
                     this.level.hydrateLevel()
                         .then(() => {
                             // hydrate each rooms in the level
-                            this.level.hydrateRooms(this.datas.boardSizes, this.datas.Characters)
+                            this.level.hydrateRooms(this.datas.boardSizes)
                                 .then(() => {
                                     // set the current room for the level
                                     this.level.currentRoom = this.level.rooms[0];
@@ -48,7 +50,6 @@ export default class GameController {
                                             // set currents stats (each stats is computed depends on the experience that the user already collected
                                             this.player.upgradeToCurrentStats();
                                             // set enemies for the current room
-                                            this.level.currentRoom.hydrateEnemies(this.level.difficulty, this.level.id, this.datas.Characters, this.player.lvl);
                                             // player in safeZone
                                             this.level.isSafe(this.datas.Characters, this.player.lvl);
                                             // set up hud
@@ -78,17 +79,27 @@ export default class GameController {
                                 .then(() => {
                                     // set the current room for the level
                                     this.level.currentRoom = this.level.rooms[0];
-                                    // set enemies for the current room
-                                    this.level.currentRoom.hydrateEnemies(this.level.difficulty, this.level.id, this.datas.Characters, this.player.lvl);
                                     // player in safeZone
                                     this.level.isSafe(this.datas.Characters, this.player.lvl);
 
                                     if (this.level.currentRoom.id === 0) {
                                         this.hud.panelInteractionsController(this.player, this);
                                     }
+                                    console.log(this.level.currentRoom.board.doors.length - 1)
+                                    let doorsLength = this.level.currentRoom.board.doors.length - 1
+                                    let doorPosition = this.level.currentRoom.board.doors[doorsLength];
+
+                                    if(this.level.id === 0){
+                                        this.player.position.y = (doorPosition.position.y * this.datas.boardSizes.tile) + this.datas.boardSizes.tile;
+                                    }else{
+                                        this.player.position.y = doorPosition.position.y * this.datas.boardSizes.tile;
+
+                                    }
+                                    this.player.position.x = doorPosition.position.x * this.datas.boardSizes.tile;
+                                }).then(() => {
                                     this.animationId = requestAnimationFrame(this.anim.bind(this))
-                                    console.log(this);
-                                })
+                                    // console.log(this);
+                            })
                         })
                 })
         }
@@ -101,6 +112,10 @@ export default class GameController {
     anim(currentTime) {
         this.animationId = requestAnimationFrame(this.anim.bind(this))
 
+        const fpsSinceLastRender = (currentTime - this.timestamp) / 1000;
+        if (fpsSinceLastRender < 1 / this.gameSpeed) return;
+        this.timestamp = currentTime;
+
         // clear canvas
         CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
 
@@ -108,13 +123,16 @@ export default class GameController {
         this.level.currentRoom.board.draw();
 
         // player
-        this.player.checkDoorCollision(this.level.currentRoom.board, this.level);
+        this.player.checkDoorCollision(this.level.currentRoom.board, this.level, this);
         this.player.checkObstaclesCollision(this.level.currentRoom.board);
         this.player.checkBoundsCollision(this.level.currentRoom.board);
         this.player.move();
         this.player.animation(64, this.datas.boardSizes.tile);
 
-        this.level.currentRoom.showEnnemies(this.player);
+
+        if(this.level.id !== 0){
+            this.level.currentRoom.showEnnemies(this.player, this);
+        }
     }
 
     stopAnim() {
@@ -122,10 +140,13 @@ export default class GameController {
         cancelAnimationFrame(this.animationId);
     }
 
-    switchLevel() {
+    switchLevel(currentLevel = 0) {
         this.stopAnim();
         this.resetLvl();
         this.initGame(ID_LEVEL, true);
+        if(currentLevel !== 0){
+            ID_LEVEL = currentLevel;
+        }
     }
 
     resetLvl(obj) {

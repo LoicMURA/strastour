@@ -84,19 +84,22 @@ export default class Room {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    showEnnemies(player){
+    showEnnemies(player, controlleur){
         for(let i = 0; i < this.enemies[this.currentHorde].length; i++){
             let enemy = this.enemies[this.currentHorde][i];
             if(enemy.name === 'voleurs'){
                 enemy.checkBoundsCollision(this.board);
                 enemy.checkObstaclesCollision(this.board);
-                enemy.followTarget(player.position.x, player.position.y);
+                enemy.followTarget(
+                    player.position.x,
+                    player.position.y,
+                    () => enemy.voleurAtk(64, this.board.tileSize, 5).then(() => enemy.isAttacking = false));
                 enemy.showHp(enemy.hp);
                 enemy.move();
-                enemy.animation(64, this.board.tileSize);
+                if(!enemy.isAttacking) enemy.animation(64, this.board.tileSize);
             }else if(enemy.name === 'nuages'){
                 // random pour le temps d'affichage
-                if(this.time == 0){
+                if(this.time === 0){
                     this.time = this.randomInt(60*2, 60*10)
                 }
 
@@ -111,18 +114,19 @@ export default class Room {
                         2 * this.board.tileSize
                     )
                     CTX.closePath()
-                    
+
                     //case pour les dégats
                     let startPosAtkX1 = enemy.position.x;
                     let startPosAtkX2 = enemy.position.x + this.board.tileSize;
                     let startPosAtkY = enemy.position.y + 1 * this.board.tileSize;
-                    
+
                     let index1 = Math.round(startPosAtkY / this.board.tileSize) * this.board.cols + Math.round(startPosAtkX1 / this.board.tileSize)
                     let index2 = Math.round(startPosAtkY / this.board.tileSize) * this.board.cols + Math.round(startPosAtkX2 / this.board.tileSize)
                     if (index1 === player.position.index || index2 === player.position.index) {
-                        nuageAtk();
+                        player.hp -= enemy.atk;
+                        console.log(player.hp);
                     }
-                    
+
                     //direction aleatoir
                     if(enemy.direction){
                         enemy.move()
@@ -131,6 +135,10 @@ export default class Room {
                     }
 
                     enemy.checkBoundsCollision(this.board)
+                    enemy.followTarget(player.position.x, player.position.y, () => {
+                        player.hp -= enemy.atk;
+                        controlleur.hud.updateHpBar(player);
+                    })
 
                     this.lifeTime++
                 }else{
@@ -142,7 +150,7 @@ export default class Room {
                         this.time = 0
                     }, timeStop);
                 }
-                
+
             }
         }
     }

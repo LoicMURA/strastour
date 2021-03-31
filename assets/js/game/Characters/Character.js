@@ -20,9 +20,12 @@ export default class Character {
         }
         this.direction = null;
         this.oldPosition = [null, null];
+        this.isAttacking = false;
         this.attackDirection = null;
         this.setIndex(cols, tileSize)
         this.canFollow = 0;
+        this.timestamp = 0;
+        this.lastAttackDelay = 0;
     }
 
     /**
@@ -34,6 +37,18 @@ export default class Character {
         let col = Math.round(this.position.x / tileSize)
         let row = Math.round(this.position.y / tileSize)
         this.position.index = row * cols + col
+    }
+
+    setSpriteAttacks(src){
+        this.spriteAttack;
+        if(this.type === 'mob'){
+            this.spriteAttack = {
+                image: new Image(),
+                indexX: 0,
+                indexY: 0
+            }
+            this.spriteAttack.image.src = src;
+        }
     }
 
     /**
@@ -50,7 +65,9 @@ export default class Character {
         }
         this.setIndex(cols, tileSize)
 
-        if (this.type === "mob" || this.type === "boss") {
+        if (this.isAttacking === true) {
+            this.animateSpriteAttack();
+        }else{
             this.animateSprite();
         }
     }
@@ -77,8 +94,10 @@ export default class Character {
         if (this.canFollow === 0){
             let distance = this.getDistance(destX, destY);
             if(distance <= 25 && this.canFollow === 0){
-                this.direction = null;
-                //callback();
+                callback();
+                if(this.hp !== null){
+                    this.isAttacking = true;
+                }
             }
             else if(distance <= 120) {
                 let posX = Math.round(this.position.x)
@@ -102,10 +121,12 @@ export default class Character {
                         this.direction = 2;
                     }
                 }
+                this.isAttacking = false;
             }
         } else {
             this.canFollow = this.canFollow - 1;
         }
+        this.lastAttackDelay++;
     }
 
     getDistance(destX, destY) {
@@ -137,6 +158,13 @@ export default class Character {
         if (this.direction === 1) this.sprite.indexY = 1;
         if (this.direction === 2) this.sprite.indexY = 2;
         if (this.direction === 3) this.sprite.indexY = 3;
+    }
+
+    animateSpriteAttack(){
+        if (this.direction === 0) this.spriteAttack.indexY = 0;
+        if (this.direction === 1) this.spriteAttack.indexY = 1;
+        if (this.direction === 2) this.spriteAttack.indexY = 2;
+        if (this.direction === 3) this.spriteAttack.indexY = 3;
     }
 
     /**
@@ -242,8 +270,34 @@ export default class Character {
         }
     }
 
-    voleurAtk() {
+    async voleurAtk(cellSize, tileSize, limitX){
+        this.animateSpriteAttack();
+        this.animationAttack(cellSize, tileSize, limitX);
+    }
 
+    animationAttack(cellSize, tileSize, limitX) {
+        for(let i = 0; i < limitX; i++){
+            CTX.beginPath()
+            CTX.drawImage(
+                this.spriteAttack.image,
+                this.spriteAttack.indexX * cellSize,
+                this.spriteAttack.indexY * cellSize,
+                cellSize,
+                cellSize,
+                this.position.x,
+                this.position.y,
+                tileSize,
+                tileSize
+            )
+            CTX.closePath();
+
+            this.spriteAttack.indexX++;
+
+            if (this.spriteAttack.indexX >= limitX) this.spriteAttack.indexX = 0;
+
+            this.oldPosition[0] = this.position.x;
+            this.oldPosition[1] = this.position.y;
+        }
     }
 
     animation(cellSize, tileSize) {

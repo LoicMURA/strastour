@@ -210,12 +210,11 @@ export default class HUD {
         }
     }
 
-    addSelectLevelEvent(controller) {
+    addSelectLevelEvent(controller, level) {
         let eventBtns = this.interactivePanel.querySelectorAll("#select-level");
         eventBtns.forEach(btn=>{
             btn.addEventListener("click", ()=>{
                 ID_LEVEL = btn.dataset.id;
-                controller.switchLevel();
             })
         })
     }

@@ -24,7 +24,8 @@ class CourseRepository extends ServiceEntityRepository
 
         $queryBuilder = ($manager->createQueryBuilder())
             ->select('t.id', 't.name')
-            ->from('App\Entity\Course', 't');
+            ->from('App\Entity\Course', 't')
+            ->orderBy('t.id');
 
         return $queryBuilder->getQuery()->getResult();
     }
