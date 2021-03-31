@@ -15,28 +15,40 @@ export default class Level{
         this.isCleared = false;
     }
 
-    async hydrateLevel(){
-        let fetchBDD = await fetch(`/jeu/${this.id}`);
-        const levelDatas = await fetchBDD.json();
-        fetcher.hydrateData(levelDatas, this);
+    async hydrateLevel() {
+        if (this.id !== 0) {
+            let fetchBDD = await fetch(`/jeu/${this.id}`);
+            const levelDatas = await fetchBDD.json();
+            fetcher.hydrateData(levelDatas, this);
+        } else {
+            this.places[0] = {
+                place: {
+                    id: 0,
+                    name: "Office du tourisme",
+                    description: "Une safe zone pour les touristes en vadrouille, les armes ne sont pas autorisées ici",
+                    address: "Le néant abyssal (Strasbourg)",
+                }
+            }
+        }
     }
 
     async hydrateRooms(boardDatas, characterDatas){
         for (const place of this.places) {
             let roomId = this.places.indexOf(place);
             let placeShort = place.place;
-            let room;
-            if(roomId !== this.places.length -1) {
-                //room datas are empty
-                room = new Room(placeShort.id, this.datas[placeShort.id], false, boardDatas);
-            } else {
-                //room hasBoss
-                room = new Room(placeShort.id, this.datas[placeShort.id], true, boardDatas);
-            }
+            let hasBoss;
+            //can be modified if needed to specify datas for room 0 (game home)
+            hasBoss = roomId === this.places.length - 1;
+            let room = new Room(placeShort.id, this.datas[placeShort.id], hasBoss, boardDatas);
             fetcher.hydrateData(placeShort, room);
             this.rooms = [...this.rooms, room];
         }
-        this.places = "hydrated";
+    }
+
+    isSafe(characterDatas, playerLvl) {
+        if (this.id !== 0) {
+            this.currentRoom.hydrateEnemies(this.difficulty, this.id, characterDatas, playerLvl);
+        }
     }
 
     switchRoom(door, player){

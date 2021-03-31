@@ -32,6 +32,7 @@ export default class Player extends Character {
     // --- Hydrating class datas ---
     hydrateInventory(bonusDatas, weaponDatas) {
         let index = 0;
+        console.log(USER.player.inventory);
         for (const itemData of USER.player.inventory) {
             // to delete later on
             itemData.equiped = true;
@@ -44,8 +45,6 @@ export default class Player extends Character {
             if(index === 2) itemData.item.type.name = "speed";
 
             let id = itemData.item.type.id;
-            bonusDatas[id].id = id;
-            weaponDatas[id].id = id;
             if(this.itemIsBonus(itemData.item)) {
                 itemData.item = new Bonus(bonusDatas[id]);
             } else if (this.itemIsWeapon(itemData.item)) {

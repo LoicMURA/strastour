@@ -18,4 +18,14 @@ class CourseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Course::class);
     }
+
+    public function findAllForGame(): array {
+        $manager = $this->getEntityManager();
+
+        $queryBuilder = ($manager->createQueryBuilder())
+            ->select('t.id', 't.name')
+            ->from('App\Entity\Course', 't');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

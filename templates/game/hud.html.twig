@@ -43,4 +43,19 @@ align-items-center w-100 hud__full" id="hud">
         <p id="place" class="hud__text">Étape:</p>
         <p id="difficulty" class="hud__text">Difficulté:</p>
     </div>
+    <div id="command-infos" class="command">
+
+    </div>
+    <div id="hud-interactive-panel" class="panel panel--hidden">
+        <button class="quit">X</button>
+        <div id="hud-select-level" class="panel__selectLevel panel--hidden">
+            {% for course in courses %}
+                <div class="panel__selectLevel__level">
+                    <h1>{{ course.name }}</h1>
+                    <button id="select-level" data-id="{{ course.id }}">Jouer</button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
 </section>
