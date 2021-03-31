@@ -9,11 +9,13 @@ export default class Board{
         this.tileSize = tileSize;
         this.tiles = [];
         this.obstacles = [];
-        this.isAvailable = [];
+        this.availables = [];
         this.doors = [];
         this.background = new Image();
         this.background.src = img;
         this.hydrateTiles(states, doors);
+        CANVAS.width = this.cols * this.tileSize;
+        CANVAS.height = this.rows * this.tileSize;
     }
 
     /**
@@ -21,30 +23,27 @@ export default class Board{
      */
     async hydrateTiles(states, doors){
 
-        // hydrate tiles position
+        let index = 0;
         for (let i = 0; i < this.rows;  i++){
             for (let j = 0; j < this.cols;  j++){
-            this.tiles = [...this.tiles, new Tile(j * this.tileSize, i * this.tileSize)];
+                let tile = new Tile(j * this.tileSize, i * this.tileSize, states[i * this.cols + j])
+                this.tiles = [...this.tiles, tile];
+                if(tile.state === 3 ){
+                    this.doors = [...this.doors, tile];
+                    tile.door = doors[index]
+                    index++
+                }
+                if(tile.state === 1){
+                    this.obstacles = [...this.obstacles, tile];
+                }
+                if(tile.state === 0){
+                    this.availables = [...this.availables, tile];
+                }
             }
-        }
-
-        // hydrate tiles state
-        for (let i = 0; i < this.tiles.length; i++){
-            this.tiles[i].state = states[i];
-            if(states[i] === 3 ){
-                this.doors = [...this.doors, this.tiles[i]];
-            }
-        }
-
-        // hydrate doors
-        for(let i = 0; i < this.doors.length; i++){
-            this.doors[i].door = doors[i]
         }
     }
 
     draw(){
-        CANVAS.width = this.cols * this.tileSize;
-        CANVAS.height = this.rows * this.tileSize;
 
         CTX.beginPath();
         CTX.drawImage(this.background, 0, 0, CANVAS.width, CANVAS.height);
@@ -68,9 +67,9 @@ export default class Board{
     getCellState(row, col) {
         for (const cell in this.tiles) {
             let index = row * (this.cols - 1) + col;
-            let tileIndex = (this.tiles[cell].position.x / 40) * (this.cols - 1) + (this.tiles[cell].position.y / 40);
+            let tileIndex = (this.tiles[cell].position.x / this.tileSize) * (this.cols - 1) + (this.tiles[cell].position.y / this.tileSize);
             if (tileIndex === index) {
-                console.log(this.tiles[cell].state);
+                return this.tiles[cell].state;
             }
         }
     }

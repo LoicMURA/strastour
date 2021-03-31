@@ -11,6 +11,7 @@ export default class Room {
         this.enemies = [];
         this.board = new Board(boardDatas.rows, boardDatas.cols, boardDatas.tile, this.datas.image, this.datas.states, this.datas.idDoors);
         this.hordes = 0;
+        this.currentHorde = 0;
         this.hasBoss = boss;
         this.isActive = false;
         this.cleared = false;
@@ -78,5 +79,27 @@ export default class Room {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    showEnnemies(player){
+        for(let i = 0; i < this.enemies[this.currentHorde].length; i++){
+            let enemy = this.enemies[this.currentHorde][i];
+            if(enemy.name === 'voleurs'){
+                enemy.checkBoundsCollision(this.board);
+                let canMove = enemy.checkObstaclesCollision(this.board);
+                if(canMove){
+                    enemy.followTarget(player.position.x, player.position.y, canMove);
+                }else{
+                    let randomDirection = this.randomInt(0, 3);
+                    while(randomDirection === enemy.direction){
+                        randomDirection = this.randomInt(0, 3)
+                    }
+                    enemy.direction = randomDirection;
+                }
+                enemy.showHp(enemy.hp);
+                enemy.move();
+                enemy.animation(64, this.board.tileSize);
+            }
+        }
     }
 }
