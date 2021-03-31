@@ -50,6 +50,7 @@ export default class GameController {
                                             // set currents stats (each stats is computed depends on the experience that the user already collected
                                             this.player.upgradeToCurrentStats();
                                             // set enemies for the current room
+                                            this.level.currentRoom.hydrateEnemies(this.level.difficulty, this.level.id, this.datas.Characters, this.player.lvl);
                                             // player in safeZone
                                             this.level.isSafe(this.datas.Characters, this.player.lvl);
                                             // set up hud
@@ -67,7 +68,7 @@ export default class GameController {
                         })
                 });
         } else {
-            document.querySelector('.loader__close').classList.replace('loader__close', 'loader__open')
+            document.querySelector('.loader__close')?.classList.replace('loader__close', 'loader__open')
             // get data for current level
             this.datas.hydrateCurrentLevel(idLevel)
                 .then(() => {
@@ -80,6 +81,8 @@ export default class GameController {
                                 .then(() => {
                                     // set the current room for the level
                                     this.level.currentRoom = this.level.rooms[0];
+                                    // set enemies for the current room
+                                    this.level.currentRoom.hydrateEnemies(this.level.difficulty, this.level.id, this.datas.Characters, this.player.lvl);
                                     // player in safeZone
                                     this.level.isSafe(this.datas.Characters, this.player.lvl);
 
@@ -98,7 +101,8 @@ export default class GameController {
                                     this.player.position.x = doorPosition.position.x * this.datas.boardSizes.tile;
                                 }).then(() => {
                                     this.animationId = requestAnimationFrame(this.anim.bind(this))
-                            })
+                                    console.log(this);
+                                })
                         })
                 })
         }
@@ -127,12 +131,27 @@ export default class GameController {
         this.player.checkBoundsCollision(this.level.currentRoom.board);
         this.player.move();
         this.player.animation(64, this.datas.boardSizes.tile);
+        if(this.player.hp <= 0){
+            this.player.dead(64, this.level.currentRoom.board.tileSize)
+            setTimeout(() =>{
+                alert("Vous avez perdu !")
+                ID_LEVEL = 0;
+                this.switchLevel(this.level.id, true)
+                this.player.hp = this.player.current.maxHp;
+            }, 1000)
+        }
 
+        for(let i = 0; i < this.level.currentRoom.enemies.length; i++){
+            let enemy = this.level.currentRoom.enemies[i];
+            if(enemy.hp === 0){
+                this.player.xp += enemy.dr
+                this.level.currentRoom.enemies.splice(i, 1)
+            }
+        }
 
         if(this.level.id !== 0){
             this.level.currentRoom.showEnnemies(this.player, this);
         }
-
         let hudPlace = document.querySelector('#place .hud__hot')
         if (hudPlace) hudPlace.innerText = this.level.currentRoom.name;
         document.querySelector('.loader__open')?.classList.replace('loader__open', 'loader__close')

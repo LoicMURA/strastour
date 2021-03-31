@@ -3,7 +3,7 @@ import {fetcher} from "../Fetcher";
 import Attack from "./Attack";
 
 export default class Mob extends Character {
-    constructor(type, id, datas, diff, cols, tileSize, playerLvl, src) {
+    constructor(type, id, datas, diff, cols, tileSize, playerLvl, src, board) {
         super(cols, tileSize, src);
         this.name = '';
         this.drop = [];
@@ -19,10 +19,10 @@ export default class Mob extends Character {
         this.upgradeToCurrentStats(playerLvl);
         this.sprite.image.src = this.src;
         this.currentHp = this.hp;
-
         if(this.typeMob === 1 || this.typeMob === '1'){
             this.setSpriteAttacks('assets/image/sprites/mobs/voleur-attack.png');
         }
+        this.setPosition(board, this.name)
     }
 
     hydrateAttacks() {
