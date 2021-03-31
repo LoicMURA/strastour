@@ -63,12 +63,11 @@ export default class Player extends Character {
     //store data that needs to be calculated based on player's level
     upgradeToCurrentStats(){
         this.lvl = this.getLevel(this.xp);
-        this.current.maxXp = this.getMaxXp(this.lvl);
+        this.current.maxXp = (this.lvl !== 60) ? this.getMaxXp(this.lvl): this.getMaxXp(this.lvl - 1);this.current.xp = this.xp;
         this.hp = this.getPlayerLife(this.lvl);
         this.current.maxHp = this.hp;
         this.atk = this.getPlayerAtk(this.lvl);
         this.def = this.getPlayerDef(this.lvl);
-        this.current.xp = this.xp % 2000; //val needed to go to next lvl
     }
     // -----------------------------------
 
