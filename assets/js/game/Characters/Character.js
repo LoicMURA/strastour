@@ -12,11 +12,9 @@ export default class Character {
         }
         this.type = null;
         this.sprite.image.src = src;
-        let x = this.randomInt(20, CANVAS.width - 20)
-        let y = this.randomInt(20, CANVAS.height - 20)
         this.position = {
-            x: x,
-            y: y
+            x: null,
+            y: null
         }
         this.direction = null;
         this.oldPosition = [null, null];
@@ -49,6 +47,46 @@ export default class Character {
             }
             this.spriteAttack.image.src = src;
         }
+    }
+
+    setPosition(board, name){
+        if(name === 'pigeons' || name === 'cyclistes') {
+            this.position = {
+                x: [20, CANVAS.width - 40][this.randomInt(0,1)],
+                y: this.randomInt(0,CANVAS.height)
+            }
+
+            if(this.position.x === 20) this.direction = 1
+            if(this.position.x === CANVAS.width - 40) this.direction = 3
+        }else{
+            let random = this.randomInt(0, board.availables.length - 1)
+            let cell = board.availables[random];
+            this.position = {
+                x: cell.position.x * board.tileSize,
+                y: cell.position.y * board.tileSize
+            }
+        }
+
+    }
+
+    draw(board, name){
+        let size;
+        if(name === 'nuages') size = 2 * board.tileSize;
+        else size = 1.5 * board.tileSize;
+
+
+        let isRotated = false;
+        CTX.beginPath()
+        if(name === 'cyclistes' || name === 'pigeons'){
+            if(this.direction === 1){
+                CTX.rotate(2 * Math.PI)
+                isRotated = true;
+            }
+        }
+        CTX.drawImage(this.sprite.image, this.position.x, this.position.y, size, size)
+        if(isRotated) CTX.restore();
+        CTX.closePath()
+
     }
 
     /**
@@ -94,6 +132,9 @@ export default class Character {
         if (this.canFollow === 0){
             let distance = this.getDistance(destX, destY);
             if(distance <= 25 && this.canFollow === 0){
+                this.lastAttackDelay++;
+                if(this.lastAttackDelay > 30) this.lastAttackDelay = 0;
+                if(this.lastAttackDelay < 30) return;
                 callback();
                 if(this.hp !== null){
                     this.isAttacking = true;
@@ -134,6 +175,11 @@ export default class Character {
         return Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
     }
 
+    applyDamage(def){
+        let defEffect = this.randomInt(0, def);
+        return this.atk - defEffect;
+    }
+
     showHp(currentHp) {
         let width;
         let rapport = (currentHp / this.hp) * 100;
@@ -151,6 +197,26 @@ export default class Character {
         CTX.rect(this.position.x + width / 2, this.position.y - 10, width, 5)
 
         CTX.fill();
+    }
+
+    dead(cellSize, tileSize, callback){
+        this.direction = null;
+        this.sprite.indexY = 4;
+        for(let i = 0; i < 6; i++){
+            CTX.drawImage(
+                this.sprite.image,
+                this.sprite.indexX * cellSize,
+                this.sprite.indexY * cellSize,
+                cellSize,
+                cellSize,
+                this.position.x,
+                this.position.y,
+                tileSize,
+                tileSize
+            )
+            this.sprite.indexX++
+        }
+        callback();
     }
 
     animateSprite() {
@@ -270,12 +336,55 @@ export default class Character {
         }
     }
 
-    async voleurAtk(cellSize, tileSize, limitX){
-        this.animateSpriteAttack();
-        this.animationAttack(cellSize, tileSize, limitX);
+
+
+    // async voleurAtk(cellSize, tileSize, limitX){
+    //     this.animationAttack(cellSize, tileSize, limitX);
+    // }
+
+    nuageAtk(player, board){
+        if (this.time === 0) {
+            this.time = this.randomInt(60 * 2, 60 * 10)
+        }
+
+        // random pour le temps d'affichage
+        if (this.time === 0) {
+            this.time = this.randomInt(60 * 2, 60 * 10)
+        }
+
+        if (this.lifeTime <= this.time) {
+            let startPosAtkX1 = this.position.x;
+            let startPosAtkX2 = this.position.x + board.tileSize;
+            let startPosAtkY = this.position.y + board.tileSize;
+
+            let index1 = Math.round(startPosAtkY / board.tileSize) * board.cols + Math.round(startPosAtkX1 / board.tileSize)
+            let index2 = Math.round(startPosAtkY / board.tileSize) * board.cols + Math.round(startPosAtkX2 / board.tileSize)
+            if (index1 === player.position.index || index2 === player.position.index) {
+                player.hp -= this.atk;
+                console.log(player.hp);
+            }
+
+            //direction aleatoir
+            if (this.direction) {
+                this.move()
+            } else {
+                this.direction = this.randomInt(0, 3)
+            }
+            this.lifeTime++
+        } else {
+            // temps d'attente avant réaparition
+            let timeStop = this.randomInt(4000, 6000)
+            this.direction = null;
+            setTimeout(() => {
+                this.lifeTime = 0
+                this.time = 0
+            }, timeStop);
+        }
+
     }
 
     animationAttack(cellSize, tileSize, limitX) {
+        this.animateSprite();
         for(let i = 0; i < limitX; i++){
             CTX.beginPath()
             CTX.drawImage(
