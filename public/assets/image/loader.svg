@@ -1,0 +1,21 @@
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.45 113.57">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #1d1d1b;
+      }
+    </style>
+  </defs>
+  <circle class="cls-1" cx="14.04" cy="99.53" r="14.04"/>
+  <circle class="cls-1" cx="31.76" cy="70" r="12.69" transform="translate(-49.97 86.65) rotate(-85)"/>
+  <circle class="cls-1" cx="53.32" cy="40.86" r="11.33" transform="translate(-17.01 59.86) rotate(-62)"/>
+  <circle class="cls-1" cx="83.06" cy="22.99" r="10.42" transform="translate(-4.56 49.88) rotate(-40)"/>
+  <circle class="cls-1" cx="114.15" cy="17.5" r="8.61" transform="translate(-8.32 31.21) rotate(-20)"/>
+  <circle class="cls-1" cx="142.25" cy="21.95" r="7.7" transform="translate(-9.9 -3.91) rotate(-2)"/>
+  <circle class="cls-1" cx="165" cy="33.04" r="6.35" transform="translate(83.8 176.25) rotate(-76)"/>
+  <circle class="cls-1" cx="181.72" cy="47.58" r="5.44" transform="translate(45.18 176.8) rotate(-62)"/>
+  <circle class="cls-1" cx="193.68" cy="64.34" r="4.08" transform="translate(8.84 159.41) rotate(-49)"/>
+  <circle class="cls-1" cx="200.63" cy="80.32" r="3.17" transform="translate(-16.14 131.66) rotate(-38)"/>
+  <circle class="cls-1" cx="204.4" cy="97.33" r="2.27" transform="translate(-31.13 94.52) rotate(-27)"/>
+  <circle class="cls-1" cx="204.86" cy="114.76" r="1.36" transform="translate(-32.91 52.02) rotate(-16)"/>
+</svg>
