@@ -93,14 +93,17 @@ class UserController extends AbstractController
     public function checkPlace(
         Place $place,
         Security $security,
+        Request $request,
         EntityManagerInterface $manager,
         UserPlacesRepository $userPlacesRepository,
         CoursePlaceRepository $coursePlaceRepository,
         CourseRepository $courseRepository
     ): Response
     {
+        $irl = true;
+        if ($request->request->get('irl') !== null) $irl = $request->request->get('irl');
         $userPlace = (new UserPlaces())
-            ->setInRealLife(true)
+            ->setInRealLife($irl)
             ->setPlace($place)
             ->setUser($security->getUser());
 
@@ -124,7 +127,7 @@ class UserController extends AbstractController
                 $userCourse = (new UserCourses())
                     ->setUser($security->getUser())
                     ->setCourse($course)
-                    ->setInRealLife(true);
+                    ->setInRealLife($irl);
 
                 $manager->persist($userCourse);
                 $manager->flush();
