@@ -25,10 +25,8 @@ export default class Player extends Character {
         this.equipement = [];
         //store if a weapon or bonus is being used, their relative bonuses to each of those items
         this.activeBonus = [];
-        this.oldPosition = [null, null];
         this.hydrateInventory(itemDatas, weaponDatas);
         this.mouvementController(cols, tileSize, 64);
-        console.log(this);
     }
 
     // --- Hydrating class datas ---
@@ -44,7 +42,7 @@ export default class Player extends Character {
                 itemData.item.type.id = 3;
             }
             if(index === 2) itemData.item.type.name = "speed";
-            //
+
             let id = itemData.item.type.id;
             bonusDatas[id].id = id;
             weaponDatas[id].id = id;
@@ -209,11 +207,6 @@ export default class Player extends Character {
             else if (e.code === "KeyA") this.direction = this.sprite.indexY = 3;
             else this.direction = null;
         })
-
-        // window.addEventListener('keypress', (e) => {
-        //     if (e.code === "KeyW" || e.code === "KeyD" || e.code === "KeyS" || e.code === "KeyA") this.move();
-        // })
-
         window.addEventListener("keyup", (e) => {
             if (e.code === "KeyW" || e.code === "KeyD" || e.code === "KeyS" || e.code === "KeyA")
                 this.direction = null;
@@ -222,39 +215,26 @@ export default class Player extends Character {
 
     controlActions() {
         window.addEventListener('keydown', (e) => {
-            if (e.code === "ArrowUp") {
-            }
-            if (e.code === "ArrowDown") {
-            }
-            if (e.code === "ArrowLeft") {
-            }
-            if (e.code === "ArrowRight") {
-            }
+            if (e.code === "ArrowUp") this.attackDirection = this.sprite.indexY = 0;
+            if (e.code === "ArrowRight") this.attackDirection = this.sprite.indexY = 1;
+            if (e.code === "ArrowDown") this.attackDirection = this.sprite.indexY = 2;
+            if (e.code === "ArrowRight") this.attackDirection = this.sprite.indexY = 3;
         })
     }
 
-    animation(cellSize, tileSize) {
-        CTX.beginPath()
-        CTX.drawImage(
-            this.sprite.image,
-            this.sprite.indexX * cellSize,
-            this.sprite.indexY * cellSize,
-            cellSize,
-            cellSize,
-            this.position.x,
-            this.position.y,
-            tileSize,
-            tileSize
-        )
-        CTX.closePath();
-
-        if(this.oldPosition[0] !== this.position.x || this.oldPosition[1] !== this.position.y){
-            this.sprite.indexX++;
+    checkDoorCollision(board, level){
+        let coordinates = this.getNextPosition(board);
+        for(let i = 0; i < board.doors.length; i++){
+            let door = board.doors[i];
+            if(coordinates.col === door.position.x && coordinates.row === door.position.y){
+                if(coordinates.col === 0 && this.direction === 3 ||
+                    coordinates.col === board.cols - 1 && this.direction === 1 ||
+                    coordinates.row === board.rows - 1 && this.direction === 2 ||
+                    coordinates.row === 0 && this.direction === 0
+                ){
+                    level.switchRoom(board.doors[i].door, this)
+                }
+            }
         }
-        if(this.sprite.indexX >= 9) this.sprite.indexX = 0;
-
-        this.oldPosition[0] = this.position.x;
-        this.oldPosition[1] = this.position.y;
     }
-
 }

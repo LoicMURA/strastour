@@ -3,18 +3,22 @@ import {fetcher} from "../Fetcher";
 import Attack from "./Attack";
 
 export default class Mob extends Character {
-    constructor(type, id, datas, diff, cols, tileSize, playerLvl) {
-        super(cols, tileSize);
+    constructor(type, id, datas, diff, cols, tileSize, playerLvl, src) {
+        super(cols, tileSize, src);
         this.name = '';
         this.drop = [];
         this.dropChance = 0;
         this.type = type; // 'mob' || 'boss'
         this.typeMob = id; // 'mob' => id_mob || 'boss' => id_boss
         this.attacks = []; // [new Attack]
+        this.src = null;
         fetcher.hydrateData(datas[id], this);
         this.hydrateAttacks();
         this.setDiff(diff);
+        this.direction = this.randomInt(0, 3);
         this.upgradeToCurrentStats(playerLvl);
+        this.sprite.image.src = this.src;
+        this.currentHp = this.hp;
     }
 
     hydrateAttacks() {
