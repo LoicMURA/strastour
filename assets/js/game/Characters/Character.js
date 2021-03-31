@@ -78,7 +78,7 @@ export default class Character {
             let distance = this.getDistance(destX, destY);
             if(distance <= 25 && this.canFollow === 0){
                 this.direction = null;
-                // callback();
+                //callback();
             }
             else if(distance <= 120) {
                 let posX = Math.round(this.position.x)
