@@ -44,6 +44,7 @@ export default class Level{
         //     this.currentRoom = controlleur.accueil
         // }else{
         // }
+        console.log(door);
         this.currentRoom = this.rooms[door.room];
         let nextDoor = this.currentRoom.board.doors[door.door];
         player.position.x = nextDoor.position.x * this.currentRoom.board.tileSize
