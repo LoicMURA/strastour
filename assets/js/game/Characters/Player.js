@@ -11,6 +11,10 @@ export default class Player extends Character {
         this.gender = USER.player.gender;
         this.pseudo = USER.username;
         this.xp = USER.player.xp;
+        this.position = {
+            x: CANVAS.width / 2,
+            y: CANVAS.height / 2
+        }
         //each values that needs to be selected based on classes properties
         this.current = {
             xp: 0,
