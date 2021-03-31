@@ -86,16 +86,8 @@ export default class Room {
             let enemy = this.enemies[this.currentHorde][i];
             if(enemy.name === 'voleurs'){
                 enemy.checkBoundsCollision(this.board);
-                let canMove = enemy.checkObstaclesCollision(this.board);
-                if(canMove){
-                    enemy.followTarget(player.position.x, player.position.y, canMove);
-                }else{
-                    let randomDirection = this.randomInt(0, 3);
-                    while(randomDirection === enemy.direction){
-                        randomDirection = this.randomInt(0, 3)
-                    }
-                    enemy.direction = randomDirection;
-                }
+                enemy.checkObstaclesCollision(this.board);
+                enemy.followTarget(player.position.x, player.position.y);
                 enemy.showHp(enemy.hp);
                 enemy.move();
                 enemy.animation(64, this.board.tileSize);
