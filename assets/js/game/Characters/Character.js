@@ -289,58 +289,6 @@ export default class Character {
         return {col: playerCol, row: playerRow};
     }
 
-    action() {
-        switch (this.type) {
-            case "player":
-                console.log(this.getCurrentItem().item);
-                //attack is instantiated in Weapon class
-                switch (this.getCurrentItem().item.id) {
-                    //logic for each Weapon attack
-                }
-                break;
-            case "mob":
-                //attack is direrctly related to a Mob (no Weapon class between)
-                switch (this.info.atk) {
-                    //logic for each mob atk
-                    case 1:
-                        this.voleurAtk();
-                        break;
-                    case 2:
-                        this.cyclistAtk();
-                        break;
-                    case 3:
-                        this.piegonAtk();
-                        break;
-                    case 4:
-                        this.nuageAtk();
-                        break;
-                }
-                break;
-            case "boss":
-                //same as mob
-                switch (this.info.atk) {
-                    //logic for each boss atk (assuming they are different from mobs
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                }
-                break;
-        }
-    }
-
-
-
-    // async voleurAtk(cellSize, tileSize, limitX){
-    //     this.animationAttack(cellSize, tileSize, limitX);
-    // }
-
     nuageAtk(player, board){
         if (this.time === 0) {
             this.time = this.randomInt(60 * 2, 60 * 10)
@@ -383,8 +331,7 @@ export default class Character {
     }
 
     animationAttack(cellSize, tileSize, limitX) {
-        this.animateSprite();
-        for(let i = 0; i < limitX; i++){
+        // for(let i = 0; i < limitX; i++){
             CTX.beginPath()
             CTX.drawImage(
                 this.spriteAttack.image,
@@ -405,7 +352,7 @@ export default class Character {
 
             this.oldPosition[0] = this.position.x;
             this.oldPosition[1] = this.position.y;
-        }
+        // }
     }
 
     animation(cellSize, tileSize) {

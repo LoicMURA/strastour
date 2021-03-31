@@ -30,6 +30,24 @@ export default class Player extends Character {
         this.activeBonus = [];
         this.hydrateInventory(itemDatas, weaponDatas);
         this.mouvementController(cols, tileSize, 64);
+
+        this.setSpritesAttacks();
+    }
+
+    action(board) {
+        if(this.current.item === 1) {
+            this.spriteAttack.image = this.spriteAttack.dagger
+            this.animationAttack(64, board.tileSize, 5)
+        }else if(this.current.item === 2){
+            this.spriteAttack.image = this.spriteAttack.spear
+            this.animationAttack(64, board.tileSize, 7)
+        }else if(this.current.item === 3){
+            this.spriteAttack.image = this.spriteAttack.sword
+            this.animationAttack(128, board.tileSize, 5)
+        }else if(this.current.item === 4){
+            this.spriteAttack.image = this.spriteAttack.bow
+            this.animationAttack(128, board.tileSize, 12)
+        }
     }
 
     // --- Hydrating class datas ---
@@ -71,7 +89,6 @@ export default class Player extends Character {
             }
         }
         this.updateEquipement();
-        this.setSpritesAttacks();
     }
 
     //store data that needs to be calculated based on player's level
@@ -188,6 +205,7 @@ export default class Player extends Character {
         this.upgradeToCurrentStats();
         hud.updateLvlIndicator(this);
         hud.updateHpBar(this);
+        this.updateXp();
     }
 
     //----------------------------------
@@ -256,30 +274,28 @@ export default class Player extends Character {
         window.addEventListener("keyup", (e) => {
             if (e.code === "KeyW" || e.code === "KeyD" || e.code === "KeyS" || e.code === "KeyA")
                 this.direction = null;
+
         })
     }
 
-    controlActions() {
+    controlActions(board) {
         window.addEventListener('keydown', (e) => {
-            if (e.code === "ArrowUp") this.attackDirection = this.sprite.indexY = 0;
-            if (e.code === "ArrowRight") this.attackDirection = this.sprite.indexY = 1;
-            if (e.code === "ArrowDown") this.attackDirection = this.sprite.indexY = 2;
-            if (e.code === "ArrowRight") this.attackDirection = this.sprite.indexY = 3;
+            if (e.code === "ArrowUp") this.attackDirection = this.spriteAttack.indexY = 0;
+            if (e.code === "ArrowRight") this.attackDirection = this.spriteAttack.indexY = 1;
+            if (e.code === "ArrowDown") this.attackDirection = this.spriteAttack.indexY = 2;
+            if (e.code === "ArrowRight") this.attackDirection = this.spriteAttack.indexY = 3;
         })
 
         window.addEventListener('keydown', (e => {
             if(e.code === "ArrowUp" || e.code === "ArrowDown" || e.code === "ArrowLeft" || e.code === "ArrowRight"){
                 this.isAttacking = true;
+                this.action(board);
             }
         }))
     }
 
-    updateSpriteAttack(){
-
-    }
-
     async setSpritesAttacks(){
-        this.spritesAttacks = {
+        this.spriteAttack = {
             dagger: new Image(),
             bow: new Image(),
             spear: new Image(),
@@ -287,11 +303,10 @@ export default class Player extends Character {
             indexX : 0,
             indexY : 0
         }
-
-        this.spritesAttacks.dagger.src = 'assets/image/sprites/character/male/attacks/dagger.png';
-        this.spritesAttacks.bow.src = 'assets/image/sprites/character/male/attacks/bow.png';
-        this.spritesAttacks.spear.src = 'assets/image/sprites/character/male/attacks/spear.png';
-        this.spritesAttacks.sword.src = 'assets/image/sprites/character/male/attacks/sword.png';
+        this.spriteAttack.dagger.src = 'assets/image/sprites/character/male/attacks/dagger.png';
+        this.spriteAttack.bow.src = 'assets/image/sprites/character/male/attacks/bow.png';
+        this.spriteAttack.spear.src = 'assets/image/sprites/character/male/attacks/spear.png';
+        this.spriteAttack.sword.src = 'assets/image/sprites/character/male/attacks/sword.png';
     }
 
     checkDoorCollision(board, level, controller){
