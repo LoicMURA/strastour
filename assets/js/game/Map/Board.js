@@ -11,6 +11,7 @@ export default class Board{
         this.obstacles = [];
         this.availables = [];
         this.doors = [];
+        this.interactibles = [];
         this.background = new Image();
         this.background.src = img;
         this.hydrateTiles(states, doors);
@@ -37,6 +38,9 @@ export default class Board{
                 }
                 if(tile.state === 0){
                     this.availables = [...this.availables, tile];
+                }
+                if(tile.state === 4 || tile.state === 5 || tile.state === 6){
+                    this.interactibles = [...this.interactibles, tile];
                 }
             }
         }

@@ -50,7 +50,6 @@ export default class GameController {
                                             // set currents stats (each stats is computed depends on the experience that the user already collected
                                             this.player.upgradeToCurrentStats();
                                             // set enemies for the current room
-                                            this.level.currentRoom.hydrateEnemies(this.level.difficulty, this.level.id, this.datas.Characters, this.player.lvl);
                                             // player in safeZone
                                             this.level.isSafe(this.datas.Characters, this.player.lvl);
                                             // set up hud
@@ -81,8 +80,6 @@ export default class GameController {
                                 .then(() => {
                                     // set the current room for the level
                                     this.level.currentRoom = this.level.rooms[0];
-                                    // set enemies for the current room
-                                    this.level.currentRoom.hydrateEnemies(this.level.difficulty, this.level.id, this.datas.Characters, this.player.lvl);
                                     // player in safeZone
                                     this.level.isSafe(this.datas.Characters, this.player.lvl);
 
@@ -129,6 +126,9 @@ export default class GameController {
         this.player.checkDoorCollision(this.level.currentRoom.board, this.level, this);
         this.player.checkObstaclesCollision(this.level.currentRoom.board);
         this.player.checkBoundsCollision(this.level.currentRoom.board);
+        if(this.level.id === 0) {
+            this.player.checkInteractionCollision(this.level.currentRoom.board, this.hud);
+        }
         this.player.move();
         this.player.animation(64, this.datas.boardSizes.tile);
         if(this.player.hp <= 0){
