@@ -67,6 +67,7 @@ export default class GameController {
                         })
                 });
         } else {
+            document.querySelector('.loader__close').classList.replace('loader__close', 'loader__open')
             // get data for current level
             this.datas.hydrateCurrentLevel(idLevel)
                 .then(() => {
@@ -85,7 +86,6 @@ export default class GameController {
                                     if (this.level.currentRoom.id === 0) {
                                         this.hud.panelInteractionsController(this.player, this);
                                     }
-                                    console.log(this.level.currentRoom.board.doors.length - 1)
                                     let doorsLength = this.level.currentRoom.board.doors.length - 1
                                     let doorPosition = this.level.currentRoom.board.doors[doorsLength];
 
@@ -98,7 +98,6 @@ export default class GameController {
                                     this.player.position.x = doorPosition.position.x * this.datas.boardSizes.tile;
                                 }).then(() => {
                                     this.animationId = requestAnimationFrame(this.anim.bind(this))
-                                    // console.log(this);
                             })
                         })
                 })
@@ -124,6 +123,7 @@ export default class GameController {
 
         // player
         this.player.checkDoorCollision(this.level.currentRoom.board, this.level, this);
+        if (this.level === null) console.log(this.level);
         this.player.checkObstaclesCollision(this.level.currentRoom.board);
         this.player.checkBoundsCollision(this.level.currentRoom.board);
         this.player.move();
@@ -133,6 +133,7 @@ export default class GameController {
         if(this.level.id !== 0){
             this.level.currentRoom.showEnnemies(this.player, this);
         }
+        document.querySelector('.loader__open')?.classList.replace('loader__open', 'loader__close')
     }
 
     stopAnim() {

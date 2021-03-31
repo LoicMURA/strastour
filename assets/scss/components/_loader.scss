@@ -1,0 +1,39 @@
+.loader {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $bg-secondary;
+    transition: opacity ease-in .5s;
+  }
+  &::before {
+    content: url('/public/assets/image/loader.svg');
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5%;
+    height: 5%;
+    transform: translate(-50%, -50%) scaleX(-1) rotate(90deg);
+    transform-origin: 50% 100%;
+    z-index: 999;
+    animation: rotate 2s infinite ease-in-out;
+    transition: opacity ease-out .5s;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: translate(-50%, -50%) scaleX(-1) rotate(90deg);
+    }
+    to {
+      transform: translate(-50%, -50%) scaleX(-1) rotate(-270deg);
+    }
+  }
+  &__close {
+    &::after, &::before {
+      opacity: 0;
+    }
+  }
+}

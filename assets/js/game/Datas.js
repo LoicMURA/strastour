@@ -22,7 +22,7 @@ export default class Datas {
     async hydrateCurrentLevel(id){
         let query = await fetch(`/assets/datas/levels/${id}.json`);
         let datas = await query.json();
-        this.Level = datas;
+        this.Level = await datas;
     }
 
     /**
