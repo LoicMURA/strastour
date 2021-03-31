@@ -18,6 +18,7 @@ export default class HUD {
             }
     }
     interacting = false;
+    interactionInfos = false;
 
     constructor(player, level) {
         this.hydrateEquipement(player);
@@ -96,8 +97,12 @@ export default class HUD {
     }
 
     updateXpBar(player) {
-        this.xpBar.style.right = Math.round(100 - (player.current.xp / player.current.maxXp * 100)) + "%";
+        this.xpBar.style.right = Math.round(100 - ( (player.current.xp - player.xp) / (player.current.maxXp - player.xp)  * 100)) + "%";
         this.xpVal.innerHTML = `${player.current.xp} / ${player.current.maxXp} XP`;
+    }
+
+    updateLvlIndicator(player) {
+        this.lvlVal.innerHTML = player.lvl;
     }
 
     updateLevel(level) {
@@ -122,10 +127,6 @@ export default class HUD {
         } else {
             this.level.querySelector('#difficulty').innerHTML += ` <span class="hud__hot">${difficulty}</span>`
         }
-    }
-
-    updateLvlIndicator(player) {
-        this.lvlVal.innerHTML = player.lvl;
     }
 
     setActiveItem(current, player) {
@@ -182,32 +183,45 @@ export default class HUD {
         }
     }
 
+    commandInfosController(request) {
+        if(this.interactionInfos) {
+            if(this.interactionInfos.dataset.id != request) {
+                this.hideCommandInfos();
+                this.showCommandInfos(request);
+            }
+        } else {
+            this.showCommandInfos(request);
+        }
+
+    }
+
     showCommandInfos(request) {
         let commands = document.querySelector("#command-infos");
         let command = document.createElement("div");
         command.classList.add("command__infos");
+        command.dataset.id = request;
         let msg;
         switch (request) {
             case "selectLevel":
                 msg = "Appuyez sur J pour selectionner un niveau";
                 break;
+            case "buyItems":
+                msg = "Appuyez sur B pour actionner le distributeur";
+                break;
+            case "askNarrator":
+                msg = "Appuyez sur N pour parler à Théodore van Strass";
         }
         command.innerHTML = msg;
         this.interactionInfos = command;
         commands.append(command);
     }
 
-    hideCommandInfos(player) {
-        player.interactionInfos.remove();
-        player.interacting = false;
+    hideCommandInfos() {
+        this.interactionInfos.remove();
+        this.interactionInfos = null;
     }
 
     showInteractivePanel(panelDatas, controller) {
-        // if(this.interacting){
-        //     this.closeInteractivePanel();
-        // } else  {
-        //     this.interacting = true;
-        // }
         this.interacting ? this.closeInteractivePanel() : this.interacting = true;
         if(this.interacting) {
             this.interactivePanel.classList.replace("panel--hidden", "panel--active");
