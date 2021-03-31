@@ -199,6 +199,7 @@ export default class Character {
     action() {
         switch (this.type) {
             case "player":
+                console.log(this.getCurrentItem().item);
                 //attack is instantiated in Weapon class
                 switch (this.getCurrentItem().item.id) {
                     //logic for each Weapon attack

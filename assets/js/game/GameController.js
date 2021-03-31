@@ -10,47 +10,88 @@ import {fetcher} from "./Fetcher";
 export default class GameController {
     constructor() {
         this.datas = new Datas();
+        this.animationId = 0;
+    }
+
+    awake() {
+        this.initDatas().then(() => {
+            this.initGame(ID_LEVEL);
+        })
+    }
+
+    async initDatas() {
+        // get each data
+        await this.datas.hydrateDatas(this.datas);
     }
 
     /**
      * Set up each element to start the game
      */
-    initGame() {
-        // get each data
-        this.datas.hydrateDatas(this.datas)
-            .then(() => {
-                // get data for current level
-                this.datas.hydrateCurrentLevel(ID_LEVEL)
-                    .then(() => {
-                        // instantiate level and hydrate datas
-                        this.level = new Level(ID_LEVEL ?? 0, this.datas.Level);
-                        this.level.hydrateLevel()
-                            .then(() => {
-                                // hydrate each rooms in the level
-                                this.level.hydrateRooms(this.datas.boardSizes, this.datas.Characters)
-                                    .then(() => {
-                                        // set the current room for the level
-                                        this.level.currentRoom = this.level.rooms[0];
-                                        // instatiate player
-                                        this.player = new Player(this.datas.Items, this.datas.Weapons, this.datas.boardSizes.cols, this.datas.boardSizes.tile);
-                                        fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"])
-                                            .then(() => {
-                                                // set currents stats (each stats is computed depends on the experience that the user already collected
-                                                this.player.upgradeToCurrentStats();
-                                                // set enemies for the current room
-                                                this.level.currentRoom.hydrateEnemies(this.level.difficulty,this.level.id, this.datas.Characters, this.player.lvl);
-                                                // set up hud
-                                                this.hud = new HUD(this.player, this.level);
-                                            })
-                                            .then(() => {
-                                                // start loop
-                                                requestAnimationFrame(this.anim.bind(this))
-                                                console.log(this);
-                                            })
-                                    })
-                            })
-                    })
-            });
+    initGame(idLevel, refresh = false) {
+        if (!refresh) {
+            // get data for current level
+            this.datas.hydrateCurrentLevel(idLevel)
+                .then(() => {
+                    // instantiate level and hydrate datas
+                    this.level = new Level(idLevel ?? 0, this.datas.Level);
+                    this.level.hydrateLevel()
+                        .then(() => {
+                            // hydrate each rooms in the level
+                            this.level.hydrateRooms(this.datas.boardSizes, this.datas.Characters)
+                                .then(() => {
+                                    // set the current room for the level
+                                    this.level.currentRoom = this.level.rooms[0];
+                                    // instatiate player
+                                    this.player = new Player(this.datas.Items, this.datas.Weapons, this.datas.boardSizes.cols, this.datas.boardSizes.tile);
+                                    fetcher.fetchData(this.player, '/assets/datas/Characters.json', ["player"])
+                                        .then(() => {
+                                            // set currents stats (each stats is computed depends on the experience that the user already collected
+                                            this.player.upgradeToCurrentStats();
+                                            // set enemies for the current room
+                                            this.level.currentRoom.hydrateEnemies(this.level.difficulty, this.level.id, this.datas.Characters, this.player.lvl);
+                                            // player in safeZone
+                                            this.level.isSafe(this.datas.Characters, this.player.lvl);
+                                            // set up hud
+                                            this.hud = new HUD(this.player, this.level);
+                                        })
+                                        .then(() => {
+                                            // start loop
+                                            if (this.level.currentRoom.id === 0) {
+                                                this.hud.panelInteractionsController(this.player, this);
+                                            }
+                                            this.animationId = requestAnimationFrame(this.anim.bind(this))
+                                            console.log(this);
+                                        })
+                                })
+                        })
+                });
+        } else {
+            // get data for current level
+            this.datas.hydrateCurrentLevel(idLevel)
+                .then(() => {
+                    // instantiate level and hydrate datas
+                    this.level = new Level(idLevel ?? 0, this.datas.Level);
+                    this.level.hydrateLevel()
+                        .then(() => {
+                            // hydrate each rooms in the level
+                            this.level.hydrateRooms(this.datas.boardSizes, this.datas.Characters)
+                                .then(() => {
+                                    // set the current room for the level
+                                    this.level.currentRoom = this.level.rooms[0];
+                                    // set enemies for the current room
+                                    this.level.currentRoom.hydrateEnemies(this.level.difficulty, this.level.id, this.datas.Characters, this.player.lvl);
+                                    // player in safeZone
+                                    this.level.isSafe(this.datas.Characters, this.player.lvl);
+
+                                    if (this.level.currentRoom.id === 0) {
+                                        this.hud.panelInteractionsController(this.player, this);
+                                    }
+                                    this.animationId = requestAnimationFrame(this.anim.bind(this))
+                                    console.log(this);
+                                })
+                        })
+                })
+        }
     }
 
     /**
@@ -58,7 +99,7 @@ export default class GameController {
      * @param currentTime
      */
     anim(currentTime) {
-        requestAnimationFrame(this.anim.bind(this))
+        this.animationId = requestAnimationFrame(this.anim.bind(this))
 
         // clear canvas
         CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
@@ -71,8 +112,24 @@ export default class GameController {
         this.player.checkObstaclesCollision(this.level.currentRoom.board);
         this.player.checkBoundsCollision(this.level.currentRoom.board);
         this.player.move();
-        this.player.animation(64 ,this.datas.boardSizes.tile);
+        this.player.animation(64, this.datas.boardSizes.tile);
 
         this.level.currentRoom.showEnnemies(this.player);
+    }
+
+    stopAnim() {
+        CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
+        cancelAnimationFrame(this.animationId);
+    }
+
+    switchLevel() {
+        this.stopAnim();
+        this.resetLvl();
+        this.initGame(ID_LEVEL, true);
+    }
+
+    resetLvl(obj) {
+        this.datas.Level = null;
+        this.level = null;
     }
 }
