@@ -32,7 +32,7 @@ export default class Level{
         }
     }
 
-    async hydrateRooms(boardDatas, characterDatas){
+    async hydrateRooms(boardDatas){
         for (const place of this.places) {
             let roomId = this.places.indexOf(place);
             let placeShort = place.place;
@@ -51,13 +51,13 @@ export default class Level{
         }
     }
 
-    switchRoom(door, player){
+    switchRoom(door, player, characterDatas){
         // if(door.room === -1){
         //     this.currentRoom = controlleur.accueil
         // }else{
         // }
-        console.log(door);
         this.currentRoom = this.rooms[door.room];
+        this.currentRoom.hydrateEnemies(this.difficulty, this.id, characterDatas, player.lvl)
         let nextDoor = this.currentRoom.board.doors[door.door];
         player.position.x = nextDoor.position.x * this.currentRoom.board.tileSize
         player.position.y = nextDoor.position.y * this.currentRoom.board.tileSize

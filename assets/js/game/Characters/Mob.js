@@ -19,6 +19,10 @@ export default class Mob extends Character {
         this.upgradeToCurrentStats(playerLvl);
         this.sprite.image.src = this.src;
         this.currentHp = this.hp;
+
+        if(this.typeMob === 1 || this.typeMob === '1'){
+            this.setSpriteAttacks('assets/image/sprites/mobs/voleur-attack.png');
+        }
     }
 
     hydrateAttacks() {

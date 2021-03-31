@@ -1,5 +1,4 @@
 import Character from "./Character";
-import {fetcher} from "../Fetcher";
 import Bonus from "../GameObjects/Bonus";
 import Weapon from "../GameObjects/Weapon";
 
@@ -36,7 +35,6 @@ export default class Player extends Character {
     // --- Hydrating class datas ---
     hydrateInventory(bonusDatas, weaponDatas) {
         let index = 0;
-        console.log(USER.player.inventory);
         for (const itemData of USER.player.inventory) {
             // to delete later on
             itemData.equiped = true;
@@ -224,7 +222,7 @@ export default class Player extends Character {
         })
     }
 
-    checkDoorCollision(board, level){
+    checkDoorCollision(board, level, controller){
         let coordinates = this.getNextPosition(board);
         for(let i = 0; i < board.doors.length; i++){
             let door = board.doors[i];
@@ -234,7 +232,14 @@ export default class Player extends Character {
                     coordinates.row === board.rows - 1 && this.direction === 2 ||
                     coordinates.row === 0 && this.direction === 0
                 ){
-                    level.switchRoom(board.doors[i].door, this)
+                    if((level.currentRoom.id === 1 || level.currentRoom.id === '1') && i === board.doors.length - 1){
+                        ID_LEVEL = 0;
+                        controller.switchLevel(level.id)
+                    }else{
+                        level.switchRoom(board.doors[i].door, this, controller.datas.Characters);
+                    }
+                }else if(level.id === 0 && ID_LEVEL !== 0){
+                    controller.switchLevel();
                 }
             }
         }
