@@ -24,11 +24,19 @@ export default class HUD {
         this.updateHpBar(player);
         this.updateXpBar(player);
         this.updateLvlIndicator(player);
-        if(level.id !== 0) {
-            this.updateLevel(level)
-            this.updateRoom(level.currentRoom)
-            this.updateDifficulty(level.difficulty)
+        if (level.id === 0) {
+            level = {
+                name: "Aucun",
+                currentRoom: {
+                    name: "Office de tourisme"
+                },
+                difficulty: "easy"
+            }
         }
+        this.updateLevel(level)
+        this.updateRoom(level.currentRoom)
+        this.updateDifficulty(level.difficulty)
+
         this.setActiveItem(this.equipement.children[0], player)
 
         this.equipement.addEventListener('click', (e) => {
@@ -93,15 +101,27 @@ export default class HUD {
     }
 
     updateLevel(level) {
-        this.level.querySelector('#course').innerHTML += ` <span class="hud__hot">${level.name}</span>`;
+        if (this.level.querySelector('#course .hud__hot')) {
+            this.level.querySelector('#course .hud__hot').innerText = level.name
+        } else {
+            this.level.querySelector('#course').innerHTML += ` <span class="hud__hot">${level.name}</span>`;
+        }
     }
 
     updateRoom(room) {
-        this.level.querySelector('#place').innerHTML += ` <span class="hud__hot">${room.name}</span>`
+        if (this.level.querySelector('#place .hud__hot')) {
+            this.level.querySelector('#place .hud__hot').innerText = room.name
+        } else {
+            this.level.querySelector('#place').innerHTML += ` <span class="hud__hot">${room.name}</span>`
+        }
     }
 
     updateDifficulty(difficulty) {
-        this.level.querySelector('#difficulty').innerHTML += ` <span class="hud__hot">${difficulty}</span>`
+        if (this.level.querySelector('#difficulty .hud__hot')) {
+            this.level.querySelector('#difficulty .hud__hot').innerText = difficulty
+        } else {
+            this.level.querySelector('#difficulty').innerHTML += ` <span class="hud__hot">${difficulty}</span>`
+        }
     }
 
     updateLvlIndicator(player) {
@@ -215,6 +235,8 @@ export default class HUD {
         eventBtns.forEach(btn=>{
             btn.addEventListener("click", ()=>{
                 ID_LEVEL = btn.dataset.id;
+                this.updateLevel({name: btn.getAttribute('data-name')})
+                this.closeInteractivePanel()
             })
         })
     }

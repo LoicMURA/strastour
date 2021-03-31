@@ -52,7 +52,8 @@ align-items-center w-100 hud__full" id="hud">
             {% for course in courses %}
                 <div class="panel__selectLevel__level">
                     <h1>{{ course.name }}</h1>
-                    <button id="select-level" data-id="{{ course.id }}">Jouer</button>
+                    <button id="select-level" data-id="{{ course.id }}" data-name="{{ course.name
+                    }}">Jouer</button>
                 </div>
             {% endfor %}
         </div>

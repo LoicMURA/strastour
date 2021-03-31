@@ -123,7 +123,6 @@ export default class GameController {
 
         // player
         this.player.checkDoorCollision(this.level.currentRoom.board, this.level, this);
-        if (this.level === null) console.log(this.level);
         this.player.checkObstaclesCollision(this.level.currentRoom.board);
         this.player.checkBoundsCollision(this.level.currentRoom.board);
         this.player.move();
@@ -133,6 +132,9 @@ export default class GameController {
         if(this.level.id !== 0){
             this.level.currentRoom.showEnnemies(this.player, this);
         }
+
+        let hudPlace = document.querySelector('#place .hud__hot')
+        if (hudPlace) hudPlace.innerText = this.level.currentRoom.name;
         document.querySelector('.loader__open')?.classList.replace('loader__open', 'loader__close')
     }
 
