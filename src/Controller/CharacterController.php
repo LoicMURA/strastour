@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\{Character, Inventory};
-use App\Repository\{CharacterRepository, InventoryRepository, ItemRepository};
+use App\Entity\{Character, Inventory, UserCourses, UserPlaces};
+use App\Repository\{CharacterRepository, CourseRepository, InventoryRepository, ItemRepository};
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Request, Response};
@@ -118,5 +118,35 @@ class CharacterController extends AbstractController
             $message = 'Le joueur n\'as maintenant plus d\'item '.$id;
         }
         return $message;
+    }
+
+    /**
+     * @Route("/clear-course", name="clear_course", methods={"POST"})
+     */
+    private function clearCourse(
+        Request $request,
+        EntityManagerInterface $manager,
+        Security $security,
+        CourseRepository $courseRepository
+    ) : Response
+    {
+        $userCourse = new UserCourses();
+        $course = $courseRepository->findOneBy(['id'=>$request->request->get('id')]);
+        $userCourse->setCourse($course)
+            ->setUser($security->getUser())
+            ->setInRealLife(0);
+        $manager->persist($userCourse);
+
+        $coursePlaces = $course->getPlaces();
+        foreach($coursePlaces as $place) {
+            $userPlace = new UserPlaces();
+            $userPlace->setPlace($place)
+                ->setUser($security->getUser())
+                ->setInRealLife(0);
+            $manager->persist($userPlace);
+        }
+
+        $manager->flush();
+        return $this->json('Le niveau '.$course->getName().' a été complété par le joueur.');
     }
 }

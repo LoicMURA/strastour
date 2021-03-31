@@ -171,25 +171,44 @@ export default class Player extends Character {
         }
         return false
     }
+
+    earnXp(xp, hud){
+        this.current.xp += xp * 1;
+        let currentLvl = this.lvl;
+        this.lvl = this.getLevel(this.current.xp);
+        if(currentLvl != this.lvl) {
+            this.levelUp(hud);
+        }
+        hud.updateXpBar(this);
+
+    }
+
+    levelUp(hud) {
+        this.xp = this.current.xp;
+        this.upgradeToCurrentStats();
+        hud.updateLvlIndicator(this);
+        hud.updateHpBar(this);
+    }
+
     //----------------------------------
 
 
-    updateStucks(stucks)
+    updateStucks()
     {
         let path = window.location.href.replace('jeu', 'profile/stuck-update');
         let datas = new FormData();
-        datas.append('stucks', stucks);
+        datas.append('stucks', this.stucks);
         fetch(path, {
             method: "POST",
             body: datas
         })
     }
 
-    updateXp(xp)
+    updateXp()
     {
         let path = window.location.href.replace('jeu', 'profile/xp-update');
         let datas = new FormData();
-        datas.append('xp', xp);
+        datas.append('xp', this.current.xp);
         fetch(path, {
             method: "POST",
             body: datas
@@ -197,16 +216,27 @@ export default class Player extends Character {
     }
 
     // precise each items that have been modified, even those who aren't possessed anymore
-    updateInventory(inventory)
+    updateInventory()
     {
         let path = window.location.href.replace('jeu', 'profile/inventory-update')
         let datas = new FormData()
         let i = 1;
-        for (let item of inventory) {
+        for (let item of this.inventory) {
             // item au format {id: 1, quantity: 1, quality:100}
             datas.append(`inventory-${i}`, JSON.stringify(item))
             i++
         }
+        fetch(path, {
+            method: "POST",
+            body: datas
+        })
+    }
+
+    // user has cleared each level's room and so level is also cleared
+    updateClearedLvl(levelId){
+        let path = window.location.href.replace('jeu', 'profile')
+        let datas = new FormData()
+        datas.append('id',levelId);
         fetch(path, {
             method: "POST",
             body: datas
@@ -284,6 +314,29 @@ export default class Player extends Character {
                     controller.switchLevel();
                 }
             }
+        }
+    }
+
+    checkInteractionCollision(board, hud){
+        let coordinates = this.getNextPosition(board);
+        let requestInteraction = false;
+        for(let i = 0; i < board.interactibles.length; i++) {
+            let tile = board.interactibles[i];
+            if(coordinates.col === tile.position.x && coordinates.row === tile.position.y){
+                requestInteraction = tile.state;
+
+            }
+        }
+        if(requestInteraction) {
+            if(requestInteraction === 4){
+                hud.commandInfosController("selectLevel");
+            } else if (requestInteraction === 5) {
+                hud.commandInfosController("buyItems");
+            } else if (requestInteraction === 6) {
+                hud.commandInfosController("askNarrator");
+            }
+        } else if (hud.interactionInfos) {
+            hud.hideCommandInfos();
         }
     }
 }
